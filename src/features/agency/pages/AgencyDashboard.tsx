@@ -35,7 +35,7 @@ import {
 import { AGENCY_CARD } from "@/features/agency/theme";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/features/auth/AuthContext";
-import ManagerActivityLog from "@/features/dashboard/components/ManagerActivityLog";
+import AgencyActivityLog from "@/features/agency/components/AgencyActivityLog";
 import { DashboardSectionHeader } from "@/features/dashboard/components/DashboardSectionHeader";
 import { StatCard } from "@/features/dashboard/components/StatCard";
 import { formatKes } from "@/features/landlord/lib/formatKes";
@@ -592,7 +592,7 @@ export default function AgencyDashboard() {
       {/* Recent activity */}
       <section className={AGENCY_CARD.panel} aria-labelledby="agency-dashboard-activity">
         <DashboardSectionHeader id="agency-dashboard-activity" eyebrow="Timeline" title="Recent activity" className="mb-3" />
-        <ManagerActivityLog compact limit={8} />
+        <AgencyActivityLog />
       </section>
     </AgencyLayout>
   );

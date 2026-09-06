@@ -12,6 +12,7 @@ export type AgencyPropertyRow = {
   occupied: number;
   occupancyRate: number;
   clientId: string | null;
+  propertyLandlordId: string | null;
   clientName: string;
   collectedMtd: number;
   outstanding: number;
@@ -65,65 +66,23 @@ export function useAgencyPortfolio() {
     queryKey: ["agency-portfolio", user?.id],
     enabled: Boolean(user?.id),
     queryFn: async () => {
-      if (!user) {
-        throw new Error("Not signed in");
-      }
+      if (!user) throw new Error("Not signed in");
+
+      const { data: snapshot, error } = await (supabase as any).rpc("get_agency_portfolio_snapshot");
+      if (error) throw error;
+      if (!snapshot) throw new Error("Agency portfolio snapshot unavailable");
 
       const now = new Date();
       const mtdStart = startOfMonth(now).toISOString().slice(0, 10);
-      const seriesStart = startOfMonth(subMonths(now, 5)).toISOString().slice(0, 10);
-      // Matches the Manager dashboard's definition (dashboardStats.ts) — no lease
-      // status is ever literally set to "expiring" (see 20260904000001's
-      // transition_lease_atomic), so an active lease due within 30 days is what
-      // "expiring" means everywhere else in the app.
-      const expiringCutoff = new Date(now.getTime() + 30 * 86400000).toISOString().slice(0, 10);
 
-      const [
-        propertiesRes,
-        linksRes,
-        invoicesRes,
-        expiringRes,
-        tenantsRes,
-      ] = await Promise.all([
-        supabase
-          .from("properties")
-          .select("id, name, address, units, occupied")
-          .eq("manager_id", user.id)
-          .order("name"),
-        supabase
-          .from("property_landlords")
-          .select("id, property_id, landlord_user_id, revenue_share_pct, operating_model, agency_service_model")
-          .eq("manager_id", user.id),
-        supabase
-          .from("invoices")
-          .select("property_id, amount, paid_amount, balance_due, status, paid_date, due_date")
-          .eq("manager_id", user.id),
-        supabase
-          .from("leases")
-          .select("id", { count: "exact", head: true })
-          .eq("manager_id", user.id)
-          .eq("status", "active")
-          .lte("end_date", expiringCutoff),
-        supabase
-          .from("tenants")
-          .select("id, property_id")
-          .eq("manager_id", user.id)
-          .eq("status", "active"),
-      ]);
-
-      if (propertiesRes.error) throw propertiesRes.error;
-      if (linksRes.error) throw linksRes.error;
-      if (invoicesRes.error) throw invoicesRes.error;
-      if (tenantsRes.error) throw tenantsRes.error;
-
-      const properties = (propertiesRes.data ?? []) as {
+      const properties = (snapshot.properties ?? []) as {
         id: string;
         name: string;
         address: string | null;
         units: number | null;
         occupied: number | null;
       }[];
-      const links = (linksRes.data ?? []) as {
+      const links = (snapshot.links ?? []) as {
         id: string;
         property_id: string;
         landlord_user_id: string | null;
@@ -131,13 +90,8 @@ export function useAgencyPortfolio() {
         operating_model?: string | null;
         agency_service_model?: string | null;
       }[];
-      const tenantRows = (tenantsRes.data ?? []) as { id: string; property_id: string | null }[];
-      const tenantCountByProperty = new Map<string, number>();
-      for (const tenant of tenantRows) {
-        if (tenant.property_id) tenantCountByProperty.set(tenant.property_id, (tenantCountByProperty.get(tenant.property_id) ?? 0) + 1);
-      }
-
-      const invoices = (invoicesRes.data ?? []) as {
+      const tenantRows = (snapshot.tenants ?? []) as { id: string; property_id: string | null }[];
+      const invoices = (snapshot.invoices ?? []) as {
         property_id: string | null;
         amount: number | string | null;
         paid_amount: number | string | null;
@@ -146,15 +100,14 @@ export function useAgencyPortfolio() {
         paid_date: string | null;
         due_date: string | null;
       }[];
-
-      const landlordIds = [...new Set(links.map((link) => link.landlord_user_id).filter((id): id is string => Boolean(id)))];
-      const { data: profiles } = landlordIds.length
-        ? await supabase.from("profiles").select("id, full_name, email").in("id", landlordIds)
-        : { data: [] as { id: string; full_name: string | null; email: string | null }[] };
-      const profileMap = new Map((profiles ?? []).map((profile) => [profile.id, profile]));
+      const profiles = (snapshot.profiles ?? []) as { id: string; full_name: string | null; email: string | null }[];
+      const profileMap = new Map(profiles.map((profile) => [profile.id, profile]));
+      const tenantCountByProperty = new Map<string, number>();
+      for (const tenant of tenantRows) {
+        if (tenant.property_id) tenantCountByProperty.set(tenant.property_id, (tenantCountByProperty.get(tenant.property_id) ?? 0) + 1);
+      }
 
       const linkByProperty = new Map(links.map((link) => [link.property_id, link]));
-
       const collectedByProperty = new Map<string, number>();
       const outstandingByProperty = new Map<string, number>();
       let collectedMtd = 0;
@@ -166,28 +119,13 @@ export function useAgencyPortfolio() {
         const paid = Number(invoice.paid_amount ?? (invoice.status === "paid" ? amount : 0));
         if (invoice.status === "paid" && inMonth(invoice.paid_date, mtdStart)) {
           collectedMtd += paid;
-          if (invoice.property_id) {
-            collectedByProperty.set(invoice.property_id, (collectedByProperty.get(invoice.property_id) ?? 0) + paid);
-          }
+          if (invoice.property_id) collectedByProperty.set(invoice.property_id, (collectedByProperty.get(invoice.property_id) ?? 0) + paid);
         }
-        if (invoice.status === "overdue") {
-          overdueInvoices += 1;
-        }
-        // Outstanding must include partially_paid invoices too — a partial
-        // payment moves status away from "overdue" while balance_due stays
-        // > 0, so counting "overdue" alone silently drops real arrears the
-        // moment any partial payment lands (agencyPortfolio.ts's own
-        // agencyClientStatus() reads this figure to flag a client as
-        // "attention", so this also fixes client status chips).
+        if (invoice.status === "overdue") overdueInvoices += 1;
         if (invoice.status === "overdue" || invoice.status === "partially_paid") {
           const due = dueAmount(invoice);
           outstanding += due;
-          if (invoice.property_id) {
-            outstandingByProperty.set(
-              invoice.property_id,
-              (outstandingByProperty.get(invoice.property_id) ?? 0) + due,
-            );
-          }
+          if (invoice.property_id) outstandingByProperty.set(invoice.property_id, (outstandingByProperty.get(invoice.property_id) ?? 0) + due);
         }
       }
 
@@ -204,6 +142,7 @@ export function useAgencyPortfolio() {
           occupied,
           occupancyRate: occupancyRate(occupied, units),
           clientId: link?.landlord_user_id ?? null,
+          propertyLandlordId: link?.id ?? null,
           clientName: profile?.full_name || profile?.email || (link ? "Invitation pending" : "Unlinked"),
           collectedMtd: collectedByProperty.get(property.id) ?? 0,
           outstanding: outstandingByProperty.get(property.id) ?? 0,
@@ -252,33 +191,18 @@ export function useAgencyPortfolio() {
         const monthDate = subMonths(now, i);
         const start = startOfMonth(monthDate).toISOString().slice(0, 10);
         const end = endOfMonth(monthDate).toISOString().slice(0, 10);
-        const paid = invoices
-          .filter((invoice) => invoice.status === "paid" && inMonth(invoice.paid_date, start, end))
-          .reduce((sum, invoice) => sum + Number(invoice.paid_amount ?? invoice.amount ?? 0), 0);
-        // Include partially_paid so this chart's "pending" series matches the
-        // same outstanding figure shown in the KPI cards above — otherwise
-        // the page would show two different "Outstanding" totals.
-        const pending = invoices
-          .filter(
-            (invoice) =>
-              (invoice.status === "pending" ||
-                invoice.status === "overdue" ||
-                invoice.status === "partially_paid") &&
-              inMonth(invoice.due_date, start, end),
-          )
-          .reduce((sum, invoice) => sum + dueAmount(invoice), 0);
+        const paid = invoices.filter((invoice) => invoice.status === "paid" && inMonth(invoice.paid_date, start, end)).reduce((sum, invoice) => sum + Number(invoice.paid_amount ?? invoice.amount ?? 0), 0);
+        const pending = invoices.filter((invoice) => (invoice.status === "pending" || invoice.status === "overdue" || invoice.status === "partially_paid") && inMonth(invoice.due_date, start, end)).reduce((sum, invoice) => sum + dueAmount(invoice), 0);
         series.push({ month: format(monthDate, "MMM"), paid, pending });
       }
 
       const totalUnits = propertyRows.reduce((sum, row) => sum + row.units, 0);
       const totalOccupied = propertyRows.reduce((sum, row) => sum + row.occupied, 0);
-
       const serviceModelsByProperty = new Map<string, AgencyServiceModel>();
       for (const link of links) {
         const model = (link.agency_service_model ?? agencyServiceModelFromOperatingModel(link.operating_model)) as AgencyServiceModel | null;
         if (model) serviceModelsByProperty.set(link.property_id, model);
       }
-
       const serviceMix = {
         fullManagement: [...serviceModelsByProperty.values()].filter((model) => model === "full_management").length,
         managedDirectCollection: [...serviceModelsByProperty.values()].filter((model) => model === "managed_direct_landlord_collection").length,
@@ -298,15 +222,12 @@ export function useAgencyPortfolio() {
         collectedMtd,
         outstanding,
         overdueInvoices,
-        expiringLeases: expiringRes.count ?? 0,
+        expiringLeases: Number(snapshot.expiring_leases ?? 0),
         serviceMix,
         series,
       };
     },
   });
 
-  return {
-    ...query,
-    data: query.data,
-  };
+  return { ...query, data: query.data };
 }
