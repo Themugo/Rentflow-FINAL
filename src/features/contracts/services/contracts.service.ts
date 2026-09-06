@@ -141,12 +141,10 @@ export async function bulkDeleteContracts(
 ) {
   for (const contractId of contractIds) {
     const { error } = await supabase.rpc("soft_delete_contract_atomic", { p_contract_id: contractId, p_reason: reason, p_deleted_by: userId });
-    if (error) throw error;
-  }
-
-  if (error) {
-    logError("bulkDeleteContracts", error);
-    throw error;
+    if (error) {
+      logError("bulkDeleteContracts", error);
+      throw error;
+    }
   }
 }
 

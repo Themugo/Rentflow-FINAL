@@ -223,7 +223,7 @@ export default function LandlordDashboard() {
                   <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-border" />
                   <XAxis dataKey="month" tick={{ fontSize: 11 }} />
                   <YAxis width={52} tick={{ fontSize: 11 }} tickFormatter={(v: number) => (v >= 1000 ? `${Math.round(v / 1000)}k` : String(v))} />
-                  <Tooltip formatter={(v: number) => formatKes(Number(v ?? 0))} />
+                  <Tooltip formatter={(v) => formatKes(Number(v ?? 0))} />
                   <Area type="monotone" dataKey="collected" name="Collected" stroke={LANDLORD_TREND_COLORS.collected} strokeWidth={2} fill="none" />
                   <Area type="monotone" dataKey="net" name="Net to you" stroke={LANDLORD_TREND_COLORS.net} strokeWidth={2} fill="url(#landlordNetFill)" />
                 </AreaChart>

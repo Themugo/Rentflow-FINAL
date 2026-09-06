@@ -22,7 +22,7 @@ const GROUPS = [
   ["communication_rules", "Communications", ["notify_material_changes","allow_selected_reach","allow_global_reach"]],
   ["security_rules", "Security", ["deny_cross_scope_access","require_server_authority","protect_closed_periods","protect_paid_invoices"]],
 ] as const;
-const label = (v:string) => v.replaceAll("_"," ").replace(/\b\w/g,c=>c.toUpperCase());
+const label = (v:string) => v.replace(/_/g, " ").replace(/\b\w/g,(c: string)=>c.toUpperCase());
 type Props = { role: "manager" | "landlord"; propertyId: string; readOnly?: boolean; title?: string; description?: string };
 export default function ManagementConfigurationCenter({ role, propertyId, readOnly=false, title="Operating configuration", description="Configure the rules that govern this property without creating a second billing, tenant or financial system." }: Props) {
   const qc=useQueryClient(); const [draft,setDraft]=useState<Record<string,any>>({});

@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useMemo, type ReactNode } 
 import { useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { type PortalId } from "./portals";
+import { portalFromAppRole, type PortalId } from "./portals";
 import { DEFAULT_PORTAL_IDENTITIES, portalIdentityFromRow, type PortalIdentity } from "./portalIdentity";
 import { useAuth } from "@/features/auth/AuthContext";
 import { deriveBrandPalette } from "@/core/design/deriveBrandPalette";

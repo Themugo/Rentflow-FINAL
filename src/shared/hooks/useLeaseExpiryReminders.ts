@@ -133,7 +133,7 @@ async function runExpiryCheck(userId: string, managerId: string) {
       if (w === null) return null;
       return buildNotification(l, daysLeft, userId);
     })
-    .filter(Boolean);
+    .filter((notification): notification is NonNullable<typeof notification> => Boolean(notification));
 
   if (toInsert.length === 0) return;
 

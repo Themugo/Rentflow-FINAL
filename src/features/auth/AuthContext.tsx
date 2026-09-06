@@ -55,6 +55,7 @@ export interface WebhostPermissions {
   can_manage_properties: boolean;
   can_manage_system_landlords: boolean;
   can_view_activity_logs: boolean;
+  can_manage_platform_settings: boolean;
 }
 
 export interface SubmanagerPermissions {
@@ -125,6 +126,7 @@ interface AdminPermissionsRow {
   can_manage_properties: boolean;
   can_manage_system_landlords: boolean;
   can_view_activity_logs: boolean;
+  can_manage_platform_settings: boolean;
 }
 
 interface SubmanagerPermissionsRow {
@@ -193,7 +195,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const fetchWebhostPermissions = useCallback(async (userId: string): Promise<WebhostPermissions | null> => {
     const { data } = await supabase
       .from('admin_permissions')
-      .select('admin_level, can_create_webhosts, can_manage_managers, can_manage_billing, can_manage_properties, can_manage_system_landlords, can_view_activity_logs')
+      .select('admin_level, can_create_webhosts, can_manage_managers, can_manage_billing, can_manage_properties, can_manage_system_landlords, can_view_activity_logs, can_manage_platform_settings')
       .eq('user_id', userId)
       .maybeSingle();
     if (!data) return null;
@@ -206,6 +208,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       can_manage_properties:      row.can_manage_properties ?? false,
       can_manage_system_landlords:row.can_manage_system_landlords ?? false,
       can_view_activity_logs:     row.can_view_activity_logs ?? false,
+      can_manage_platform_settings: row.can_manage_platform_settings ?? false,
     };
   }, []);
 

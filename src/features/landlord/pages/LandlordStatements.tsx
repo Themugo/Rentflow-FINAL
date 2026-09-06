@@ -11,6 +11,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { EmptyState } from "@/shared/components/ui/empty-state";
 import { ErrorState } from "@/shared/components/ui/error-state";
+import { formatKes } from "@/features/landlord/lib/formatKes";
+import { payoutStatusTone } from "@/shared/lib/statusBadge";
+import { statusBadgeClass } from "@/shared/lib/statusBadge";
 
 export default function LandlordStatements() {
   const { properties, isLoading, isError, refetch } = useLandlordPortfolio();

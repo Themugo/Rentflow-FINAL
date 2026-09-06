@@ -169,9 +169,11 @@ export const ReceiptVerification = () => {
     setProcessing(true);
     try {
       const { data: userData } = await supabase.auth.getUser();
+      const verifierId = userData.user?.id ?? user?.id;
+      if (!verifierId) throw new Error("Authenticated user required to verify a receipt.");
       const { error } = await supabase.rpc('verify_payment_receipt_atomic', {
         p_receipt_id: receipt.id,
-        p_verified_by: userData.user?.id ?? user.id,
+        p_verified_by: verifierId,
       });
       if (error) throw error;
 
@@ -267,9 +269,11 @@ export const ReceiptVerification = () => {
     setProcessing(true);
     try {
       const { data: userData } = await supabase.auth.getUser();
+      const verifierId = userData.user?.id ?? user?.id;
+      if (!verifierId) throw new Error("Authenticated user required to reject a receipt.");
 
       const { error } = await supabase.rpc('reject_payment_receipt_atomic', {
-        p_receipt_id: selectedReceipt.id, p_rejection_reason: rejectionReason, p_verified_by: userData.user?.id ?? user.id,
+        p_receipt_id: selectedReceipt.id, p_rejection_reason: rejectionReason, p_verified_by: verifierId,
       });
       if (error) throw error;
 

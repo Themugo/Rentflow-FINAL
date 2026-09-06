@@ -216,6 +216,7 @@ const TenantPortal = () => {
   const {
     loading: leaseLoading,
     isFromCache: leaseFromCache,
+    data: lease,
     error: leaseError,
     refetch: refetchLease,
   } = useOfflineData(`lease_${userRole?.tenant_id}`, fetchLease, {
@@ -596,9 +597,9 @@ const TenantPortal = () => {
           firstName={tenantInfo.name?.split(" ")[0] || "there"}
           propertyName={tenantInfo.property}
           unit={tenantInfo.unit}
-          propertyImage={homeDetails.image_url}
-          propertyType={homeDetails.property_type}
-          unitBedrooms={homeDetails.bedrooms}
+          propertyImage={homeDetails?.image_url ?? null}
+          propertyType={homeDetails?.property_type ?? null}
+          unitBedrooms={homeDetails?.bedrooms ?? null}
           amountDue={stats.totalDue}
           dueDate={mostUrgent?.due_date ?? null}
           overdue={stats.overdueCount > 0}
@@ -606,8 +607,8 @@ const TenantPortal = () => {
           onPayRent={() => openStkPay(urgentInvoices as PayableInvoice[])}
           payDisabled={isOffline || urgentInvoices.length === 0}
           maintenanceOpen={maintenanceSummary.openCount}
-          activeMaintenance={activeMaintenance.map((m) => ({ title: m.title, status: m.status, href: '/portal/maintenance' }))}
-          recentNotices={recentNotices}
+          activeMaintenance={(activeMaintenance ?? []).map((m) => ({ title: m.title, status: m.status, href: '/portal/maintenance' }))}
+          recentNotices={recentNotices ?? []}
           recentActivity={recentActivity}
         />
       )}

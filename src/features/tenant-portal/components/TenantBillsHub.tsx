@@ -90,7 +90,7 @@ const TenantBillsHub: React.FC<TenantBillsHubProps> = ({ tenantId, onPay, invoic
   const unitGroups = useMemo(() => {
     const groups = new Map<string, { label: string; bills: InvoiceRow[] }>();
     for (const bill of payable) {
-      const key = bill.unit_id ?? bill.lease_id ?? bill.id;
+      const key = bill.unit_id ?? bill.property_id ?? bill.id;
       const label = bill.unit_number ? `Unit ${bill.unit_number}` : (bill.property_name ?? 'Unit');
       const current = groups.get(key) ?? { label, bills: [] };
       current.bills.push(bill);

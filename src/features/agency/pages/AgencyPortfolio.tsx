@@ -81,10 +81,10 @@ export default function AgencyPortfolio() {
                     {AGENCY_SERVICE_MODEL_SHORT_LABELS[model.id]}
                   </button>
                 ))}
-                {data.serviceMix.unconfigured > 0 ? <button type="button" onClick={() => setServiceFilter("unconfigured")} className={`rounded-full border px-2.5 py-1.5 text-[10px] font-semibold transition ${serviceFilter === "unconfigured" ? "border-warning bg-warning text-white" : "border-warning/30 bg-warning/5 text-warning hover:bg-warning/10"}`}>Unconfigured · {data.serviceMix.unconfigured}</button> : null}
+                {(data?.serviceMix.unconfigured ?? 0) > 0 ? <button type="button" onClick={() => setServiceFilter("unconfigured")} className={`rounded-full border px-2.5 py-1.5 text-[10px] font-semibold transition ${serviceFilter === "unconfigured" ? "border-warning bg-warning text-white" : "border-warning/30 bg-warning/5 text-warning hover:bg-warning/10"}`}>Unconfigured · {data?.serviceMix.unconfigured ?? 0}</button> : null}
               </div>
             </div>
-            <p className="mt-2 text-[10px] text-muted-foreground">Showing {filteredProperties.length} of {data.totalProperties} properties.</p>
+            <p className="mt-2 text-[10px] text-muted-foreground">Showing {filteredProperties.length} of {data?.totalProperties ?? 0} properties.</p>
           </div>
 
           <Table>

@@ -39,7 +39,7 @@ type TransparencyPayload = {
 
 function downloadCsv(rows: SettlementRow[]) {
   const headers = ["Property", "Period start", "Period end", "Gross", "Fee", "Net", "Status", "Settlement reference", "Settled at"];
-  const esc = (value: unknown) => `"${String(value ?? "").replaceAll('"', '""')}"`;
+  const esc = (value: unknown) => `"${String(value ?? "").replace(/"/g, '""')}"`;
   const csv = [headers.join(","), ...rows.map(r => [r.property_name,r.period_start,r.period_end,r.gross_amount,r.fee_amount,r.net_amount,r.batch_status,r.settlement_reference,r.settled_at].map(esc).join(","))].join("\n");
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
   const url = URL.createObjectURL(blob);

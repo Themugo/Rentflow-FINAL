@@ -139,6 +139,7 @@ export interface RouteDef {
     | "can_manage_properties"
     | "can_manage_system_landlords"
     | "can_manage_billing"
+    | "can_manage_platform_settings"
     | "can_view_activity_logs";
   /** Minimum webhost admin tier required to open this URL. */
   minAdminLevel?: AdminLevel;

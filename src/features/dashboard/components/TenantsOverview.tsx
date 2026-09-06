@@ -20,7 +20,7 @@ export function TenantsOverview() {
   const assignedKey = assignedPropertyIds.join(",");
   const [signedUrls, setSignedUrls] = useState<Record<string,string>>({});
   const { data: tenants = [], isLoading: loading } = useQuery<Tenant[]>({
-    queryKey: [...dashboardDataKeys.tenantsOverview(managerId ?? ""), assignedKey],
+    queryKey: [...dashboardDataKeys.tenantsOverview(managerId ?? "", assignedKey), assignedKey],
     enabled: !!managerId && (!restrictToAssignedProperties || assignedPropertyIds.length > 0),
     staleTime: 30 * 1000,
     queryFn: async () => {

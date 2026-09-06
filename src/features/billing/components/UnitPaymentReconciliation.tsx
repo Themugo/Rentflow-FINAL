@@ -20,7 +20,7 @@ const STATUS: Record<string, { label: string; className: string }> = {
   no_billing: { label: "No billing", className: "bg-muted text-muted-foreground border-border" },
 };
 
-const UnitPaymentReconciliation = ({ propertyId, landlordView = false, title = "Unit payment reconciliation" }) => {
+const UnitPaymentReconciliation = ({ propertyId, landlordView = false, title = "Unit payment reconciliation" }: { propertyId?: string; landlordView?: boolean; title?: string }) => {
   const { formatCurrency } = useCurrency();
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");

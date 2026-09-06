@@ -150,6 +150,7 @@ export function MpesaPaymentDialog({
       const MAX_ATTEMPTS = 12; // 12 × 5s = 60s
 
       const timer = setInterval(async () => {
+        if (!invoice) return;
         attempts++;
         if (attempts > MAX_ATTEMPTS) {
           clearInterval(timer);
@@ -175,7 +176,7 @@ export function MpesaPaymentDialog({
             setPaymentStatus("success");
             toast({
               title: "Payment successful! 🎉",
-              description: `KES ${paymentAmount.toLocaleString()} received for Unit ${unitNumber}.`,
+              description: `KES ${Number(invoice.balance_due ?? invoice.amount).toLocaleString()} received for Unit ${unitNumber}.`,
             });
             setTimeout(() => {
               onPaymentComplete();

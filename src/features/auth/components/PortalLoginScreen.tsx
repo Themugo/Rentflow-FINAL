@@ -45,6 +45,8 @@ interface PortalLoginLayoutProps {
   portalName: string;
   /** Marketable portal slogan shown prominently under the portal name. */
   slogan?: string;
+  /** Optional explicit headline lines for a portal-specific entry treatment. */
+  headlineLines?: string[];
   description: string;
   features?: Array<{ icon: ComponentType<{ className?: string }>; label: string; text: string }>;
   trustLabel?: string;
@@ -58,6 +60,7 @@ export function PortalLoginLayout({
   badgeIcon: BadgeIcon,
   portalName,
   slogan,
+  headlineLines,
   description,
   features = [],
   trustLabel = "Secure workspace · Connected property operations",
@@ -97,7 +100,7 @@ export function PortalLoginLayout({
             <section className="flex min-h-0 flex-col justify-center px-2 py-8 sm:min-h-[500px] sm:px-4 lg:min-h-[calc(100vh-122px)] lg:py-10">
               <div className="max-w-3xl">
                 <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-2 text-xs font-bold tracking-[0.24em] text-white/95 backdrop-blur-md"><BadgeIcon className="h-4 w-4" aria-hidden />{resolvedPortalName.toUpperCase()} PORTAL</div>
-                <h1 className="mt-6 max-w-3xl font-heading text-[clamp(2.7rem,5.6vw,5.35rem)] font-semibold leading-[0.94] tracking-[-0.05em] text-white drop-shadow-[0_3px_18px_rgba(0,0,0,0.24)]">{resolvedPortalName}</h1>
+                <h1 className="mt-6 max-w-3xl font-heading text-[clamp(2.7rem,5.6vw,5.35rem)] font-semibold leading-[0.94] tracking-[-0.05em] text-white drop-shadow-[0_3px_18px_rgba(0,0,0,0.24)]">{(headlineLines ?? [resolvedPortalName]).map((line) => <span key={line} className="block">{line}</span>)}</h1>
                 <p className="mt-4 max-w-3xl font-heading text-[clamp(1.45rem,2.45vw,2.2rem)] font-medium leading-[1.1] tracking-[-0.03em] text-white/96">{resolvedSlogan}</p>
                 <p className="mt-5 max-w-2xl text-base leading-7 text-white/86 sm:text-lg sm:leading-8">{description}</p>
                 {trustLabel ? <div className="mt-6 flex w-fit items-center gap-2.5 rounded-xl border border-white/16 bg-black/10 px-4 py-3 text-xs font-semibold text-white/92 backdrop-blur-md"><span className="h-2 w-2 rounded-full bg-white/80" aria-hidden />{trustLabel}</div> : null}

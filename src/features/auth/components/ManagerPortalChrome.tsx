@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import { Building2, UsersRound, FileChartColumn, Wrench } from "lucide-react";
 import { PROPERTY_IMAGES } from "@/features/marketing/propertyImages";
-import { CALQULUS_PORTAL_ACCENT } from "@/shared/theme/tokens";
 import { usePortalIdentity } from "@/core/product/PortalIdentityProvider";
 import { PortalLoginLayout } from "@/features/auth/components/PortalLoginScreen";
 
@@ -12,7 +11,7 @@ import { PortalLoginLayout } from "@/features/auth/components/PortalLoginScreen"
  * all four portals stay visually and structurally consistent.
  */
 
-export const MANAGER_ACCENT = CALQULUS_PORTAL_ACCENT.manager.hex;
+export const MANAGER_ACCENT = "#31577E";
 
 interface ManagerPortalShellProps {
   children: ReactNode;
@@ -30,9 +29,10 @@ export function ManagerPortalShell({ children }: ManagerPortalShellProps) {
       accentHex={MANAGER_ACCENT}
       backgroundImage={identity.backgroundImageUrl || PROPERTY_IMAGES.residential}
       badgeIcon={Building2}
-      portalName={identity.shortName}
+      portalName="Manager"
+      headlineLines={["Manager", "Portal"]}
       slogan={identity.tagline}
-      description="Run property operations, tenants, leases, billing, payments and maintenance from one connected desk."
+      description="Run properties, tenants, leases, billing, payments and maintenance from one connected desk."
       features={[
         { icon: Building2, label: "Properties", text: "Keep buildings, units and occupancy under control." },
         { icon: UsersRound, label: "Tenants", text: "Coordinate tenant records, leases and service." },

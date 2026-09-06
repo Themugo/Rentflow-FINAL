@@ -37,7 +37,7 @@ function jsonRecords(value: unknown): any[] {
 
 function csvCell(value: unknown) {
   const raw = String(value ?? "");
-  return `"${raw.replaceAll('"', '""')}"`;
+  return `"${raw.replace(/"/g, '""')}"`;
 }
 
 const PAYMENT_METHODS = [
@@ -60,7 +60,7 @@ const EVIDENCE_SOURCES = [
 ] as const;
 
 function friendly(value: string) {
-  return value.replaceAll("_", " ").replace(/\b\w/g, (char) => char.toUpperCase());
+  return value.replace(/_/g, " ").replace(/\b\w/g, (char: string) => char.toUpperCase());
 }
 
 export default function AgencyFinancialWorkbench() {

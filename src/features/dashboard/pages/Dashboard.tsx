@@ -48,7 +48,7 @@ import { PropertiesOverview } from "@/features/dashboard/components/PropertiesOv
 import {
   Home, RefreshCw, DollarSign, Building2, DoorOpen, Plus, BarChart3,
 } from "lucide-react";
-import { lazy, Suspense, useEffect, useMemo, useRef } from "react";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/features/auth/AuthContext";
@@ -130,6 +130,14 @@ const Dashboard = () => {
   });
 
   const userName = profile?.full_name?.split(" ")[0] || "there";
+  const [activeDeskTab, setActiveDeskTab] = useState<"overview" | "collections" | "occupancy" | "operations" | "controls">("overview");
+  const deskTabs = [
+    { id: "overview" as const, label: "Command center", hint: "Today's priorities" },
+    { id: "collections" as const, label: "Collections", hint: "Cash and arrears" },
+    { id: "occupancy" as const, label: "Portfolio", hint: "Properties and occupancy" },
+    { id: "operations" as const, label: "Operations", hint: "Maintenance and service" },
+    { id: "controls" as const, label: "Controls", hint: "Finance and governance" },
+  ];
   const attentionItems = useMemo(
     () => (stats ? buildAttentionItems(stats, formatCurrency) : []),
     [stats, formatCurrency],
@@ -299,6 +307,7 @@ const Dashboard = () => {
                 ? Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-[5.5rem] rounded-xl" />)
                 : (
                   <>
+                    <div id="dashboard-properties">
                     <StatCard
                       compact
                       title="Properties"
@@ -308,6 +317,8 @@ const Dashboard = () => {
                       icon={Building2}
                       iconColor="primary"
                     />
+                    </div>
+                    <div id="dashboard-units">
                     <StatCard
                       compact
                       title="Units"
@@ -317,15 +328,8 @@ const Dashboard = () => {
                       icon={DoorOpen}
                       iconColor="primary"
                     />
-                    <StatCard
-                      compact
-                      title="Occupancy"
-                      value={`${stats.occupancyRate}%`}
-                      changeType={stats.occupancyRate >= 90 ? "positive" : stats.occupancyRate >= 70 ? "neutral" : "negative"}
-                      icon={Home}
-                      iconColor={stats.occupancyRate >= 70 ? "success" : "destructive"}
-                      progressValue={stats.occupancyRate}
-                    />
+                    </div>
+                    <div id="dashboard-collections">
                     <StatCard
                       compact
                       title="Collections"
@@ -335,6 +339,18 @@ const Dashboard = () => {
                       icon={DollarSign}
                       iconColor="primary"
                     />
+                    </div>
+                    <div id="dashboard-occupancy">
+                    <StatCard
+                      compact
+                      title="Occupancy"
+                      value={`${stats.occupancyRate}%`}
+                      changeType={stats.occupancyRate >= 90 ? "positive" : stats.occupancyRate >= 70 ? "neutral" : "negative"}
+                      icon={Home}
+                      iconColor={stats.occupancyRate >= 70 ? "success" : "destructive"}
+                      progressValue={stats.occupancyRate}
+                    />
+                    </div>
                   </>
                 )}
             </div>
@@ -376,164 +392,138 @@ const Dashboard = () => {
             </section>
           )}
 
-          {/* Portfolio control centre — combines existing dashboard truth with payment exceptions. */}
-          <section className="mb-6 min-w-0" aria-labelledby="dashboard-operations-control">
-            <div id="dashboard-operations-control" className="sr-only">Portfolio operations control</div>
-            <PortfolioOperationsControlCenter stats={stats} loading={loading} />
-            <ManagementAnalyticsPanel />
-            <ExecutivePortfolioIntelligence />
-            <PortfolioFinancialIntelligence />
-            <FinancialCloseControlCenter />
-            <OwnerPayoutSettlementCenter />
-            <PropertyRevenueLeaseOptimization />
-            <RevenueLeakageIntelligence />
-            <CollectionsRecoveryAutomation />
-            <CollectionsCommunicationsMonitoring />
-            <TenantRetentionChurnIntelligence />
-            <TenantExperienceServiceQualityIntelligence />
-            <TenantServiceRecoveryCenter />
-            <DocumentEvidenceControlCenter />
-            <FinancialOperationalReconciliationCenter />
-            <FinancialAuditPackCenter />
-            <ManagementComplianceAssuranceCenter />
-            <ControlledManagementReportingCenter />
-              <DoubleEntryLedgerIntegrityCenter />
-          <LedgerAdjustmentsReversalsGovernance />
-            <TrialBalanceFinancialStatementsCenter />
-            <BudgetForecastVarianceCenter />
-            <CashFlowTreasuryLiquidityCenter />
-            <ExpenseCommitmentPayablesCenter />
-            <VendorProcurementContractControlCenter />
-            <MaintenanceProcurementCostControlCenter />
-            <MaintenanceSlaVendorDispatchAssuranceCenter />
-            <PreventiveMaintenanceLifecycleCenter />
-            <MaintenanceAssetLifecycleCenter />
-            <PropertySafetyRegulatoryRiskCenter />
-            <PropertyInspectionComplianceAssuranceCenter />
-          </section>
-
-          <section className="mb-6 min-w-0" aria-labelledby="dashboard-work-queue">
-            <div id="dashboard-work-queue" className="sr-only">Operational work queue</div>
-            <OperationWorkQueue />
-          </section>
-
-          {/* Priority queue — surface live exceptions before deeper analysis. */}
-          <section className="mb-6 min-w-0" aria-labelledby="dashboard-attention">
-            <DashboardSectionHeader
-              id="dashboard-attention"
-              eyebrow="Action queue"
-              title="Needs attention"
-              description="Live issues ranked by urgency — collections, maintenance, leases, refunds, and vacancies"
-            />
-            <AttentionStrip items={attentionItems} loading={loading} />
-          </section>
-
-          <div className="mb-6 grid grid-cols-1 gap-4 lg:grid-cols-3">
-            <section className="min-w-0 lg:col-span-2" aria-labelledby="dashboard-collections">
-              <DashboardSectionHeader
-                eyebrow="Cash flow"
-                id="dashboard-collections"
-                title="Collections performance"
-                description="Collected versus expected rent, and outstanding balances by property"
-              />
-              <div className="grid gap-4">
-                {stats && (
-                  <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 rounded-xl border border-border bg-card px-4 py-3 card-shadow">
-                    <div className="flex items-center gap-2">
-                      <span className="h-2 w-2 rounded-full bg-success" aria-hidden />
-                      <span className="text-sm text-muted-foreground">Collection rate</span>
-                      <span className="text-sm font-semibold text-foreground">{stats.collectionRate}%</span>
-                    </div>
-                    <div className="hidden h-4 w-px bg-border sm:block" aria-hidden />
-                    <span className="text-sm text-muted-foreground">
-                      {stats.expectedRent > 0
-                        ? `${formatCurrency(stats.collectedRent)} collected of ${formatCurrency(stats.expectedRent)} due`
-                        : "No expected rent recorded this month"}
-                    </span>
-                    {stats.revenueChange !== 0 && (
-                      <span className="ml-auto text-sm">
-                        <span className={stats.revenueChange > 0 ? "text-success" : "text-destructive"}>
-                          {stats.revenueChange > 0 ? "▲" : "▼"} {Math.abs(stats.revenueChange)}%
-                        </span>{" "}
-                        <span className="text-muted-foreground">vs last month</span>
-                      </span>
-                    )}
-                  </div>
-                )}
-                <ErrorBoundary compact label="Revenue chart">
-                  <Suspense fallback={<ChartFallback />}>
-                    <RevenueChart />
-                  </Suspense>
-                </ErrorBoundary>
-                <ArrearsHeatMap />
+          {/* Manager operations desk: keep the existing live intelligence, but reveal it through
+              a small number of deliberate workspaces instead of one uninterrupted dashboard. */}
+          <section className="mb-6 rounded-2xl border border-border bg-card p-2 shadow-[0_8px_28px_-22px_rgb(13_39_68/0.28)]" aria-label="Manager operations workspaces">
+            <div className="flex flex-col gap-2 border-b border-border px-2 pb-2 sm:flex-row sm:items-center sm:justify-between">
+              <div className="px-2 py-1">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-primary">Operations desk</p>
+                <p className="mt-0.5 text-sm font-medium text-foreground">Move from signal to action without losing portfolio context.</p>
               </div>
-            </section>
+              <div className="grid grid-cols-2 gap-1 sm:flex sm:flex-wrap" role="tablist" aria-label="Manager dashboard workspaces">
+                {deskTabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={activeDeskTab === tab.id}
+                    onClick={() => setActiveDeskTab(tab.id)}
+                    className={activeDeskTab === tab.id
+                      ? "rounded-lg bg-primary px-3 py-2 text-left text-primary-foreground shadow-sm sm:min-w-[8.5rem]"
+                      : "rounded-lg px-3 py-2 text-left text-muted-foreground hover:bg-muted/60 hover:text-foreground sm:min-w-[8.5rem]"}
+                  >
+                    <span className="block text-xs font-semibold">{tab.label}</span>
+                    <span className={activeDeskTab === tab.id ? "block text-[10px] opacity-80" : "block text-[10px] opacity-70"}>{tab.hint}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
 
-            <div className="flex min-w-0 flex-col gap-4">
-              <section aria-labelledby="dashboard-occupancy">
-                <DashboardSectionHeader
-                  id="dashboard-occupancy"
-                  eyebrow="Portfolio health"
-                  title="Occupancy"
-                  description="Occupied versus vacant units, by property"
-                />
-                <ErrorBoundary compact label="Occupancy chart">
-                  <Suspense fallback={<ChartFallback />}>
-                    <OccupancyChart />
-                  </Suspense>
-                </ErrorBoundary>
+            <div className="p-2 pt-4">
+              {activeDeskTab === "overview" && (
+                <div className="space-y-5">
+                  <PortfolioOperationsControlCenter stats={stats} loading={loading} />
+                  <section aria-labelledby="dashboard-attention-inline">
+                    <DashboardSectionHeader id="dashboard-attention-inline" eyebrow="Action queue" title="Needs attention" description="The exceptions most likely to affect cash, occupancy, leases or service." />
+                    <AttentionStrip items={attentionItems} loading={loading} />
+                  </section>
+                  <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+                    <section className="min-w-0 lg:col-span-2" aria-labelledby="dashboard-collections-overview">
+                      <DashboardSectionHeader id="dashboard-collections-overview" eyebrow="Cash flow" title="Collections performance" description="Collected versus expected rent and outstanding balances." />
+                      <ErrorBoundary compact label="Revenue chart"><Suspense fallback={<ChartFallback />}><RevenueChart /></Suspense></ErrorBoundary>
+                    </section>
+                    <section className="min-w-0" aria-labelledby="dashboard-maintenance-overview">
+                      <DashboardSectionHeader id="dashboard-maintenance-overview" eyebrow="Operations" title="Maintenance" description={stats ? `${stats.openMaintenanceCount} open · ${stats.urgentMaintenanceCount} urgent` : "Open work orders"} />
+                      <OpenMaintenancePreview />
+                    </section>
+                  </div>
+                </div>
+              )}
+
+              {activeDeskTab === "collections" && (
+                <div className="space-y-5">
+                  {stats && (
+                    <div className="grid gap-3 sm:grid-cols-3">
+                      <div className="rounded-xl border border-success/20 bg-success/[0.035] p-4"><p className="text-xs font-medium text-muted-foreground">Collected</p><p className="mt-1 text-xl font-semibold">{formatCurrency(stats.collectedRent)}</p><p className="mt-1 text-xs text-muted-foreground">of {formatCurrency(stats.expectedRent)} expected</p></div>
+                      <div className="rounded-xl border border-destructive/20 bg-destructive/[0.035] p-4"><p className="text-xs font-medium text-muted-foreground">Outstanding</p><p className="mt-1 text-xl font-semibold">{formatCurrency(stats.outstandingRent)}</p><p className="mt-1 text-xs text-muted-foreground">{stats.overdueInvoices} overdue invoice{stats.overdueInvoices === 1 ? "" : "s"}</p></div>
+                      <div className="rounded-xl border border-primary/20 bg-primary/[0.035] p-4"><p className="text-xs font-medium text-muted-foreground">Collection rate</p><p className="mt-1 text-xl font-semibold">{stats.collectionRate}%</p><p className="mt-1 text-xs text-muted-foreground">{stats.revenueChange > 0 ? "+" : ""}{stats.revenueChange}% vs last month</p></div>
+                    </div>
+                  )}
+                  <div className="grid gap-4 lg:grid-cols-2">
+                    <ErrorBoundary compact label="Revenue chart"><Suspense fallback={<ChartFallback />}><RevenueChart /></Suspense></ErrorBoundary>
+                    <ArrearsHeatMap />
+                  </div>
+                  <PortfolioFinancialIntelligence />
+                  <CollectionsRecoveryAutomation />
+                  <CollectionsCommunicationsMonitoring />
+                  <FinancialOperationalReconciliationCenter />
+                </div>
+              )}
+
+              {activeDeskTab === "occupancy" && (
+                <div className="space-y-5">
+                  <div className="grid gap-4 lg:grid-cols-3">
+                    <section className="min-w-0 lg:col-span-2"><DashboardSectionHeader eyebrow="Portfolio" title="Property performance" description="See occupancy and operational pressure property by property." /><PropertiesOverview showHeader={false} /></section>
+                    <section className="min-w-0"><DashboardSectionHeader eyebrow="Occupancy" title="Portfolio occupancy" description="Occupied versus vacant units." /><ErrorBoundary compact label="Occupancy chart"><Suspense fallback={<ChartFallback />}><OccupancyChart /></Suspense></ErrorBoundary></section>
+                  </div>
+                  <ExecutivePortfolioIntelligence />
+                  <PropertyRevenueLeaseOptimization />
+                  <TenantRetentionChurnIntelligence />
+                  <TenantExperienceServiceQualityIntelligence />
+                </div>
+              )}
+
+              {activeDeskTab === "operations" && (
+                <div className="space-y-5">
+                  <OperationWorkQueue />
+                  <div className="grid gap-4 lg:grid-cols-2">
+                    <TenantServiceRecoveryCenter />
+                    <DocumentEvidenceControlCenter />
+                  </div>
+                  <MaintenanceProcurementCostControlCenter />
+                  <MaintenanceSlaVendorDispatchAssuranceCenter />
+                  <PreventiveMaintenanceLifecycleCenter />
+                  <MaintenanceAssetLifecycleCenter />
+                  <PropertySafetyRegulatoryRiskCenter />
+                  <PropertyInspectionComplianceAssuranceCenter />
+                </div>
+              )}
+
+              {activeDeskTab === "controls" && (
+                <div className="space-y-5">
+                  <ManagementAnalyticsPanel />
+                  <ManagementComplianceAssuranceCenter />
+                  <ControlledManagementReportingCenter />
+                  <div className="grid gap-4 lg:grid-cols-2">
+                    <FinancialCloseControlCenter />
+                    <OwnerPayoutSettlementCenter />
+                  </div>
+                  <DoubleEntryLedgerIntegrityCenter />
+                  <LedgerAdjustmentsReversalsGovernance />
+                  <TrialBalanceFinancialStatementsCenter />
+                  <BudgetForecastVarianceCenter />
+                  <CashFlowTreasuryLiquidityCenter />
+                  <ExpenseCommitmentPayablesCenter />
+                  <VendorProcurementContractControlCenter />
+                  <FinancialAuditPackCenter />
+                  <RevenueLeakageIntelligence />
+                </div>
+              )}
+            </div>
+          </section>
+
+          {activeDeskTab === "overview" && (
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+              <section className="min-w-0" aria-labelledby="dashboard-activity">
+                <DashboardSectionHeader eyebrow="Timeline" id="dashboard-activity" title="Recent activity" description="Latest tenant, lease and payment events." />
+                <ErrorBoundary compact label="Recent activity"><Suspense fallback={<ActivityFallback />}><RecentActivity showHeader={false} /></Suspense></ErrorBoundary>
               </section>
-
-              <section aria-labelledby="dashboard-maintenance">
-                <DashboardSectionHeader
-                  id="dashboard-maintenance"
-                  eyebrow="Operations"
-                  title="Maintenance"
-                  description={stats
-                    ? `${stats.openMaintenanceCount} open · ${stats.urgentMaintenanceCount} urgent`
-                    : "Open work orders from live requests"}
-                />
-                <OpenMaintenancePreview />
+              <section className="min-w-0" aria-labelledby="dashboard-upcoming">
+                <DashboardSectionHeader eyebrow="Next up" id="dashboard-upcoming" title="Upcoming actions" description="Pending and overdue invoices from live billing." />
+                <UpcomingPayments showHeader={false} />
               </section>
             </div>
-          </div>
-
-          {/* Properties — compact portfolio table surfaced high */}
-          <section className="mb-6 min-w-0" aria-labelledby="dashboard-properties">
-            <DashboardSectionHeader
-              id="dashboard-properties"
-              eyebrow="Portfolio detail"
-              title="Property performance"
-              description="Occupancy per property from live records"
-            />
-            <PropertiesOverview showHeader={false} />
-          </section>
-
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            <section className="min-w-0" aria-labelledby="dashboard-activity">
-              <DashboardSectionHeader
-                eyebrow="Timeline"
-                id="dashboard-activity"
-                title="Recent activity"
-                description="Latest tenant, lease, and payment events"
-              />
-              <ErrorBoundary compact label="Recent activity">
-                <Suspense fallback={<ActivityFallback />}>
-                  <RecentActivity showHeader={false} />
-                </Suspense>
-              </ErrorBoundary>
-            </section>
-
-            <section className="min-w-0" aria-labelledby="dashboard-upcoming">
-              <DashboardSectionHeader
-                eyebrow="Next up"
-                id="dashboard-upcoming"
-                title="Upcoming actions"
-                description="Pending and overdue invoices from live billing"
-              />
-              <UpcomingPayments showHeader={false} />
-            </section>
-          </div>
+          )}
         </>
       )}
     </ManagerLayout>

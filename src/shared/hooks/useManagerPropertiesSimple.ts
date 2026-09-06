@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/features/auth/AuthContext";
+import { useManagerScope } from "@/shared/hooks/useManagerScope";
 
 export interface SimpleProperty {
   id: string;
@@ -12,20 +12,22 @@ export interface SimpleProperty {
  * populate property-picker dropdowns (e.g. Statements, Water Billing).
  */
 export function useManagerPropertiesSimple() {
-  const { user } = useAuth();
+  const { managerId, restrictToAssignedProperties, assignedPropertyIds } = useManagerScope();
 
   const { data: properties = [], isLoading } = useQuery<SimpleProperty[]>({
-    queryKey: ["manager-properties-simple", user?.id],
+    queryKey: ["manager-properties-simple", managerId, restrictToAssignedProperties, assignedPropertyIds.join(",")],
     queryFn: async () => {
-      if (!user) return [];
-      const { data, error } = await supabase
+      if (!managerId) return [];
+      let query = supabase
         .from("properties")
         .select("id, name")
-        .eq("manager_id", user.id);
+        .eq("manager_id", managerId);
+      if (restrictToAssignedProperties) query = query.in("id", assignedPropertyIds);
+      const { data, error } = await query;
       if (error) throw error;
       return data || [];
     },
-    enabled: !!user,
+    enabled: !!managerId,
   });
 
   return { properties, isLoading };

@@ -63,6 +63,7 @@ export interface BillingInvoice extends Omit<InvoiceRow, "status"> {
   original_amount: number | null;
   paid_amount: number;
   balance_due: number | null;
+  property_id: string | null;
   /** Agency-only: whether the agency is permitted to collect this invoice. */
   agencyCanCollect?: boolean;
   /** Agency-only: configured collection destination for this invoice. */

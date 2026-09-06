@@ -41,7 +41,7 @@ export function RecentActivity({ showHeader = true }: { showHeader?: boolean }) 
   const { data: tenantIds = [], isLoading: tenantIdsLoading } = useDashboardTenantIds();
 
   const { data: activities = [], isLoading: activityLoading } = useQuery<Activity[]>({
-    queryKey: [...dashboardDataKeys.recentActivity(managerId ?? ""), assignedKey],
+    queryKey: [...dashboardDataKeys.recentActivity(managerId ?? "", assignedKey), assignedKey],
     enabled: !!managerId && (!restrictToAssignedProperties || assignedPropertyIds.length > 0) && tenantIds.length > 0,
     staleTime: 30 * 1000,
     queryFn: async () => {

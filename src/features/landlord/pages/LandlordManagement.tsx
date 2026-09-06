@@ -23,7 +23,7 @@ interface Row {
   owner_portal_enabled: boolean; owner_visibility: Record<string, boolean>; reporting_frequency: string; reporting_delivery: string;
 }
 
-const label = (value: string) => value.replaceAll("_", " ").replace(/\b\w/g, (c) => c.toUpperCase());
+const label = (value: string) => value.replace(/_/g, " ").replace(/\b\w/g, (c: string) => c.toUpperCase());
 
 export default function LandlordManagement() {
   const { user, userRole } = useAuth();

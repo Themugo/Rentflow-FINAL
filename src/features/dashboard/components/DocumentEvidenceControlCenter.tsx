@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { AlertTriangle, CheckCircle2, FileCheck2, FileText, ShieldAlert, Upload } from "lucide-react";
+import { AlertTriangle, CheckCircle2, FileCheck2, FileText, ShieldAlert, Upload, type LucideIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useManagerScope } from "@/shared/hooks/useManagerScope";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card";
@@ -132,7 +132,7 @@ export function DocumentEvidenceControlCenter() {
     </CardHeader>
     <CardContent className="space-y-4">
       <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
-        {[["Unverified", counts.unverified, ShieldAlert], ["Expiring &lt;30d", counts.expiring, AlertTriangle], ["Revoked", counts.revoked, ShieldAlert], ["Integrity", "SHA-256", CheckCircle2]].map(([label,value,Icon]) => <div key={String(label)} className="rounded-lg border border-border px-3 py-2"><div className="flex items-center gap-2 text-muted-foreground"><Icon className="h-3.5 w-3.5"/><span className="text-[10px] uppercase tracking-wide">{String(label).replace("&lt;","<")}</span></div><p className="mt-1 text-lg font-semibold">{value as any}</p></div>)}
+        {([ ["Unverified", counts.unverified, ShieldAlert], ["Expiring <30d", counts.expiring, AlertTriangle], ["Revoked", counts.revoked, ShieldAlert], ["Integrity", "SHA-256", CheckCircle2] ] as Array<[string, string | number, LucideIcon]>).map(([label, value, Icon]) => <div key={label} className="rounded-lg border border-border px-3 py-2"><div className="flex items-center gap-2 text-muted-foreground"><Icon className="h-3.5 w-3.5"/><span className="text-[10px] uppercase tracking-wide">{label}</span></div><p className="mt-1 text-lg font-semibold">{value}</p></div>)}
       </div>
       <div className="grid gap-3 rounded-lg border border-border p-3 md:grid-cols-5">
         <div className="md:col-span-2"><Label>Owner</Label><Select value={landlordId} onValueChange={setLandlordId}><SelectTrigger className="mt-1"><SelectValue placeholder="Select owner" /></SelectTrigger><SelectContent>{landlords.map((l: any) => <SelectItem key={l.user_id} value={l.user_id}>{l.full_name ?? l.user_id}</SelectItem>)}</SelectContent></Select></div>

@@ -48,7 +48,7 @@ export async function generateIssuedPaymentReceiptPDF(payload: IssuedPaymentRece
   doc.text(payload.payer?.display_name || "Payment party", 14, y + 5);
   if (payload.payer?.phone) doc.text(payload.payer.phone, 14, y + 10);
   doc.setFont("helvetica","bold"); doc.text("Payment", width / 2 + 8, y); doc.setFont("helvetica","normal");
-  doc.text(String(payload.transaction?.payment_type || "payment").replaceAll("_", " ").toUpperCase(), width / 2 + 8, y + 5);
+  doc.text(String(payload.transaction?.payment_type || "payment").replace(/_/g, " ").toUpperCase(), width / 2 + 8, y + 5);
   const reference = payload.transaction?.mpesa_receipt_number || payload.transaction?.bank_reference || payload.transaction?.id;
   doc.text(`Reference: ${reference || "—"}`, width / 2 + 8, y + 10); y += 22;
 
