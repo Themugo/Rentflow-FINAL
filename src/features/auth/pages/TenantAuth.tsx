@@ -494,7 +494,8 @@ const TenantAuth = () => {
   }
 
   return (
-    <div className={`min-h-screen flex items-center justify-center bg-background px-4 py-4 ${isMobile ? 'items-start pt-8' : ''}`}>
+    <TenantPortalShell>
+      <div className={`min-h-screen flex items-center justify-center bg-background px-4 py-4 ${isMobile ? 'items-start pt-8' : ''}`}>
       <Card className="w-full max-w-md border-primary/20 bg-card/95 backdrop-blur-sm shadow-sm max-h-[calc(100vh-2rem)] overflow-y-auto">
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
@@ -625,8 +626,8 @@ const TenantAuth = () => {
             </p>
           </div>
         </CardFooter>
-      </Card>
-    </div>
+        </Card>
+      </div>
     </TenantPortalShell>
   );
 };

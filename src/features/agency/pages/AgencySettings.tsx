@@ -1,10 +1,5 @@
-import AgencyLayout from "@/features/agency/components/AgencyLayout";
-import Settings from "@/features/settings/pages/Settings";
+import AgencyOperationsCenter from "@/features/agency/components/AgencyOperationsCenter";
 
-const AgencySettings = () => (
-  <AgencyLayout title="Settings" description="Organization, users, notifications, and billing for this agency.">
-    <Settings />
-  </AgencyLayout>
-);
-
-export default AgencySettings;
+export default function AgencySettings() {
+  return <AgencyOperationsCenter />;
+}
