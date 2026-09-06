@@ -177,40 +177,58 @@ export type WebhostNavPermission =
   | "can_manage_properties"
   | "can_manage_system_landlords"
   | "can_manage_billing"
-  | "can_view_activity_logs";
+  | "can_view_activity_logs"
+  | "can_manage_platform_settings";
 
 export const WEBHOST_NAV_GROUPS: PortalDeskNavGroup[] = [
   {
-    label: "Control plane",
+    label: "Master control",
     items: [
       { label: "Dashboard", href: WEBHOST_ROUTES.dashboard, icon: LayoutDashboard },
-      { label: "Applications", href: WEBHOST_ROUTES.applications, icon: Layers2 },
-      { label: "Deployments", href: WEBHOST_ROUTES.deployments, icon: Rocket },
-      { label: "Operations", href: WEBHOST_ROUTES.operations, icon: Activity },
+      { label: "Organizations", href: WEBHOST_ROUTES.organizations, icon: Building2, permission: "can_manage_managers" },
+      { label: "Users", href: WEBHOST_ROUTES.users, icon: Users, permission: "can_manage_managers" },
     ],
   },
   {
-    label: "Administration",
+    label: "Platform operations",
     items: [
-      { label: "Organizations", href: WEBHOST_ROUTES.organizations, icon: Building2, permission: "can_manage_managers" },
-      { label: "Users", href: WEBHOST_ROUTES.users, icon: Users },
+      { label: "Applications", href: WEBHOST_ROUTES.applications, icon: Layers2, permission: "can_manage_platform_settings" },
+      { label: "Deployments", href: WEBHOST_ROUTES.deployments, icon: Rocket, permission: "can_manage_platform_settings" },
+      { label: "Operations", href: WEBHOST_ROUTES.operations, icon: Activity, permission: "can_manage_platform_settings" },
       { label: "Properties", href: WEBHOST_OPS_ROUTES.properties, icon: Building2, permission: "can_manage_properties" },
       { label: "Landlords", href: WEBHOST_OPS_ROUTES.landlords, icon: Handshake, permission: "can_manage_system_landlords" },
+    ],
+  },
+  {
+    label: "Commercial control",
+    items: [
       { label: "Subscriptions", href: WEBHOST_ROUTES.subscriptions, icon: CreditCard, permission: "can_manage_billing" },
       { label: "Tiers", href: WEBHOST_OPS_ROUTES.tiers, icon: Layers, permission: "can_manage_billing" },
+      { label: "Billing rules", href: WEBHOST_OPS_ROUTES.billingRules, icon: Receipt, permission: "can_manage_billing" },
+      { label: "Custom pricing", href: WEBHOST_OPS_ROUTES.customPricing, icon: CreditCard, permission: "can_manage_billing" },
       { label: "Contracts", href: WEBHOST_OPS_ROUTES.contracts, icon: FileCheck, permission: "can_manage_managers" },
-      { label: "Audit Log", href: WEBHOST_ROUTES.audit, icon: ScrollText, permission: "can_view_activity_logs" },
+    ],
+  },
+  {
+    label: "Access & public experience",
+    items: [
+      { label: "Public Site", href: WEBHOST_ROUTES.publicSite, icon: LayoutPanelTop, permission: "can_manage_platform_settings" },
+      { label: "Brand Studio", href: WEBHOST_ROUTES.brand, icon: Palette, permission: "can_manage_platform_settings" },
       { label: "Security", href: WEBHOST_ROUTES.security, icon: ShieldAlert, permission: "can_view_activity_logs" },
+      { label: "Audit Log", href: WEBHOST_ROUTES.audit, icon: ScrollText, permission: "can_view_activity_logs" },
       { label: "Issues", href: WEBHOST_OPS_ROUTES.issues, icon: TriangleAlert, permission: "can_view_activity_logs" },
-      { label: "Unattached tenants", href: WEBHOST_ROUTES.unattachedTenants, icon: ShieldQuestion },
+    ],
+  },
+  {
+    label: "Exceptions",
+    items: [
+      { label: "Unattached tenants", href: WEBHOST_ROUTES.unattachedTenants, icon: ShieldQuestion, permission: "can_manage_managers" },
     ],
   },
   {
     label: "Account",
     items: [
-      { label: "Settings", href: WEBHOST_ROUTES.settings, icon: Settings },
-      { label: "Public Site", href: WEBHOST_ROUTES.publicSite, icon: LayoutPanelTop },
-      { label: "Brand Studio", href: WEBHOST_ROUTES.brand, icon: Palette },
+      { label: "Settings", href: WEBHOST_ROUTES.settings, icon: Settings, permission: "can_manage_platform_settings" },
     ],
   },
 ];

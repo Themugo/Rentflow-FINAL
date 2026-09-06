@@ -104,8 +104,8 @@ export function PortalDeskShell({
   const closeSidebar = () => setSidebarOpen(false);
 
   const shellStyle: CSSProperties = {
-    ...(style ?? {}),
     "--portal-shell-image": `url("${identity.backgroundImageUrl}")`,
+    ...(style ?? {}),
   } as CSSProperties;
 
   return (

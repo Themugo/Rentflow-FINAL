@@ -72,4 +72,22 @@ export function webhostSurfaceLabel(surface: WebhostSurface): string {
 }
 
 /** Accent override for the Admin surface — control-plane keeps the teal portal accent. */
-export const ADMIN_SURFACE_ACCENT = "var(--calqulus-indigo)" as const;
+export const WEBHOST_SURFACE_IDENTITY = {
+  "control-plane": {
+    label: "WebHost",
+    navLabel: "WebHost control plane",
+    brandSubtitle: "WebHost",
+    accent: "#2C9183",
+    backgroundImageSlot: "office" as const,
+  },
+  admin: {
+    label: "Admin",
+    navLabel: "Platform administration",
+    brandSubtitle: "Admin",
+    accent: "#4658C9",
+    backgroundImageSlot: "commercial" as const,
+  },
+} as const;
+
+/** Legacy name retained for callers that only need the Admin accent. */
+export const ADMIN_SURFACE_ACCENT = WEBHOST_SURFACE_IDENTITY.admin.accent;

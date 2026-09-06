@@ -4,8 +4,9 @@ import { useAuth } from "@/features/auth/AuthContext";
 import { isDevAccessEnabled } from "@/features/auth/lib/devAccess";
 import { PortalDeskLoading, PortalDeskShell } from "@/shared/components/layout/PortalDeskShell";
 import { portalSurfaceProps } from "@/core/design";
+import { PROPERTY_IMAGES } from "@/features/marketing/propertyImages";
 import { supabase } from "@/integrations/supabase/client";
-import { ADMIN_SURFACE_ACCENT, WEBHOST_LOGIN, WEBHOST_ROUTES, webhostSurface, webhostSurfaceLabel } from "@/features/webhost/lib/webhostPaths";
+import { WEBHOST_LOGIN, WEBHOST_ROUTES, WEBHOST_SURFACE_IDENTITY, webhostSurface } from "@/features/webhost/lib/webhostPaths";
 
 import { WEBHOST_NAV_GROUPS, type WebhostNavPermission } from "@/shared/navigation/portalNavigation";
 type PermissionKey = WebhostNavPermission;
@@ -30,20 +31,25 @@ export default function WebhostLayout({ children, title, description, actions }:
 
   const visibleGroups = WEBHOST_NAV_GROUPS.map((group) => ({ ...group, items: group.items.filter(canSee) })).filter((group) => group.items.length > 0);
   const surface = webhostSurface(location.pathname);
-  const style = surface === "admin" ? ({ "--portal-accent": ADMIN_SURFACE_ACCENT } as CSSProperties) : undefined;
+  const surfaceIdentity = WEBHOST_SURFACE_IDENTITY[surface];
+  const style = {
+    "--portal-accent": surfaceIdentity.accent,
+    "--portal-primary": surfaceIdentity.accent,
+    "--portal-shell-image": `url("${PROPERTY_IMAGES[surfaceIdentity.backgroundImageSlot]}")`,
+  } as CSSProperties;
 
   return (
     <PortalDeskShell
       title={title}
       description={description}
       actions={actions}
-      portalLabel={webhostSurfaceLabel(surface)}
-      navLabel="Platform admin"
+      portalLabel={surfaceIdentity.label}
+      navLabel={surfaceIdentity.navLabel}
       navGroups={visibleGroups}
       userEmail={user?.email ?? "Platform administrator"}
       onSignOut={() => void signOut()}
       settingsHref={WEBHOST_ROUTES.settings}
-      brandSubtitle="Admin"
+      brandSubtitle={surfaceIdentity.brandSubtitle}
       forcePlatformBrand
       style={style}
       headerRight={

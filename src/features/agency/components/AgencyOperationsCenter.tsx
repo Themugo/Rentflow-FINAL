@@ -16,7 +16,6 @@ import { Skeleton } from "@/shared/components/ui/skeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/shared/components/ui/alert";
 import { useToast } from "@/shared/hooks/use-toast";
 import { useAgencyOperationsConfig, type AgencyChargeCatalogItem, type AgencyContractRule, type AgencyMemberPermission, saveAgencyOperationsConfig } from "@/features/agency/lib/useAgencyOperationsConfig";
-import { useAgencyPortfolio } from "@/features/agency/lib/useAgencyPortfolio";
 import AgencyPaymentPolicyCenter from "@/features/agency/components/AgencyPaymentPolicyCenter";
 
 const MANAGEMENT_KEYS = [
@@ -147,25 +146,31 @@ export default function AgencyOperationsCenter() {
     setMemberDraft(next ? { ...next, permissions: { ...(next.permissions ?? {}) } } : null);
   }, [members, selectedMemberId]);
 
-  const { data: portfolio } = useAgencyPortfolio();
-  const relationships = (portfolio?.properties ?? []).filter((property) => property.propertyLandlordId).map((property) => ({
-    id: property.propertyLandlordId!,
-    property_id: property.id,
-    landlord_user_id: property.clientId,
-    agency_service_model: property.serviceModel,
-    operating_model: null,
-    propertyName: property.name,
-    address: property.address,
-    landlordName: property.clientName,
-  }));
+  const { data: relationships = [] } = useQuery({
+    queryKey: ["agency-contract-relationships", agencyId],
+    enabled: Boolean(agencyId),
+    queryFn: async () => {
+      const { data: agency, error: agencyError } = await (supabase as any).from("agencies").select("id,manager_id").eq("id", agencyId).maybeSingle();
+      if (agencyError) throw agencyError;
+      if (!agency?.manager_id) return [];
+      const { data: rows, error } = await (supabase as any).from("property_landlords").select("id,property_id,landlord_user_id,agency_service_model,operating_model,properties(name,address)").eq("manager_id", agency.manager_id).order("updated_at", { ascending: false });
+      if (error) throw error;
+      const ids = (rows ?? []).map((row: any) => row.landlord_user_id).filter(Boolean);
+      const { data: profiles } = ids.length ? await supabase.from("profiles").select("id,full_name,email").in("id", ids) : { data: [] };
+      const profileMap = new Map((profiles ?? []).map((p) => [p.id, p]));
+      return (rows ?? []).map((row: any) => ({ ...row, propertyName: row.properties?.name ?? "Property", address: row.properties?.address ?? "", landlordName: profileMap.get(row.landlord_user_id)?.full_name ?? profileMap.get(row.landlord_user_id)?.email ?? "Landlord" }));
+    },
+  });
 
   const { data: memberProfiles = [] } = useQuery({
-    queryKey: ["agency-member-profiles", agencyId],
-    enabled: Boolean(agencyId && members.length > 0),
+    queryKey: ["agency-member-profiles", members.map((m) => m.member_user_id).join(",")],
+    enabled: members.length > 0,
     queryFn: async () => {
-      const { data: profiles, error } = await (supabase as any).rpc("get_agency_member_profiles");
+      const ids = members.map((member) => member.member_user_id).filter(Boolean);
+      if (!ids.length) return [];
+      const { data: profiles, error } = await supabase.from("profiles").select("id,full_name,email").in("id", ids);
       if (error) throw error;
-      return Array.isArray(profiles) ? profiles : [];
+      return profiles ?? [];
     },
   });
 

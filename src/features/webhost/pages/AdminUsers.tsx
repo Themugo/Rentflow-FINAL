@@ -21,7 +21,7 @@ export default function AdminUsers() {
   return (
     <WebhostLayout
       title="Users"
-      description="Platform operators and customer accounts. Tenant accounts are never listed here."
+      description="Master user registry for every non-tenant account. Tenant accounts are intentionally excluded from this control room."
     >
       <div className="mb-6 grid grid-cols-2 gap-2 sm:grid-cols-5">
         {(

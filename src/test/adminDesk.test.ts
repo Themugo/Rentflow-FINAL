@@ -7,6 +7,7 @@ import {
   isWebhostPublicPath,
   webhostApplicationPath,
   webhostOrganizationPath,
+  WEBHOST_SURFACE_IDENTITY,
 } from "@/features/webhost/lib/webhostPaths";
 import { assembleAdminHealthProbes, PAYMENTS_HEALTH_DETAIL, type ComponentProbe } from "@/features/webhost/lib/adminHealth";
 import { parseLogRow, parseLogRows } from "@/features/webhost/lib/operations";
@@ -88,9 +89,13 @@ describe("webhost role routing", () => {
 });
 
 describe("platform admin identity", () => {
-  it("uses teal as the 2px accent", () => {
+  it("keeps the platform portal teal while giving WebHost and Admin distinct surface identities", () => {
     expect(CALQULUS_PORTAL_ACCENT.platform_admin.hex).toBe("#2C9183");
     expect(CALQULUS_PORTAL_ACCENT.platform_admin.label).toBe("Teal");
+    expect(WEBHOST_SURFACE_IDENTITY["control-plane"].accent).toBe("#2C9183");
+    expect(WEBHOST_SURFACE_IDENTITY.admin.accent).toBe("#4658C9");
+    expect(WEBHOST_SURFACE_IDENTITY["control-plane"].backgroundImageSlot).toBe("office");
+    expect(WEBHOST_SURFACE_IDENTITY.admin.backgroundImageSlot).toBe("commercial");
   });
 });
 

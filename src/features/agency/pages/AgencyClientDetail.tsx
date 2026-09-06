@@ -17,7 +17,7 @@ import { useAuth } from "@/features/auth/AuthContext";
 import { formatKes } from "@/features/landlord/lib/formatKes";
 import { AGENCY_SERVICE_MODELS, AGENCY_SERVICE_MODEL_SHORT_LABELS } from "@/shared/constants/authorityModels";
 import { LANDLORD_DOCUMENT_TYPE } from "@/features/landlord/lib/documentTypes";
-import AgencyActivityLog from "@/features/agency/components/AgencyActivityLog";
+import ManagerActivityLog from "@/features/dashboard/components/ManagerActivityLog";
 import { occupancyRateColor } from "@/shared/lib/statusBadge";
 import { Button } from "@/shared/components/ui/button";
 import { Skeleton } from "@/shared/components/ui/skeleton";
@@ -263,7 +263,7 @@ export default function AgencyClientDetail() {
             </TabsContent>
 
             <TabsContent value="activity">
-              <AgencyActivityLog landlordUserId={client?.id && !client.id.startsWith("pending:") ? client.id : undefined} />
+              <ManagerActivityLog compact limit={25} />
             </TabsContent>
 
             <TabsContent value="documents">

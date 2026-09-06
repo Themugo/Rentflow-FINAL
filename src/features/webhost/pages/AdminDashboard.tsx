@@ -212,7 +212,7 @@ export default function AdminDashboard() {
     staleTime: 30_000,
   });
 
-  const { user, platformAdminInfo } = useAuth();
+  const { user, platformAdminInfo, webhostPermissions, isSuperAdmin } = useAuth();
   const adminDisplayName = platformAdminInfo?.display_name || user?.email?.split("@")[0] || "administrator";
   const adminDisplay = (name: string) =>
     name
@@ -231,8 +231,8 @@ export default function AdminDashboard() {
 
   return (
     <WebhostLayout
-      title="Infrastructure control center"
-      description="Platform services, application runtime, and access — without tenant records."
+      title="Master platform control room"
+      description="One command center for platform operations, users, access, public experience and commercial control — tenant records remain outside this desk."
     >
       <div className="space-y-6">
         {/* Executive page header */}
@@ -255,6 +255,23 @@ export default function AdminDashboard() {
             <span className="hidden italic text-xs text-muted-foreground sm:block">Executive view</span>
           </div>
         </header>
+
+        {/* Admin authority — factual identity, never a fabricated permission summary. */}
+        <section aria-label="Administrator authority" className="grid gap-3 sm:grid-cols-3">
+          {[
+            ["Account", platformAdminInfo?.admin_type ? adminDisplay(platformAdminInfo.admin_type) : "Platform administrator", platformAdminInfo?.suspended ? "Suspended" : "Active"],
+            ["Access tier", webhostPermissions?.admin_level ? adminDisplay(webhostPermissions.admin_level) : "Not loaded", isSuperAdmin ? "Full platform authority" : "Scoped by permissions"],
+            ["Operating posture", isSuperAdmin ? "Super admin control" : "Permission-led control", "Changes remain server-authorized"],
+          ].map(([label, value, helper]) => (
+            <div key={label} className="rounded-xl border border-border bg-card px-4 py-3">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">{label}</p>
+              <div className="mt-1 flex items-center justify-between gap-3">
+                <p className="truncate text-sm font-semibold">{value}</p>
+                <span className="shrink-0 rounded-full border border-[var(--portal-accent)]/20 bg-[var(--portal-accent)]/5 px-2 py-0.5 text-[10px] font-semibold text-[var(--portal-accent)]">{helper}</span>
+              </div>
+            </div>
+          ))}
+        </section>
 
         {/* Platform scale — real counts, compact KPI cells */}
         <section aria-label="Platform scale" className="grid grid-cols-2 gap-3 md:grid-cols-4">
@@ -351,6 +368,34 @@ export default function AdminDashboard() {
               No invoices billed yet. Revenue appears once subscriptions begin.
             </p>
           ) : null}
+        </section>
+
+        {/* Master control map — one place to reach every non-tenant platform domain */}
+        <section aria-label="Master control map" className="overflow-hidden rounded-xl border border-border bg-card">
+          <SectionTitle>Master control room</SectionTitle>
+          <div className="grid grid-cols-1 divide-y divide-border sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4">
+            {[
+              { title: "People & organizations", body: "Manage every non-tenant account, organization and operating relationship.", href: WEBHOST_ROUTES.users, links: [["Users", WEBHOST_ROUTES.users], ["Organizations", WEBHOST_ROUTES.organizations]] },
+              { title: "Platform operations", body: "Control applications, releases, runtime operations and platform-owned property records.", href: WEBHOST_ROUTES.operations, links: [["Applications", WEBHOST_ROUTES.applications], ["Deployments", WEBHOST_ROUTES.deployments], ["Operations", WEBHOST_ROUTES.operations]] },
+              { title: "Commercial control", body: "Own subscriptions, tiers, billing rules, negotiated pricing and platform contracts.", href: WEBHOST_ROUTES.subscriptions, links: [["Subscriptions", WEBHOST_ROUTES.subscriptions], ["Billing rules", WEBHOST_OPS_ROUTES.billingRules], ["Custom pricing", WEBHOST_OPS_ROUTES.customPricing]] },
+              { title: "Access & public experience", body: "Control public pages, brand presentation, security, audit and platform access policy.", href: WEBHOST_ROUTES.publicSite, links: [["Public Site", WEBHOST_ROUTES.publicSite], ["Brand Studio", WEBHOST_ROUTES.brand], ["Security", WEBHOST_ROUTES.security]] },
+            ].map((group) => (
+              <div key={group.title} className="p-4">
+                <Link to={group.href} className="font-heading text-sm font-semibold tracking-tight hover:text-[var(--portal-accent)]">{group.title}</Link>
+                <p className="mt-1.5 min-h-[42px] text-xs leading-5 text-muted-foreground">{group.body}</p>
+                <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1.5">
+                  {group.links.map(([label, href]) => (
+                    <Link key={href} to={href} className="inline-flex items-center gap-0.5 text-[11px] font-medium text-primary hover:underline">
+                      {label}<ChevronRight className="h-3 w-3" />
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="border-t border-border px-4 py-2 text-[11px] text-muted-foreground">
+            Tenant records are deliberately outside the master user registry and operational command surface. The only tenant-related exception is the restricted unattached-account queue.
+          </p>
         </section>
 
         {/* System status band — deep navy is chrome, never a page fill */}
