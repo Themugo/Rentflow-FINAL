@@ -14,12 +14,15 @@
  * the manager registers the tenant. It is read-only for the tenant.
  */
 import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/features/auth/AuthContext';
 import { Badge } from '@/shared/components/ui/badge';
 import { Skeleton } from '@/shared/components/ui/skeleton';
 import { Progress } from '@/shared/components/ui/progress';
 import { CreditCard, Building2, Smartphone, Calendar, Shield, Info, Copy, CheckCircle } from 'lucide-react';
 import { Button } from '@/shared/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/components/ui/card';
+import { supabase } from '@/integrations/supabase/client';
 
 const fmt = (n: number | null | undefined) =>
   n == null
@@ -145,6 +148,27 @@ const TenantPaymentDetails: React.FC = () => {
     enabled: !!user?.id && !!userRole?.tenant_id,
   });
 
+  const { data: agencyPolicy } = useQuery({
+    queryKey: ['tenant-effective-agency-payment-policy', userRole?.tenant_id],
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc('get_tenant_effective_agency_payment_policy' as any);
+      if (error) throw error;
+      return data as {
+        policy_configured?: boolean;
+        property_name?: string | null;
+        unit_number?: string | null;
+        source_scope?: string | null;
+        last_updated?: string | null;
+        allowed_payment_methods?: string[];
+        collection_destination?: string | null;
+        policy_config?: Record<string, unknown>;
+        billing_due?: { due_day_of_month?: number; overdue_after_days?: number; reminder_before_days?: number } | null;
+      } | null;
+    },
+    enabled: !!user?.id && !!userRole?.tenant_id,
+    staleTime: 60_000,
+  });
+
   const copyAccountRef = (ref: string) => {
     navigator.clipboard.writeText(ref);
     setCopied(true);
@@ -182,11 +206,11 @@ const TenantPaymentDetails: React.FC = () => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 gap-3">
-            <div className="rounded-xl bg-success/20 border border-success/30 p-3 text-center">
+            <div className="rounded-xl bg-primary/5 border border-primary/15 p-3 text-center">
               <p className="text-xs text-muted-foreground mb-1">Monthly rent</p>
-              <p className="text-xl font-bold text-success">{fmt(details?.monthly_rent)}</p>
+              <p className="text-xl font-bold text-foreground">{fmt(details?.monthly_rent)}</p>
               {details?.payment_day && (
-                <p className="text-xs text-success mt-0.5 flex items-center justify-center gap-1">
+                <p className="text-xs text-muted-foreground mt-0.5 flex items-center justify-center gap-1">
                   <Calendar className="h-3 w-3" />
                   Due {details.payment_day === 1 ? '1st' : `${details.payment_day}th`} of month
                 </p>
@@ -234,6 +258,38 @@ const TenantPaymentDetails: React.FC = () => {
         </CardContent>
       </Card>
 
+      {agencyPolicy?.policy_configured ? (
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm flex items-center gap-2"><Shield className="h-4 w-4 text-primary" /> Payment settings for this tenancy</CardTitle>
+            <CardDescription>These are the current Agency payment rules for {agencyPolicy.property_name ?? 'your property'}{agencyPolicy.unit_number ? ` · Unit ${agencyPolicy.unit_number}` : ''}. Unit rules override property rules, which override Agency defaults.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="grid gap-2 sm:grid-cols-2">
+              <div className="rounded-xl border border-border bg-background p-3"><p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Collection</p><p className="mt-1 text-sm font-semibold capitalize">{String(agencyPolicy.collection_destination ?? 'agency').replaceAll('_',' ')}</p></div>
+              <div className="rounded-xl border border-border bg-background p-3"><p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Policy scope</p><p className="mt-1 text-sm font-semibold capitalize">{agencyPolicy.source_scope ?? 'Agency'} default</p></div>
+            </div>
+            <div>
+              <p className="text-xs font-semibold text-foreground">Accepted methods</p>
+              <div className="mt-2 flex flex-wrap gap-1.5">{(agencyPolicy.allowed_payment_methods ?? []).map((method) => <Badge key={method} variant="secondary" className="text-[10px]">{method === 'mpesa_paybill' ? 'M-Pesa Paybill' : method === 'mpesa_till' ? 'M-Pesa Till' : method === 'bank_transfer' ? 'Bank transfer' : method.replaceAll('_',' ')}</Badge>)}</div>
+            </div>
+            <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="rounded-lg border border-border bg-background px-3 py-2"><p className="text-[10px] text-muted-foreground">Partial payments</p><p className="text-xs font-semibold">{agencyPolicy.policy_config?.allow_partial_payments === false ? 'Not allowed' : 'Allowed'}</p></div>
+              <div className="rounded-lg border border-border bg-background px-3 py-2"><p className="text-[10px] text-muted-foreground">Third-party payer</p><p className="text-xs font-semibold">{agencyPolicy.policy_config?.allow_third_party_payers === false ? 'Not allowed' : 'Allowed'}</p></div>
+              <div className="rounded-lg border border-border bg-background px-3 py-2"><p className="text-[10px] text-muted-foreground">Manual proof</p><p className="text-xs font-semibold">{agencyPolicy.policy_config?.proof_required_for_manual === false ? 'Optional' : 'Required'}</p></div>
+              <div className="rounded-lg border border-border bg-background px-3 py-2"><p className="text-[10px] text-muted-foreground">Payment reference</p><p className="text-xs font-semibold">{agencyPolicy.policy_config?.payment_reference_required === true ? 'Required' : 'Optional'}</p></div>
+            </div>
+            <div className="grid gap-2 sm:grid-cols-2">
+              <div className="rounded-lg border border-border bg-background px-3 py-2"><p className="text-[10px] text-muted-foreground">Outside-source payments</p><p className="text-xs font-semibold">{agencyPolicy.policy_config?.allow_external_consolidation === false ? 'Not allowed' : 'Allowed'}</p></div>
+              {agencyPolicy.policy_config?.late_fee_type && agencyPolicy.policy_config?.late_fee_type !== 'none' ? <div className="rounded-lg border border-border bg-background px-3 py-2"><p className="text-[10px] text-muted-foreground">Late fee rule</p><p className="text-xs font-semibold">{String(agencyPolicy.policy_config.late_fee_value ?? 0)} {agencyPolicy.policy_config.late_fee_type === 'percentage' ? '%' : 'KES'}</p></div> : null}
+            </div>
+            {agencyPolicy.billing_due?.due_day_of_month ? <p className="text-xs text-muted-foreground">Rent due on the {agencyPolicy.billing_due.due_day_of_month}{agencyPolicy.billing_due.due_day_of_month % 10 === 1 && agencyPolicy.billing_due.due_day_of_month !== 11 ? 'st' : agencyPolicy.billing_due.due_day_of_month % 10 === 2 && agencyPolicy.billing_due.due_day_of_month !== 12 ? 'nd' : agencyPolicy.billing_due.due_day_of_month % 10 === 3 && agencyPolicy.billing_due.due_day_of_month !== 13 ? 'rd' : 'th'} of each month. {agencyPolicy.billing_due.overdue_after_days ?? 0} day(s) after due date before overdue status.</p> : null}
+            <div className="rounded-lg border border-primary/15 bg-primary/5 px-3 py-2 text-[10px] leading-4 text-muted-foreground">Payment-rule changes are announced in the CALQULUS communication centre and remain visible here while they are effective.</div>
+            {agencyPolicy.last_updated ? <p className="text-[10px] text-muted-foreground">Last changed: {new Date(agencyPolicy.last_updated).toLocaleDateString('en-KE')}</p> : null}
+          </CardContent>
+        </Card>
+      ) : null}
+
       {/* Canonical payment destinations — resolved from the same records used by invoices, prompts and STK. */}
       {paymentRoutes.length > 0 && (
         <div className="space-y-3">
@@ -253,16 +309,16 @@ const TenantPaymentDetails: React.FC = () => {
                 </CardHeader>
                 <CardContent className="space-y-3">
                   {destination && (
-                    <div className="rounded-xl bg-success/20 border border-success/30 p-4">
-                      <p className="text-xs font-semibold text-success uppercase tracking-wide">{isPaybill ? 'M-Pesa Paybill' : 'M-Pesa Till'}</p>
-                      <p className="text-2xl font-bold font-mono text-success">{destination}</p>
+                    <div className="rounded-xl bg-primary/5 border border-primary/15 p-4">
+                      <p className="text-xs font-semibold text-primary uppercase tracking-wide">{isPaybill ? 'M-Pesa Paybill' : 'M-Pesa Till'}</p>
+                      <p className="text-2xl font-bold font-mono text-foreground">{destination}</p>
                       {isPaybill && accRef && (
                         <div className="mt-2 flex items-center justify-between gap-3">
                           <div>
-                            <p className="text-xs text-success">Account / reference</p>
-                            <p className="font-semibold font-mono text-success">{accRef}</p>
+                            <p className="text-xs text-muted-foreground">Account / reference</p>
+                            <p className="font-semibold font-mono text-foreground">{accRef}</p>
                           </div>
-                          <Button variant="outline" size="sm" className="gap-2 border-success/40 text-success" onClick={() => copyAccountRef(accRef)}>
+                          <Button variant="outline" size="sm" className="gap-2 border-primary/20 text-primary" onClick={() => copyAccountRef(accRef)}>
                             {copied ? <CheckCircle className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
                             {copied ? 'Copied!' : 'Copy'}
                           </Button>
