@@ -32,6 +32,8 @@ interface UtilityMeter {
   current_reading: number;
   last_read_date: string | null;
   is_active: boolean;
+  meter_source?: string;
+  external_meter_id?: string | null;
 }
 
 const UTILITY_TYPES = [
@@ -188,6 +190,7 @@ export default function UnitUtilityMeters({ unitId, propertyId, unitLabel }: Uni
                 <div className="flex flex-wrap items-center gap-1.5 text-xs mb-2">
                   <Badge variant="outline" className="text-[10px] px-1.5 py-0 capitalize">{meter.billing_method}</Badge>
                   {meter.provider && <Badge variant="outline" className="text-[10px] px-1.5 py-0">{meter.provider}</Badge>}
+                  {meter.meter_source && meter.meter_source !== 'manual' && <Badge variant="secondary" className="text-[10px] px-1.5 py-0">{meter.meter_source.replaceAll('_', ' ')}</Badge>}
                   {!meter.is_active && <Badge variant="outline" className="text-[10px] px-1.5 py-0 text-muted-foreground">Inactive</Badge>}
                 </div>
                 <div className="flex items-center justify-between">

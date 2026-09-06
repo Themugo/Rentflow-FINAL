@@ -1,0 +1,19 @@
+{
+  "product": "CALQULUS PMS",
+  "release": "master-complete-2026-09-06",
+  "source": "CALQULUS-PMS-main (4).zip supplied by user",
+  "delivery": "complete repository snapshot",
+  "patch_only": false,
+  "initiative": "Utilities, Amenities & Contract Document Control",
+  "database_migration": "supabase/migrations/20260906000007_utilities_amenities_contract_document_control.sql",
+  "regression_test": "src/test/utilitiesAmenitiesContractsInitiative.test.ts",
+  "verification": {
+    "static_repository_audit": "passed",
+    "runtime_npm_tests": "not completed in sandbox because dependency installation could not complete",
+    "supabase_apply": "not executed against live project"
+  },
+  "package_policy": {
+    "node_modules_included": false,
+    "git_metadata_included": false
+  }
+}
