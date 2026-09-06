@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-08-19T15:43:50.537276Z",
+  "kind": "local_postgres_dump_restore",
+  "notProductionPitr": true,
+  "migrationsApplied": 42,
+  "migrationsFailed": 32,
+  "failedFiles": [
+    "20230101000000_base_schema.sql\\n20260506000000_fix_properties_manager_column.sql\\n20260506000012_complete_rbac_enforcement.sql\\n20260506000013_submanager_write_permissions.sql\\n20260506000014_manager_agency_relationship.sql\\n20260506000016_multi_unit_payment_details.sql\\n20260506000017_monetisation_enforcement.sql\\n20260506000018_property_taxonomy_and_tier_system.sql\\n20260506000022b_unit_first_integrity.sql\\n20260506000022c_mpesa_policy_fixes.sql\\n20260506000023_missing_platform_tables.sql\\n20260526000000_settings_storage_and_notifications.sql\\n20260526001000_core_flow_storage_buckets.sql\\n20260529000000_final_production_hardening.sql\\n20260530000000_platform_admin_hierarchy.sql\\n20260530000001_customer_billing_blocks.sql\\n20260601000000_enforce_management_structure.sql\\n20260601000003_role_firewall_hardening.sql\\n20260602000000_mfa_and_device_management.sql\\n20260728000000_security_audit_fixes.sql\\n20260728000001_comprehensive_security_audit_fixes.sql\\n20260728000002_atomic_payment_processing.sql\\n20260803000000_activation_token_functions.sql\\n20260811000001_security_definer_rpc_hardening.sql\\n20260811000002_storage_security_hardening.sql\\n20260811000003_auth_privileged_action_hardening.sql\\n20260812000001_fix_platform_admins_rls_recursion.sql\\n20260812000002_fix_user_roles_rls_recursion.sql\\n20260819000000_phase2_landlord_finance_rpc.sql\\n20260819000002_phase3_leftover_hardening.sql\\n20260819000003_phase4_financial_integrity.sql\\n20260819000004_manager_dashboard_stats_complete.sql\\n"
+  ],
+  "sourcePublicTables": 127,
+  "restoredPublicTables": 127,
+  "sourceRlsTables": 124,
+  "restoredRlsTables": 124,
+  "restoreMatched": true
+}

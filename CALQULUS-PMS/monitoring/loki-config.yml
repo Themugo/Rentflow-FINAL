@@ -1,0 +1,87 @@
+# Loki Configuration for CALQULUS RMS
+# Log aggregation and querying system
+
+server:
+  http_listen_port: 3100
+
+common:
+  path_prefix: /loki
+  storage:
+    filesystem:
+      chunks_directory: /loki/chunks
+      rules_directory: /loki/rules
+  replication_factor: 1
+  ring:
+    kvstore:
+      store: inmemory
+
+query_range:
+  align_queries_with_step: true
+  max_parallel_shard_queries_per_user: 32
+  cache_results: true
+  results_cache:
+    cache:
+      enable_fifocache: true
+      fifocache:
+        max_size_items: 1024
+        ttl: 24h
+
+schema_config:
+  configs:
+    - from: 2024-01-01
+      store: boltdb-shipper
+      object_store: filesystem
+      schema: v13
+      index:
+        prefix: index_
+        period: 24h
+      chunks:
+        prefix: chunk_
+        period: 24h
+
+ruler:
+  alertmanager_url: http://localhost:9093
+  evaluation_interval: 1m
+  rule_path: /loki/rules
+  storage:
+    type: local
+    local:
+      directory: /loki/rules
+
+# Ingester configuration
+ingester:
+  lifecycler:
+    address: 127.0.0.1
+    ring:
+      kvstore:
+        store: inmemory
+      replication_factor: 1
+  chunk_idle_period: 30m
+  chunk_block_size: 512000
+  chunk_target_size: 1048576
+  max_returned_stream_errors: 5
+
+# Limits configuration
+limits_config:
+  enforce_metric_name_length: false
+  reject_old_samples: true
+  reject_old_samples_max_age: 168h
+  max_streams_per_user: 0
+  max_entries_per_stream: 0
+  max_global_streams_per_user: 0
+  max_query_series: 10000
+  max_query_parallelism: 32
+  cardinality_limit: 100000
+
+# Table manager configuration
+table_manager:
+  retention_deletes_enabled: true
+  retention_period: 744h
+
+# Compactor configuration
+compactor:
+  working_directory: /loki/compactor
+  shared_store: filesystem
+  compaction_interval: 10m
+  retention_enabled: true
+  delete_request_cancel_period: 10m

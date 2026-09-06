@@ -1,0 +1,24 @@
+CALQULUS PMS — DOCUMENT & EVIDENCE GOVERNANCE AUDIT
+====================================================
+
+Migration: 20260904000034_document_evidence_governance.sql
+
+PASS — landlord_documents extended with storage metadata, SHA-256 integrity fingerprint, verification state, source references, expiry and uploader.
+PASS — landlord_document_access_log records view/download/verify/revoke/restore actions.
+PASS — manager verification/revocation is SECURITY DEFINER, authenticated-only, manager-scope checked.
+PASS — access-log RPC is SECURITY DEFINER, authenticated-only and scope checked.
+PASS — landlord document storage bucket is private.
+PASS — storage SELECT is limited to the owning landlord or scoped manager and visible documents.
+PASS — storage INSERT/UPDATE/DELETE requires the document row to belong to a manager within the caller's property scope.
+PASS — revoked documents are hidden from storage reads.
+PASS — landlord UI creates short-lived signed URLs rather than exposing private storage paths.
+PASS — manager upload computes SHA-256 before storage upload and persists the fingerprint.
+PASS — manager dashboard control center supports owner selection, document type, property association, upload, verify and revoke.
+PASS — tenant personal data is not requested or returned by the owner document UI.
+PASS — migration chain has no new duplicate version or ordering violation.
+
+VERIFICATION LIMITS
+-------------------
+- Full npm/Vitest suite was not run because node_modules is absent in the build workspace.
+- Application typecheck is currently blocked by a pre-existing syntax error in src/features/billing/components/ReceiptsTab.tsx (around line 156), unrelated to this initiative.
+- Live Supabase application schema deployment remains a separate production reconciliation task; this initiative does not claim migration 00034 is deployed remotely.

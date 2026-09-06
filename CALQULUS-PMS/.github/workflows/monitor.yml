@@ -1,0 +1,234 @@
+name: Deployment Monitor
+
+on:
+  schedule:
+    # Run monitoring every 15 minutes during business hours
+    - cron: "*/15 6-20 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      alert_email:
+        description: Email for alerts
+        required: false
+        type: string
+
+concurrency:
+  group: monitor
+  cancel-in-progress: true
+
+jobs:
+  # ── Endpoint Health Monitor ─────────────────────────────────────────
+  health-monitor:
+    name: Health Monitoring
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check application health
+        id: app-health
+        run: |
+          APP_URL="https://www.calqulus.site"
+          HEALTH_URL="https://aelzsqxllkypbzslxyju.supabase.co/functions/v1/health-check"
+          SUPABASE_URL="https://aelzsqxllkypbzslxyju.supabase.co"
+          
+          # Check app
+          APP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$APP_URL" --max-time 15 --connect-timeout 5 || echo "000")
+          if [ "$APP_CODE" == "200" ] || [ "$APP_CODE" == "304" ]; then
+            echo "✅ App: HTTP $APP_CODE"
+          else
+            echo "::warning title=App Unreachable::HTTP $APP_CODE"
+          fi
+          
+          # Check Supabase edge function health
+          HEALTH_RESPONSE=$(curl -s "$HEALTH_URL?detailed=true" --max-time 10 2>/dev/null || echo "{}")
+          HEALTH_STATUS=$(echo "$HEALTH_RESPONSE" | grep -o '"status":"[^"]*"' | cut -d'"' -f4 || echo "unknown")
+          
+          if [ "$HEALTH_STATUS" == "healthy" ]; then
+            echo "✅ Health Check: Healthy"
+          elif [ "$HEALTH_STATUS" == "degraded" ]; then
+            echo "⚠️ Health Check: Degraded"
+          else
+            echo "❌ Health Check: Issues detected"
+          fi
+          
+          # Check Supabase
+          SB_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$SUPABASE_URL/rest/v1/" --max-time 15 --connect-timeout 5 || echo "000")
+          if [ "$SB_CODE" == "200" ] || [ "$SB_CODE" == "401" ]; then
+            echo "✅ Supabase: HTTP $SB_CODE"
+          else
+            echo "::warning title=Supabase Unreachable::HTTP $SB_CODE"
+          fi
+          
+          # Summary
+          echo "## 🔍 Health Check - $(date)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Service | Status | Code |" >> $GITHUB_STEP_SUMMARY
+          echo "|---------|--------|------|" >> $GITHUB_STEP_SUMMARY
+          echo "| App | $([ "$APP_CODE" == "200" ] && echo "✅ Up" || echo "❌ Down") | $APP_CODE |" >> $GITHUB_STEP_SUMMARY
+          echo "| Health Check | $([ "$HEALTH_STATUS" == "healthy" ] && echo "✅ $HEALTH_STATUS" || echo "⚠️ $HEALTH_STATUS") | - |" >> $GITHUB_STEP_SUMMARY
+          echo "| Supabase | $([ "$SB_CODE" == "200" ] && echo "✅ Up" || echo "⚠️ Degraded") | $SB_CODE |" >> $GITHUB_STEP_SUMMARY
+
+  # ── Performance Monitor ─────────────────────────────────────────────
+  performance-monitor:
+    name: Performance Monitoring
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Measure response time
+        run: |
+          START=$(date +%s%N)
+          # Fallback so an unresolvable/down host reports a large duration
+          # instead of aborting the step under `bash -e` (curl exit 6).
+          curl -s -o /dev/null "https://www.calqulus.site" --max-time 10 --connect-timeout 5 || echo "curl-failed"
+          END=$(date +%s%N)
+          DURATION=$((($END - $START) / 1000000))
+          
+          echo "Response time: ${DURATION}ms"
+          
+          if [ $DURATION -gt 3000 ]; then
+            echo "::warning title=Slow Response::Response time exceeded 3s"
+          fi
+          
+          echo "## ⚡ Performance" >> $GITHUB_STEP_SUMMARY
+          echo "- Response time: ${DURATION}ms" >> $GITHUB_STEP_SUMMARY
+          echo "- Timestamp: $(date -u)" >> $GITHUB_STEP_SUMMARY
+
+  # ── SSL Certificate Monitor ─────────────────────────────────────────
+  ssl-monitor:
+    name: SSL Certificate Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check SSL expiry
+        run: |
+          DOMAIN="www.calqulus.site"
+          EXPIRY_DATE=$(echo | openssl s_client -servername "$DOMAIN" -connect "$DOMAIN:443" 2>/dev/null | openssl x509 -noout -dates 2>/dev/null | grep notAfter | cut -d= -f2)
+          
+          if [ -n "$EXPIRY_DATE" ]; then
+            echo "SSL Expiry: $EXPIRY_DATE"
+            
+            # Calculate days until expiry
+            EXPIRY_TS=$(date -d "$EXPIRY_DATE" +%s 2>/dev/null || date -j -f "%b %d %H:%M:%S %Y" "$EXPIRY_DATE" +%s 2>/dev/null)
+            NOW_TS=$(date +%s)
+            DAYS_LEFT=$(( ($EXPIRY_TS - $NOW_TS) / 86400 ))
+            
+            echo "Days until expiry: $DAYS_LEFT"
+            
+            if [ $DAYS_LEFT -lt 30 ]; then
+              echo "::warning title=SSL Certificate Expiring::Certificate expires in $DAYS_LEFT days"
+            fi
+            
+            echo "## 🔐 SSL Certificate" >> $GITHUB_STEP_SUMMARY
+            echo "- Domain: $DOMAIN" >> $GITHUB_STEP_SUMMARY
+            echo "- Expires: $EXPIRY_DATE" >> $GITHUB_STEP_SUMMARY
+            echo "- Days remaining: $DAYS_LEFT" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "::error title=SSL Check Failed::Could not retrieve SSL certificate"
+          fi
+
+  # ── Uptime Verification ────────────────────────────────────────────
+  uptime-verification:
+    name: Uptime Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify uptime
+        run: |
+          # This simulates an uptime check
+          # In production, integrate with external uptime monitoring services
+          
+          CHECK_COUNT=3
+          SUCCESS_COUNT=0
+          
+          for i in $(seq 1 $CHECK_COUNT); do
+            HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "https://www.calqulus.site" --max-time 10 --connect-timeout 3 || echo "000")
+            if [ "$HTTP_CODE" == "200" ] || [ "$HTTP_CODE" == "304" ]; then
+              SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
+            fi
+            sleep 2
+          done
+          
+          UPTIME_PERCENT=$((SUCCESS_COUNT * 100 / CHECK_COUNT))
+          
+          echo "Uptime: ${UPTIME_PERCENT}% ($SUCCESS_COUNT/$CHECK_COUNT successful checks)"
+          
+          if [ $UPTIME_PERCENT -lt 95 ]; then
+            echo "::warning title=Uptime Alert::Uptime below 95%: ${UPTIME_PERCENT}%"
+          fi
+          
+          echo "## 📊 Uptime Verification" >> $GITHUB_STEP_SUMMARY
+          echo "- Checks: $CHECK_COUNT" >> $GITHUB_STEP_SUMMARY
+          echo "- Success: $SUCCESS_COUNT" >> $GITHUB_STEP_SUMMARY
+          echo "- Uptime: ${UPTIME_PERCENT}%" >> $GITHUB_STEP_SUMMARY
+
+  # ── Database Health Check ──────────────────────────────────────────
+  database-health:
+    name: Database Health
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check database connectivity
+        run: |
+          # Check Supabase API health endpoint
+          HEALTH=$(curl -s "https://aelzsqxllkypbzslxyju.supabase.co/rest/v1/" \
+            -H "apikey: ${{ secrets.SUPABASE_SERVICE_KEY }}" \
+            -o /dev/null -w "%{http_code}" --max-time 10 || echo "000")
+          
+          if [ "$HEALTH" == "200" ] || [ "$HEALTH" == "401" ]; then
+            echo "✅ Database API reachable"
+          else
+            echo "::warning title=Database Issue::HTTP $HEALTH"
+          fi
+          
+          echo "## 🗄️ Database Status" >> $GITHUB_STEP_SUMMARY
+          echo "- API Status: HTTP $HEALTH" >> $GITHUB_STEP_SUMMARY
+          echo "- Timestamp: $(date -u)" >> $GITHUB_STEP_SUMMARY
+
+  # ── Rollback Health Check ───────────────────────────────────────────
+  rollback-check:
+    name: Rollback Health
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 5
+
+      - name: Verify rollback capability
+        run: |
+          # Check if we can identify recent deployments
+          echo "## 🔄 Rollback Capability" >> $GITHUB_STEP_SUMMARY
+          
+          echo "Last 3 commits:" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          git log --oneline -3 >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "To perform rollback:" >> $GITHUB_STEP_SUMMARY
+          echo "1. \`git revert <commit-hash>\` to create revert commit" >> $GITHUB_STEP_SUMMARY
+          echo "2. \`git push origin main\` to deploy revert" >> $GITHUB_STEP_SUMMARY
+          echo "OR use Vercel dashboard to rollback to previous deployment" >> $GITHUB_STEP_SUMMARY
+
+  # ── Monitoring Summary ──────────────────────────────────────────────
+  monitoring-summary:
+    name: Monitoring Summary
+    runs-on: ubuntu-latest
+    needs: [health-monitor, performance-monitor, ssl-monitor, uptime-verification, database-health]
+    if: always()
+    steps:
+      - name: Generate summary
+        run: |
+          echo "## 📈 CALQULUS RMS - Monitoring Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Generated:** $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Overall status
+          ALL_SUCCESS=true
+          for result in ${{ needs.health-monitor.result }} ${{ needs.uptime-verification.result }}; do
+            if [ "$result" != "success" ] && [ "$result" != "skipped" ]; then
+              ALL_SUCCESS=false
+            fi
+          done
+          
+          if [ "$ALL_SUCCESS" == "true" ]; then
+            echo "## ✅ All Systems Operational" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## ⚠️ Some Systems Need Attention" >> $GITHUB_STEP_SUMMARY
+          fi

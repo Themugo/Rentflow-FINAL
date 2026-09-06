@@ -1,0 +1,7 @@
+import {execFileSync} from 'node:child_process';
+import fs from 'node:fs';
+const checks=[['prod','npm',['run','audit:prod']],['security','npm',['run','audit:security-boundary']],['cross-role','npm',['run','audit:cross-role']],['final-security','npm',['run','audit:final-security']],['migration','npm',['run','audit:migration-chain']],['staging','npm',['run','audit:staging-readiness']],['recovery','npm',['run','audit:disaster-recovery']],['observability','npm',['run','audit:observability']],['edge-reliability','npm',['run','audit:edge-reliability']],['operations','npm',['run','audit:operations-readiness']],['release-evidence','npm',['run','audit:release-evidence']]];
+const results=[]; for(const [name,cmd,args] of checks){try{execFileSync(cmd,args,{stdio:'pipe',encoding:'utf8'});results.push({name,status:'PASS'});}catch(e){results.push({name,status:'FAIL',detail:String(e.stdout||e.stderr||'').slice(-1200)});}}
+const report={generatedAt:new Date().toISOString(),checks:results,status:results.every(x=>x.status==='PASS')?'PASS':'BLOCKED',externalGates:['live migration history reconciliation','staging migration execution','staging restore test','role-isolation smoke test','production smoke test']};
+fs.writeFileSync('docs/audits/PHASE_104_105_RELEASE_READINESS_CERTIFICATE.json',JSON.stringify(report,null,2)+'\n');
+console.log(`release-readiness: ${report.status}`); for(const r of results) console.log(`${r.status} ${r.name}`); if(report.status!=='PASS')process.exit(1);

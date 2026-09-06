@@ -1,0 +1,17 @@
+CALQULUS PMS — PERIOD-END FINANCIAL AUDIT PACK GOVERNANCE AUDIT
+
+Scope
+- Closed financial period -> reproducible audit snapshot
+- Financial totals, bank reconciliation, owner settlement, evidence, operations, reconciliation exceptions
+- SHA-256 artifact fingerprint before finalization
+- Manager/submanager authorization and anonymous/public denial
+
+Static assertions
+PASS: closed-period gate
+PASS: authoritative snapshot sections
+PASS: audit-pack persistence
+PASS: SHA-256 validation
+PASS: finalization actor recorded
+PASS: PUBLIC/anon table access revoked
+PASS: PUBLIC/anon RPC execution revoked
+PASS: Dashboard integration

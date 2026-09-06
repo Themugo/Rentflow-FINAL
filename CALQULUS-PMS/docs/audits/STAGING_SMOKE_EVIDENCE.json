@@ -1,0 +1,7 @@
+{
+  "generatedAt": "2026-09-03T13:59:58.769Z",
+  "status": "EXTERNAL_REQUIRED",
+  "baseUrl": null,
+  "routes": [],
+  "note": "Set SMOKE_BASE_URL to the staging or production origin and rerun. This command never creates credentials or bypasses authentication."
+}

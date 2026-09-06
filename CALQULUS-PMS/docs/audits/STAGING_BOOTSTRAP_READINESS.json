@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-09-03T13:59:58.532Z",
+  "status": "EXTERNAL_REQUIRED",
+  "missingEnvironment": [
+    "VITE_SUPABASE_URL",
+    "VITE_SUPABASE_PUBLISHABLE_KEY",
+    "SMOKE_BASE_URL"
+  ],
+  "unsafeDefaults": [],
+  "tooling": {
+    "node": true,
+    "npm": true,
+    "playwright": false
+  },
+  "rules": {
+    "credentialsEnvironmentOnly": true,
+    "noProductionMutation": true,
+    "noSecretPersistence": true
+  }
+}

@@ -1,0 +1,173 @@
+{
+  "dashboard": {
+    "title": "CALQULUS RMS Infrastructure",
+    "uid": "calqulusrms-infrastructure",
+    "tags": ["calqulusrms", "infrastructure", "system"],
+    "timezone": "browser",
+    "schemaVersion": 16,
+    "version": 0,
+    "refresh": "30s",
+    "panels": [
+      {
+        "id": 1,
+        "title": "CPU Usage by Core",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+        "targets": [
+          {
+            "expr": "100 - (avg by (cpu) (rate(node_cpu_seconds_total{mode='idle'}[5m])) * 100)",
+            "legendFormat": "CPU {{cpu}}"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "percent",
+            "label": "CPU %"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Memory Usage",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
+        "targets": [
+          {
+            "expr": "(1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100",
+            "legendFormat": "Memory usage %"
+          },
+          {
+            "expr": "node_memory_MemAvailable_bytes / 1024 / 1024 / 1024",
+            "legendFormat": "Available GB"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "percent",
+            "label": "Memory %"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Disk I/O",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+        "targets": [
+          {
+            "expr": "rate(node_disk_io_time_seconds_total[5m])",
+            "legendFormat": "{{device}}"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "s",
+            "label": "I/O time"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Disk Space Usage",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8},
+        "targets": [
+          {
+            "expr": "(node_filesystem_size_bytes - node_filesystem_avail_bytes) / node_filesystem_size_bytes * 100",
+            "legendFormat": "{{fstype}} {{mountpoint}}"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "percent",
+            "label": "Disk usage %"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Network Traffic",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 16},
+        "targets": [
+          {
+            "expr": "rate(node_network_receive_bytes_total[5m])",
+            "legendFormat": "RX {{device}}"
+          },
+          {
+            "expr": "rate(node_network_transmit_bytes_total[5m])",
+            "legendFormat": "TX {{device}}"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "Bps",
+            "label": "Bytes/sec"
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "title": "System Load",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 16},
+        "targets": [
+          {
+            "expr": "node_load1",
+            "legendFormat": "1m load"
+          },
+          {
+            "expr": "node_load5",
+            "legendFormat": "5m load"
+          },
+          {
+            "expr": "node_load15",
+            "legendFormat": "15m load"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "short",
+            "label": "Load average"
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "title": "Container CPU Usage",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 24},
+        "targets": [
+          {
+            "expr": "rate(container_cpu_usage_seconds_total{name!=\"\"}[5m])",
+            "legendFormat": "{{name}}"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "percentunit",
+            "label": "CPU"
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "title": "Container Memory Usage",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 24},
+        "targets": [
+          {
+            "expr": "container_memory_usage_bytes{name!=\"\"} / 1024 / 1024 / 1024",
+            "legendFormat": "{{name}}"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "bytes",
+            "label": "Memory (GB)"
+          }
+        ]
+      }
+    ]
+  }
+}

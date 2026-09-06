@@ -1,0 +1,15 @@
+CALQULUS PMS — POST-INTELLIGENCE INTEGRATION & PRODUCTION HARDENING
+
+Baseline: GitHub main 9c339e88939d9b9b2b6715b3a75c75f8431286ea
+
+Controls applied:
+1. Lease-renewal SECURITY DEFINER functions now use an empty search_path and explicit PUBLIC/anon EXECUTE revocation.
+2. Operational work queue RPC output now exposes assignee_id and sla_due_at, matching the dashboard's state model.
+3. Static AI summary cards no longer publish fabricated portfolio metrics, market-rate claims, or renewal probabilities. They now direct users to live, explainable intelligence layers.
+4. Tenant experience work generation now converges on tenant_service_recovery cases with one linked operation_work_items record; legacy active tenant_experience work is retired when the canonical case is created, preventing duplicate ownership.
+
+Verification:
+- Static source assertions: PASS
+- Migration text hygiene: pending local Git diff --check
+- Vitest/build: requires project node_modules; not assumed available in this workspace
+- Remote Supabase migration reconciliation: still required

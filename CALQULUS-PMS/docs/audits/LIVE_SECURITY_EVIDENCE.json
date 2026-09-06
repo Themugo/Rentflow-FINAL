@@ -1,0 +1,7 @@
+{
+  "generatedAt": "2026-09-04T06:31:04.231Z",
+  "status": "EXTERNAL_REQUIRED",
+  "databaseAccessed": false,
+  "checks": {},
+  "reason": "DATABASE_URL or SUPABASE_DB_URL is required for live schema/RLS evidence; no database is accessed implicitly."
+}

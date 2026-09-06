@@ -1,6 +1,6 @@
 import { useState, type CSSProperties, type ComponentType, type ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ChevronRight, LogOut, Menu, Settings, User, X, Palette } from "lucide-react";
+import { ChevronRight, LogOut, Menu, Settings, User, X, Palette, MoreHorizontal } from "lucide-react";
 import { BrandMark } from "@/shared/components/branding/BrandMark";
 import { Footer } from "@/shared/components/layout/Footer";
 import { PageHeader } from "@/shared/components/layout/PageHeader";
@@ -45,6 +45,8 @@ interface PortalDeskShellProps {
   sidebarWidthClass?: string;
   sidebarOffsetClass?: string;
   mobileContentPadding?: string;
+  /** Compact app navigation shown on phones. The shell adds a More action that opens the full navigation drawer. */
+  mobileNavLabel?: string;
 }
 
 export function PortalDeskLoading({ className }: { className?: string }) {
@@ -87,6 +89,7 @@ export function PortalDeskShell({
   sidebarWidthClass = "w-64",
   sidebarOffsetClass = "lg:ml-64",
   mobileContentPadding = "pb-8",
+  mobileNavLabel = "More",
 }: PortalDeskShellProps) {
   const location = useLocation();
   const { identity, themeMode, setThemeMode } = usePortalIdentity();
@@ -109,7 +112,7 @@ export function PortalDeskShell({
   } as CSSProperties;
 
   return (
-    <div className={cn("relative min-h-screen bg-background text-foreground", className)} style={shellStyle}>
+    <div className={cn("relative min-h-screen bg-background text-foreground", mobileNav && "mobile-app-surface", className)} style={shellStyle}>
       <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden>
         <div className="absolute inset-0 bg-[image:var(--portal-shell-image)] bg-cover bg-center opacity-[0.045]" />
         <div className="absolute inset-0 bg-gradient-to-br from-background via-background/95 to-primary/[0.035]" />
@@ -241,9 +244,9 @@ export function PortalDeskShell({
           </div>
         </header>
 
-        {!hideHeader ? <PageHeader title={title} description={description} actions={actions} className="border-0 px-4 py-4 sm:px-6 lg:px-8" /> : null}
+        {!hideHeader ? <PageHeader title={title} description={description} actions={actions} className={cn("border-0 px-4 py-4 sm:px-6 lg:px-8", mobileNav && "hidden md:block")} /> : null}
 
-        <main id="main-content" tabIndex={-1} className={cn("mx-auto w-full flex-1 min-w-0 overflow-x-clip px-4 outline-none sm:px-6 lg:px-8", mobileContentPadding, contentMaxWidth)}>
+        <main id="main-content" tabIndex={-1} className={cn("mx-auto w-full flex-1 min-w-0 overflow-x-clip px-3 pt-3 outline-none sm:px-6 sm:pt-0 lg:px-8", mobileContentPadding, contentMaxWidth)}>
           {children}
         </main>
 
@@ -253,16 +256,25 @@ export function PortalDeskShell({
       {visibleMobileNav ? (
         <nav aria-label={`${navLabel} mobile`} className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-card md:hidden safe-area-bottom">
           <div className="flex h-16 items-stretch justify-around">
-            {visibleMobileNav.map((item) => {
+            {visibleMobileNav.slice(0, 4).map((item) => {
               const active = isActive(item.href, location.pathname);
               const Icon = item.icon;
               return (
-                <Link key={item.href} to={item.href} aria-current={active ? "page" : undefined} className={cn("flex min-h-11 min-w-0 flex-1 flex-col items-center justify-center gap-0.5 px-0.5", active ? "text-foreground" : "text-muted-foreground")}>
+                <Link key={item.href} to={item.href} aria-current={active ? "page" : undefined} className={cn("flex min-h-11 min-w-0 flex-1 flex-col items-center justify-center gap-0.5 px-0.5 touch-manipulation", active ? "text-foreground" : "text-muted-foreground")}>
                   <Icon className={cn("h-5 w-5 shrink-0", active && "text-primary")} />
                   <span className={cn("max-w-full text-center text-[10px] leading-tight", active && "font-medium")}>{item.label}</span>
                 </Link>
               );
             })}
+            <button
+              type="button"
+              onClick={() => setSidebarOpen(true)}
+              aria-label={`Open ${mobileNavLabel} menu`}
+              className="flex min-h-11 min-w-0 flex-1 flex-col items-center justify-center gap-0.5 px-0.5 text-muted-foreground touch-manipulation"
+            >
+              <MoreHorizontal className="h-5 w-5 shrink-0" />
+              <span className="max-w-full text-center text-[10px] leading-tight">{mobileNavLabel}</span>
+            </button>
           </div>
         </nav>
       ) : null}

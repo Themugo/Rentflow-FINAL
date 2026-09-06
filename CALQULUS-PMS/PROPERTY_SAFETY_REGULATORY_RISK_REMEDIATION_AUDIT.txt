@@ -1,0 +1,15 @@
+CALQULUS PMS — Initiative 51 Audit
+Property Safety, Regulatory Certification & Risk Remediation
+
+Implemented:
+- property_safety_certificates with expiry/status/evidence linkage.
+- property_risk_register with severity, target date and links to inspection findings/assets/maintenance requests.
+- Atomic certificate, risk, maintenance-link and risk-transition RPCs.
+- Manager-scoped RLS and restricted direct writes.
+- Dashboard control centre with certificate/risk KPIs and entry forms.
+- No duplicate work-order or accounting system.
+
+Verification notes:
+- TypeScript and migration-chain verification must be run after this initiative.
+- Full Vitest requires installed node_modules.
+- Live Supabase reconciliation/deployment is intentionally not claimed by this local package.

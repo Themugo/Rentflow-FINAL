@@ -645,6 +645,28 @@
   body {
     @apply bg-background text-foreground font-sans antialiased;
     overflow-x: clip;
+    overscroll-behavior-x: none;
+  }
+
+  @media (max-width: 767px) {
+    html, body, #root {
+      min-height: 100%;
+      width: 100%;
+    }
+
+    html {
+      overscroll-behavior-y: none;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      overscroll-behavior-y: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button, a, [role="button"] {
+      -webkit-tap-highlight-color: transparent;
+    }
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -1112,4 +1134,23 @@
 /* Accessible touch target: keeps compact visual controls usable on touch devices. */
 @media (pointer: coarse) {
   .touch-target { min-width: 44px; min-height: 44px; }
+}
+
+
+/* ── CALQULUS mobile application chrome ───────────────────────────────
+   Phone layouts are app-like: compact app bar, thumb-friendly actions,
+   bottom navigation and no desktop-style page chrome. */
+@media (max-width: 767px) {
+  .mobile-app-surface {
+    min-height: 100dvh;
+    padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .mobile-app-card {
+    border-radius: 1rem;
+  }
+
+  input, select, textarea {
+    font-size: 16px;
+  }
 }

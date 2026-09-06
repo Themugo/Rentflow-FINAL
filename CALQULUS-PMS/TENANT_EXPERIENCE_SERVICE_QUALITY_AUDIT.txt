@@ -1,0 +1,22 @@
+CALQULUS PMS — Tenant Experience & Service Quality Intelligence
+
+Implementation status: PASS (static/source audit)
+
+Included:
+- Canonical manager-scoped tenant experience intelligence RPC.
+- Explainable service-quality score using maintenance, ratings, communication, notices and payment-friction signals.
+- Maintenance response/resolution metrics and aged open-work detection.
+- Tenant communication and notice follow-up visibility.
+- Explicitly non-predictive wording; no churn/renewal probability claim.
+- Manager/submanager authorization on SECURITY DEFINER functions.
+- Deduplicated service-quality work-item creation through the existing operation work queue.
+- Dashboard integration beside existing retention/churn intelligence.
+- Targeted regression assertions.
+
+Verification:
+- Migration chain: PASS — 187 migrations, 0 unexpected duplicate versions, 0 ordering warnings.
+- Deployment controls: PASS.
+- Cross-role isolation audit: PASS.
+- Targeted Vitest: NOT RUN — node_modules is unavailable in the packaged workspace.
+- Full TypeScript/Vite build: NOT RUN — dependency-backed toolchain unavailable in the packaged workspace.
+- Live Supabase migration reconciliation: REQUIRED before deployment; the accumulated local migration chain is not claimed as deployed to the remote project.

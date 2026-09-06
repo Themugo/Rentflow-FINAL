@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: calqulusrms-blue
+  labels:
+    app: calqulusrms
+    version: blue
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 5173
+    protocol: TCP
+    name: http
+  selector:
+    app: calqulusrms
+    version: blue
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: calqulusrms-green
+  labels:
+    app: calqulusrms
+    version: green
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 5173
+    protocol: TCP
+    name: http
+  selector:
+    app: calqulusrms
+    version: green
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: calqulusrms-active
+  labels:
+    app: calqulusrms
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http
+  selector:
+    app: calqulusrms
+    active: "true"

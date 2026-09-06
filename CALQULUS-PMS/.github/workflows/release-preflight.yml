@@ -1,0 +1,46 @@
+name: Release Preflight
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  release-preflight:
+    name: CALQULUS Release Preflight
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Production environment audit
+        run: npm run audit:production-environment
+      - name: Deployment preflight
+        run: npm run deploy:preflight -- --dry-run
+      - name: Security boundary audit
+        run: npm run audit:security-boundary
+      - name: Cross-role audit
+        run: npm run audit:cross-role
+      - name: Final security audit
+        run: npm run audit:final-security
+      - name: Migration chain audit
+        run: npm run audit:migration-chain
+      - name: Upload release evidence artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: calqulus-release-preflight
+          path: |
+            docs/audits/PRODUCTION_ENVIRONMENT_CERTIFICATE.json
+            docs/audits/DEPLOYMENT_PREFLIGHT_CERTIFICATE.json
+            docs/audits/PHASE_96_97_RELEASE_READINESS_CERTIFICATE.json
+            docs/audits/RELEASE_SECURITY_CERTIFICATE.json
+            docs/audits/STAGING_READINESS_CERTIFICATE.json

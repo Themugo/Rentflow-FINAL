@@ -1,0 +1,130 @@
+# Sentry Configuration for CALQULUS RMS
+# This file configures Sentry for production error tracking and performance monitoring
+
+# DSN (Data Source Name) - Set this in environment variables
+# SENTRY_DSN=https://your-dsn@sentry.io/project-id
+
+# Environment
+environment: production
+
+# Release tracking
+release: calqulusrms@1.0.0
+
+# Sample rate for performance monitoring (0-1)
+traces_sample_rate: 0.1
+
+# Sample rate for sessions (0-1)
+session_sample_rate: 1.0
+
+# Sample rate for errors (0-1)
+error_sample_rate: 1.0
+
+# Performance monitoring
+performance:
+  # Enable performance monitoring
+  enabled: true
+  
+  # Track components
+  track_components: true
+  
+  # Track long tasks
+  track_long_tasks: true
+  
+  # Track user interactions
+  track_user_interactions: true
+
+# Error monitoring
+errors:
+  # Enable error monitoring
+  enabled: true
+  
+  # Track console errors
+  track_console: true
+  
+  # Track unhandled rejections
+  track_unhandled_rejections: true
+  
+  # Track uncaught exceptions
+  track_uncaught_exceptions: true
+
+# Integrations
+integrations:
+  # Browser tracing
+  browser_tracing:
+    enabled: true
+    
+    # Trace targets
+    trace_fetch: true
+    trace_xhr: true
+    trace_cors: true
+    
+    # Trace origins
+    tracing_origins:
+      - localhost
+      - /^\//
+      - https://www.calqulus.site
+      - https://www.calqulusrms.com
+
+# Before send callback for filtering errors
+before_send:
+  # Filter out certain errors
+  filter:
+    # Ignore errors from certain domains
+    ignore_domains:
+      - localhost
+      - 127.0.0.1
+    
+    # Ignore certain error types
+    ignore_errors:
+      - ResizeObserver loop limit exceeded
+      - Non-Error promise rejection captured
+    
+    # Ignore certain URLs
+    ignore_urls:
+      - /chrome-extension/
+      - /safari-extension/
+
+# User context
+user:
+  # Include user ID
+  id: true
+  
+  # Include user email
+  email: true
+  
+  # Include user role
+  role: true
+
+# Tags
+tags:
+  # Environment tag
+  environment: production
+  
+  # Application tag
+  application: calqulusrms
+  
+  # Version tag
+  version: 1.0.0
+
+# Alerting
+alerts:
+  # Enable alerts
+  enabled: true
+  
+  # Alert on new issues
+  new_issues: true
+  
+  # Alert on regression
+  regression: true
+  
+  # Alert on high error rate
+  high_error_rate:
+    enabled: true
+    threshold: 0.05 # 5% error rate
+    window: 5m
+  
+  # Alert on performance degradation
+  performance_degradation:
+    enabled: true
+    threshold: 2.0 # 2x slower than baseline
+    window: 10m

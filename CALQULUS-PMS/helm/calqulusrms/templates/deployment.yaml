@@ -1,0 +1,110 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "calqulusrms.fullname" . }}
+  labels:
+    {{- include "calqulusrms.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "calqulusrms.selectorLabels" . | nindent 6 }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "calqulusrms.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "calqulusrms.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+      - name: {{ .Chart.Name }}
+        securityContext:
+          {{- toYaml .Values.securityContext | nindent 12 }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - name: http
+          containerPort: 5173
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          value: {{ .Values.config.NODE_ENV | quote }}
+        - name: LOG_LEVEL
+          value: {{ .Values.config.LOG_LEVEL | quote }}
+        - name: ENABLE_METRICS
+          value: {{ .Values.config.ENABLE_METRICS | quote }}
+        - name: ENABLE_TRACING
+          value: {{ .Values.config.ENABLE_TRACING | quote }}
+        - name: CACHE_TTL
+          value: {{ .Values.config.CACHE_TTL | quote }}
+        - name: SESSION_TIMEOUT
+          value: {{ .Values.config.SESSION_TIMEOUT | quote }}
+        - name: VITE_SUPABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "calqulusrms.fullname" . }}-secrets
+              key: supabase-url
+        - name: VITE_SUPABASE_PUBLISHABLE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "calqulusrms.fullname" . }}-secrets
+              key: supabase-publishable-key
+        - name: VITE_DEMO_SEED_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "calqulusrms.fullname" . }}-secrets
+              key: demo-seed-secret
+        resources:
+          {{- toYaml .Values.resources | nindent 12 }}
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5173
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 5173
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        startupProbe:
+          httpGet:
+            path: /health
+            port: 5173
+          initialDelaySeconds: 0
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 30
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

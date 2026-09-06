@@ -1,0 +1,653 @@
+{
+  "generatedAt": "2026-09-04T06:31:03.464Z",
+  "functionCount": 91,
+  "critical": [
+    "mpesa-callback",
+    "stripe-webhook",
+    "bank-webhook",
+    "process-payment",
+    "reconcile-bank",
+    "execute-payout"
+  ],
+  "functions": [
+    {
+      "function": "accept-admin-invitation",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": true,
+      "authGate": true
+    },
+    {
+      "function": "accept-tenant-invite",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "activate-account",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "apply-credit",
+      "webhook": false,
+      "retrySignals": true,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "apply-penalties",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "auto-generate-invoices",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "auto-send-receipt",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "auto-send-rent-report",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "backfill-tenant-accounts",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "bank-webhook",
+      "webhook": true,
+      "retrySignals": true,
+      "idempotencySignals": true,
+      "authGate": true
+    },
+    {
+      "function": "bootstrap-webhost",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "calculate-tenant-score",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "check-feature",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": false
+    },
+    {
+      "function": "check-manager-subscription",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "claim-tenant",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "create-dispute",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "create-invoice",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "create-invoice-checkout",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "create-manager-invoice-checkout",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "create-manager-subscription",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "create-payout",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "create-tenant",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "create-tenant-account",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "detect-fraud",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "execute-payout",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "export-excel",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "export-pdf",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "generate-cashflow",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "generate-landlord-statement",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "generate-manager-invoices",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "generate-monthly-invoices",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "generate-pnl",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "get-payment-history",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": false
+    },
+    {
+      "function": "health-check",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "initiate-manager-mpesa-payment",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "initiate-manager-paystack-payment",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "initiate-mpesa-payment",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "initiate-mpesa-stk-push",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "initiate-paystack-payment",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "initiate-shared-payment",
+      "webhook": false,
+      "retrySignals": true,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "initiate-subscription-mpesa",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "log-audit",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": false
+    },
+    {
+      "function": "manage-mpesa-settings",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "mpesa-callback",
+      "webhook": true,
+      "retrySignals": true,
+      "idempotencySignals": true,
+      "authGate": true
+    },
+    {
+      "function": "notify-manager-payment",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "notify-manager-receipt-upload",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "notify-manager-tenant-signup",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "notify-new-manager-signup",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": false
+    },
+    {
+      "function": "parse-contract-document",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "parse-receipt",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "process-due-invoice-notifications",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "process-payment",
+      "webhook": false,
+      "retrySignals": true,
+      "idempotencySignals": true,
+      "authGate": true
+    },
+    {
+      "function": "reconcile",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "reconcile-bank",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "record-payment",
+      "webhook": false,
+      "retrySignals": true,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "resolve-dispute",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "seed-demo-data",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "seed-maintenance",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "self-register-tenant",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "send-admin-invitation",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "send-bank-details-notification",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "send-bulk-sms",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": false
+    },
+    {
+      "function": "send-contract-notification",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "send-deposit-refund-notification",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "send-invoice-due-push-notification",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "send-invoice-email",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "send-invoice-notification",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "send-maintenance-notification",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "send-manager-approval-notification",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "send-manager-contract-notification",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "send-manager-invoice-notification",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "send-manager-receipt-email",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "send-monthly-report",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "send-overdue-maintenance-notifications",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "send-overdue-notifications",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "send-payment-confirmation",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "send-payment-push-notification",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "send-payment-reminders",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "send-property-assignment-notification",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "send-push-notification",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "send-receipt-email",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "send-receipt-status-notification",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "send-signature-notification",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "send-sms-notification",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": false
+    },
+    {
+      "function": "send-tenant-invitation",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "send-tenant-notice",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "send-welcome-email",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "send-whatsapp-notification",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "stripe-webhook",
+      "webhook": true,
+      "retrySignals": true,
+      "idempotencySignals": true,
+      "authGate": true
+    },
+    {
+      "function": "verify-mpesa-payment",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    },
+    {
+      "function": "verify-mpesa-stk-status",
+      "webhook": false,
+      "retrySignals": false,
+      "idempotencySignals": false,
+      "authGate": true
+    }
+  ],
+  "failures": [],
+  "status": "PASS"
+}

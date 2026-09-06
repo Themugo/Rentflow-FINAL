@@ -1,0 +1,60 @@
+name: Release Integrity Gate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-provenance:
+    name: Dependency provenance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run audit:dependency-provenance
+      - run: npm run audit:runtime-dependency-governance
+        env:
+          RUN_NETWORK_AUDITS: true
+      - run: npm run audit:runtime-update-policy
+      - run: npm run generate:sbom
+      - run: npm run audit:sbom
+      - run: npm run audit:secret-supply-chain
+      - run: npm run audit:vulnerability-governance
+      - run: npm audit --audit-level=high
+      - run: npm run audit:release-manifest
+
+  release-gate:
+    name: Release integrity gate
+    needs: dependency-provenance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run audit:dependency-provenance
+      - run: npm run audit:runtime-update-policy
+      - run: npm run audit:security-regression-diff
+      - run: npm run generate:sbom
+      - run: npm run audit:sbom
+      - run: npm run audit:secret-supply-chain
+      - run: npm run audit:vulnerability-governance
+      - run: npm audit --audit-level=high
+      - run: npm run audit:release-manifest
+      - run: npm run audit:ci-release-gate
+      - run: npm run audit:security-regression-matrix
+      - run: npm run capture:release-evidence-integrity
+      - run: npm run audit:release-evidence-integrity
+      - run: npm run audit:release-security-gate

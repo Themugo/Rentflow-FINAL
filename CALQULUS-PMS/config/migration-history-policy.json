@@ -1,0 +1,24 @@
+{
+  "policyVersion": 1,
+  "mode": "historical-duplicates-require-live-reconciliation",
+  "rationale": "Historical Supabase migration versions are not renamed automatically because renaming an already-applied version can diverge from schema_migrations.",
+  "knownDuplicateVersions": [
+    "20260506000021",
+    "20260506000022",
+    "20260902000004",
+    "20260903000011",
+    "20260903000012",
+    "20260903000014",
+    "20260903000015",
+    "20260903000019",
+    "20260903000021",
+    "20260903000029"
+  ],
+  "knownMalformedVersions": [
+    "20260506000022b",
+    "20260506000022c",
+    "20260506000022d"
+  ],
+  "liveReconciliationRequired": true,
+  "newDuplicateVersionsFail": true
+}

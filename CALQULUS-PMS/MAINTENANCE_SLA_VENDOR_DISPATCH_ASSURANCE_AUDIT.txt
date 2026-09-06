@@ -1,0 +1,24 @@
+CALQULUS PMS — Initiative 47 Audit
+Maintenance SLA, Vendor Dispatch & Completion Assurance
+
+Scope
+- Adds SLA due time, vendor dispatch timestamp, escalation and completion verification to the existing maintenance request record.
+- Adds atomic manager-scoped SLA dispatch, escalation and completion verification controls.
+- Adds a management assurance dashboard over the existing maintenance/vendor/commitment/expenditure chain.
+- Does not create a second work-order system or financial ledger.
+
+Security
+- RPCs require an authenticated session.
+- Manager/property scope is enforced with can_manage_property_scope.
+- New RPCs are revoked from PUBLIC/anon and granted to authenticated.
+
+Accounting integrity
+- Operational escalation changes maintenance priority only.
+- Actual financial values continue to derive from existing expenditures and the canonical double-entry ledger.
+
+Verification
+- TypeScript check required.
+- Migration-chain audit required.
+- Cross-role isolation audit required.
+- Full Vitest depends on installed node_modules.
+- Live Supabase migration reconciliation remains required.

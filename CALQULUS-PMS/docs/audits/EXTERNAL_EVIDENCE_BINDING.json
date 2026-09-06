@@ -1,0 +1,41 @@
+{
+  "generatedAt": "2026-09-03T15:46:35.647Z",
+  "status": "EXTERNAL_REQUIRED",
+  "release": {
+    "commit": null,
+    "manifestSha256": "7f4b4068128fc4103ddec343739e4521087bf145fffaae888b2bc6a71f7c2818"
+  },
+  "deployment": {
+    "id": null
+  },
+  "migration": {
+    "productionRunId": null,
+    "stagingRunId": null
+  },
+  "staging": {
+    "smokeRunId": null,
+    "restoreRunId": null
+  },
+  "approval": {
+    "id": null,
+    "approverRecorded": false,
+    "approvedAt": null
+  },
+  "evidence": {
+    "operatorRecorded": false,
+    "liveReleaseEvidenceSha256": "8ae1eca33b56502e2b777427abf124ec38307b890d34bf39b219093605e3580d"
+  },
+  "missingExternalEvidence": [
+    "releaseCommit",
+    "deploymentId",
+    "migrationRunId",
+    "stagingMigrationRunId",
+    "stagingSmokeRunId",
+    "stagingRestoreRunId",
+    "productionApprovalId",
+    "productionApprover",
+    "productionApprovedAt",
+    "evidenceOperator"
+  ],
+  "rule": "This binding records identifiers and hashes only. It never persists credentials, tokens, passwords, database URLs, or command output. PASS requires explicit externally supplied release, deployment, migration, staging, restore, and production approval identifiers."
+}

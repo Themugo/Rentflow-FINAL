@@ -1,0 +1,83 @@
+{
+  "name": "CALQULUS PMS",
+  "short_name": "CALQULUS",
+  "description": "Modern property management platform for Kenya and East Africa",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F7F9FC",
+  "theme_color": "#0D2744",
+  "lang": "en-KE",
+  "categories": [
+    "finance",
+    "productivity",
+    "business"
+  ],
+  "icons": [
+    {
+      "src": "/calqulus-app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Manager Portal",
+      "short_name": "Manager",
+      "description": "Go to manager dashboard",
+      "url": "/",
+      "icons": [
+        {
+          "src": "/pwa-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Tenant Portal",
+      "short_name": "My Rent",
+      "description": "View my invoices and pay rent",
+      "url": "/portal",
+      "icons": [
+        {
+          "src": "/pwa-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "screenshots": [],
+  "prefer_related_applications": false,
+  "id": "/",
+  "scope": "/",
+  "display_override": [
+    "standalone"
+  ],
+  "launch_handler": {
+    "client_mode": [
+      "navigate-existing",
+      "auto"
+    ]
+  }
+}

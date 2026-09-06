@@ -1,0 +1,36 @@
+{
+  "generatedAt": "2026-09-04T06:31:04.115Z",
+  "status": "EXTERNAL_REQUIRED",
+  "baseUrl": null,
+  "testFile": "e2e/phase104-authenticated-isolation.spec.ts",
+  "roles": [
+    {
+      "role": "manager",
+      "credentialsProvided": false
+    },
+    {
+      "role": "landlord",
+      "credentialsProvided": false
+    },
+    {
+      "role": "tenant",
+      "credentialsProvided": false
+    },
+    {
+      "role": "webhost",
+      "credentialsProvided": false
+    }
+  ],
+  "credentialsRecorded": false,
+  "reason": "Dedicated staging origin is required.",
+  "missingEnvironment": [
+    "E2E_MANAGER_EMAIL",
+    "E2E_MANAGER_PASSWORD",
+    "E2E_LANDLORD_EMAIL",
+    "E2E_LANDLORD_PASSWORD",
+    "E2E_TENANT_EMAIL",
+    "E2E_TENANT_PASSWORD",
+    "E2E_WEBHOST_EMAIL",
+    "E2E_WEBHOST_PASSWORD"
+  ]
+}

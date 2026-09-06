@@ -1,0 +1,58 @@
+{
+  "generatedAt": "2026-09-03T13:37:24.698Z",
+  "checks": [
+    {
+      "name": "prod",
+      "status": "PASS"
+    },
+    {
+      "name": "security",
+      "status": "PASS"
+    },
+    {
+      "name": "cross-role",
+      "status": "PASS"
+    },
+    {
+      "name": "final-security",
+      "status": "PASS"
+    },
+    {
+      "name": "migration",
+      "status": "PASS"
+    },
+    {
+      "name": "staging",
+      "status": "PASS"
+    },
+    {
+      "name": "recovery",
+      "status": "PASS"
+    },
+    {
+      "name": "observability",
+      "status": "PASS"
+    },
+    {
+      "name": "edge-reliability",
+      "status": "PASS"
+    },
+    {
+      "name": "operations",
+      "status": "PASS"
+    },
+    {
+      "name": "release-evidence",
+      "status": "FAIL",
+      "detail": "\n> calqulus-pms@1.0.0 audit:release-evidence\n> node scripts/audit-release-evidence.mjs\n\nrelease-evidence-audit: BLOCKED\n- missing: releaseCommit, stagingMigrationRun, stagingSmokeRun, stagingRestoreRun, productionApproval\n- possible credential/token field detected in evidence\n"
+    }
+  ],
+  "status": "BLOCKED",
+  "externalGates": [
+    "live migration history reconciliation",
+    "staging migration execution",
+    "staging restore test",
+    "role-isolation smoke test",
+    "production smoke test"
+  ]
+}

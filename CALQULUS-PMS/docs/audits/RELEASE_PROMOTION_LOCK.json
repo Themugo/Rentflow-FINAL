@@ -1,0 +1,35 @@
+{
+  "generatedAt": "2026-09-04T06:25:20.788Z",
+  "status": "EXTERNAL_REQUIRED",
+  "authorization": {
+    "authorizationId": null,
+    "authorizedBy": null,
+    "authorizedAt": null,
+    "scope": null,
+    "credentialsPersisted": false
+  },
+  "candidateReleaseCommit": null,
+  "expectedReleaseCommit": null,
+  "checks": {
+    "authorizationIdRecorded": false,
+    "authorizedByRecorded": false,
+    "authorizationTimestampValid": false,
+    "authorizationScopeProduction": false,
+    "releaseCommitBound": false,
+    "artifactProvenancePass": false,
+    "deploymentDriftPass": false,
+    "rollbackReadinessPrepared": true,
+    "reconciliationPass": false
+  },
+  "missing": [
+    "authorizationIdRecorded",
+    "authorizedByRecorded",
+    "authorizationTimestampValid",
+    "authorizationScopeProduction",
+    "releaseCommitBound",
+    "artifactProvenancePass",
+    "deploymentDriftPass",
+    "reconciliationPass"
+  ],
+  "rule": "Production promotion requires explicit authorization bound to the exact certified release commit. Authorization credentials/secrets are never persisted by this audit."
+}

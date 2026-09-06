@@ -1,0 +1,31 @@
+{
+  "initiative": "Manager Operations Desk R4 type-safety hardening",
+  "baseline": "f2da729454017e3c6f95615ca3e6585c19c70ba0",
+  "changes": [
+    "src/app/routes.ts",
+    "src/core/product/PortalIdentityProvider.tsx",
+    "src/features/agency/components/AgencyFinancialWorkbench.tsx",
+    "src/features/agency/components/AgencyOperationsCenter.tsx",
+    "src/features/agency/components/AgencyPaymentPolicyCenter.tsx",
+    "src/features/agency/pages/AgencyPortfolio.tsx",
+    "src/features/billing/components/MpesaPaymentDialog.tsx",
+    "src/features/billing/components/UnitPaymentReconciliation.tsx",
+    "src/features/billing/hooks/useBillingData.ts",
+    "src/features/contracts/services/contracts.service.ts",
+    "src/features/dashboard/components/CollectionsRecoveryAutomation.tsx",
+    "src/features/dashboard/components/DocumentEvidenceControlCenter.tsx",
+    "src/features/dashboard/components/RecentActivity.tsx",
+    "src/features/dashboard/components/TenantsOverview.tsx",
+    "src/features/dashboard/components/TrialBalanceFinancialStatementsCenter.tsx",
+    "src/features/landlord/components/LandlordSettlementTransparency.tsx",
+    "src/features/landlord/pages/LandlordDashboard.tsx",
+    "src/features/landlord/pages/LandlordManagement.tsx",
+    "src/features/landlord/pages/LandlordStatements.tsx",
+    "src/features/manager/pages/ManagementControl.tsx",
+    "src/features/payments/components/ReceiptVerification.tsx",
+    "src/features/shared/ManagementConfigurationCenter.tsx",
+    "src/features/tenant-portal/components/TenantBillsHub.tsx",
+    "src/features/tenant-portal/pages/TenantPortal.tsx",
+    "src/shared/hooks/useLeaseExpiryReminders.ts"
+  ]
+}

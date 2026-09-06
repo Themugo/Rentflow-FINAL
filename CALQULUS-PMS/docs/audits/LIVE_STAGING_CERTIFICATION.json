@@ -1,0 +1,36 @@
+{
+  "generatedAt": "2026-09-03T13:59:58.229Z",
+  "status": "EXTERNAL_REQUIRED",
+  "baseUrl": null,
+  "checks": {
+    "connectivity": {
+      "status": "EXTERNAL_REQUIRED"
+    },
+    "bootstrap": {
+      "status": "EXTERNAL_REQUIRED"
+    },
+    "roleCertification": {
+      "status": "EXTERNAL_REQUIRED"
+    },
+    "smoke": {
+      "status": "EXTERNAL_REQUIRED"
+    },
+    "migrationIntegrity": {
+      "status": "EXTERNAL_REQUIRED"
+    },
+    "schemaDrift": {
+      "status": "EXTERNAL_REQUIRED"
+    },
+    "liveRls": {
+      "status": "EXTERNAL_REQUIRED"
+    },
+    "liveMigrations": {
+      "status": "EXTERNAL_REQUIRED"
+    },
+    "liveSecurity": {
+      "status": "EXTERNAL_REQUIRED"
+    }
+  },
+  "credentialsRecorded": false,
+  "decision": "External staging/database evidence is still required; no pass is inferred."
+}

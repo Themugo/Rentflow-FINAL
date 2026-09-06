@@ -1,0 +1,40 @@
+{
+  "generatedAt": "2026-09-03T13:29:53.101Z",
+  "deploymentMode": "DRY_RUN",
+  "status": "READY",
+  "steps": [
+    {
+      "name": "environment",
+      "status": "PASS",
+      "output": "\n> calqulus-pms@1.0.0 audit:production-environment\n> node scripts/audit-production-environment.mjs\n\nproduction-environment: PASS\n- verify_jwt=false functions: 36\n"
+    },
+    {
+      "name": "deployment-controls",
+      "status": "PASS",
+      "output": "\n> calqulus-pms@1.0.0 audit:deployment-controls\n> node scripts/audit-deployment-controls.mjs\n\ndeployment-controls: PASS\n- migrations: 158\n- destructive migration candidates: 58\n- verify_jwt=false functions: 36\n- git: not available in packaged workspace (external clean-commit gate required)\n"
+    },
+    {
+      "name": "release-readiness",
+      "status": "PASS",
+      "output": "\n> calqulus-pms@1.0.0 audit:release-readiness\n> node scripts/audit-release-readiness.mjs\n\nrelease-readiness: PASS\nPASS prod\nPASS security\nPASS cross-role\nPASS final-security\nPASS migration\nPASS staging\nPASS recovery\nPASS observability\nPASS edge-reliability\nPASS operations\n"
+    },
+    {
+      "name": "observability",
+      "status": "PASS",
+      "output": "\n> calqulus-pms@1.0.0 audit:observability\n> node scripts/audit-observability.mjs\n\nobservability-audit: PASS (1/91 instrumented)\n"
+    },
+    {
+      "name": "operations",
+      "status": "PASS",
+      "output": "\n> calqulus-pms@1.0.0 audit:operations-readiness\n> node scripts/audit-operations-readiness.mjs\n\noperations-readiness: PASS\n"
+    }
+  ],
+  "actions": [
+    "Build from a clean committed release",
+    "Apply/reconcile Supabase migrations using controlled credentials",
+    "Deploy Edge Functions",
+    "Deploy frontend through the approved hosting pipeline",
+    "Run staging/production smoke tests",
+    "Record live release evidence before declaring GO"
+  ]
+}

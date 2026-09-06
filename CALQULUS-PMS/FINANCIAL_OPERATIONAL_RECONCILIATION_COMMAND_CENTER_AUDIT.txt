@@ -1,0 +1,19 @@
+CALQULUS PMS — Financial & Operational Reconciliation Command Center
+
+Scope
+- Canonical reconciliation_cases model across lease→invoice, invoice→payment,
+  payment→allocation, bank matching, payout settlement, financial close and evidence.
+- Reuses operation_work_items as the canonical ownership/SLA execution layer.
+- Manager/submanager scope enforced through can_manage_property_scope.
+- No predictive values or fabricated financial metrics introduced.
+
+Controls
+- Active-source uniqueness prevents duplicate active cases.
+- Reconciliation scan is idempotent for active exceptions.
+- Case resolution atomically updates the linked operational work item.
+- Evidence may be attached to a case without creating a second document system.
+- Critical mismatches are surfaced as critical/high operational work.
+
+Verification
+- Static migration/component assertions covered by src/test/financialOperationalReconciliation.test.ts.
+- Full application tests depend on installed project dependencies.

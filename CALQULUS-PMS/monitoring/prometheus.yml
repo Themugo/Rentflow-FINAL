@@ -1,0 +1,53 @@
+# Prometheus Configuration for CALQULUS RMS
+# This file configures Prometheus to scrape metrics from the application
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'calqulusrms-production'
+    environment: 'production'
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            # - alertmanager:9093
+
+# Rule files for alerting
+rule_files:
+  # - "alerts/*.yml"
+
+# Scrape configurations
+scrape_configs:
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # CALQULUS RMS application metrics
+  - job_name: 'calqulusrms-app'
+    static_configs:
+      - targets: ['localhost:3000'] # Update with actual application port
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+
+  # Supabase metrics (if available)
+  - job_name: 'supabase'
+    static_configs:
+      - targets: ['localhost:4233'] # Supabase metrics endpoint
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+
+  # Node exporter for system metrics
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['localhost:9100']
+    scrape_interval: 30s
+
+  # cAdvisor for container metrics
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['localhost:8080']
+    scrape_interval: 30s

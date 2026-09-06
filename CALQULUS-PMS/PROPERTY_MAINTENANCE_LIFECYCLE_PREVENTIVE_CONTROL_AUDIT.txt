@@ -1,0 +1,25 @@
+CALQULUS PMS — Initiative 48 Audit
+Property Maintenance Lifecycle & Preventive Maintenance Control
+
+Implemented:
+- Recurring preventive maintenance plans with manager scope, property/unit targeting and optional asset reference.
+- Explicit service frequency and next-due date.
+- Idempotent preventive run records preventing duplicate work orders for the same scheduled date.
+- Atomic generation of ordinary maintenance_requests, preserving the existing maintenance lifecycle.
+- Optional governed vendor and vendor-contract linkage on generated work orders.
+- Dashboard schedule creation, due-plan visibility and controlled generation of due work.
+- No parallel work-order ledger and no parallel financial ledger.
+
+Verification:
+- TypeScript: PASS
+- Migration chain: PASS; 207 SQL migrations inspected; 0 unexpected duplicate versions; 0 ordering warnings.
+- Cross-role isolation: PASS
+- Deployment controls: PASS
+- Full Vitest: NOT RUN; packaged workspace has no installed node_modules/Vitest dependencies.
+- Live Supabase migration reconciliation: REQUIRED. The live project must be reconciled with the complete local migration chain before deployment.
+
+Security notes:
+- Preventive plan/run tables use RLS and manager-scope SELECT policies.
+- Direct authenticated INSERT/UPDATE/DELETE is revoked; writes occur through scoped RPCs.
+- RPCs are authenticated and manager-scope checked.
+- Vendor/contract/property/unit relationships are scope validated before schedule creation.

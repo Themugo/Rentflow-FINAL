@@ -1,0 +1,69 @@
+%%{ init: { "sequence": { "mirrorActors": false, "actorMargin": 80 } } }%%
+sequenceDiagram
+    title M-Pesa STK Push Payment Flow
+
+    participant Tenant as Tenant App
+    participant API as API Server
+    participant EdgeFn as Edge Function
+    participant DB as Supabase DB
+    participant Safaricom as Safaricom API
+
+    Tenant->>API: Select invoice(s) to pay
+    API->>DB: Fetch invoice details
+    DB-->>API: Invoice data + amount
+    API-->>Tenant: Show payment confirmation
+
+    Tenant->>API: Confirm payment (amount, phone)
+    API->>EdgeFn: POST /initiate-mpesa-stk-push
+    EdgeFn->>DB: Query invoice ownership
+    DB-->>EdgeFn: Verify tenant owns invoices
+
+    alt Invalid invoice ownership
+        EdgeFn-->>API: 403 Forbidden
+        API-->>Tenant: Error: Invoice not yours
+    end
+
+    EdgeFn->>EdgeFn: Validate amount (±1 KES tolerance)
+    EdgeFn->>EdgeFn: Generate idempotency key
+
+    EdgeFn->>Safaricom: POST STK Push Request
+    Safaricom-->>EdgeFn: CheckoutRequestID (pending)
+
+    EdgeFn->>DB: Insert pending transaction
+    DB-->>EdgeFn: Transaction created
+
+    EdgeFn-->>API: 200 OK (CheckoutRequestID)
+    API-->>Tenant: Payment request sent
+
+    Note over Tenant,Safaricom: Customer receives M-Pesa prompt on phone
+
+    Tenant->>Safaricom: Enter PIN, confirm
+    Safaricom-->>EdgeFn: POST /mpesa-callback
+
+    EdgeFn->>EdgeFn: Validate callback signature
+    EdgeFn->>EdgeFn: Verify idempotency key
+
+    EdgeFn->>DB: Check for duplicate receipt
+    DB-->>EdgeFn: No duplicate found
+
+    alt Payment successful (ResultCode: 0)
+        EdgeFn->>EdgeFn: Parse callback metadata
+        EdgeFn->>DB: Record payment transaction
+        EdgeFn->>DB: Allocate to invoices
+        EdgeFn->>DB: Update invoice statuses
+        EdgeFn->>EdgeFn: Generate receipt
+        
+        EdgeFn->>Tenant: WebSocket: Payment complete
+        EdgeFn-->>Safaricom: ACK
+        
+        Note over Tenant: Dashboard shows "Payment Successful"
+    else Payment failed/cancelled
+        EdgeFn->>DB: Record failed attempt
+        EdgeFn-->>Safaricom: ACK
+        EdgeFn-->>Tenant: WebSocket: Payment failed
+    end
+
+    EdgeFn-->>API: 200 OK
+    API-->>Tenant: Show receipt / error
+
+    Note over Tenant,DB: Reconciliation runs nightly to catch missed callbacks

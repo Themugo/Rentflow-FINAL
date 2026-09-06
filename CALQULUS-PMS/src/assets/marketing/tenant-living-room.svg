@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-labelledby="title desc">
+  <title id="title">Bright modern living room</title>
+  <desc id="desc">A soft neutral living room with a sofa, plant, coffee table and tall window.</desc>
+  <defs>
+    <linearGradient id="wall" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fbf8ff"/>
+      <stop offset="1" stop-color="#eee9f7"/>
+    </linearGradient>
+    <linearGradient id="floor" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#eee9e2"/>
+      <stop offset="1" stop-color="#d9d0c7"/>
+    </linearGradient>
+    <linearGradient id="sofa" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#ded9df"/>
+      <stop offset="1" stop-color="#bcb5bf"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="620" fill="url(#wall)"/>
+  <rect y="620" width="1200" height="280" fill="url(#floor)"/>
+  <rect x="760" y="85" width="290" height="410" rx="8" fill="#ffffff" stroke="#ded8e5" stroke-width="8"/>
+  <rect x="785" y="110" width="240" height="360" fill="#dfeef6"/>
+  <path d="M785 420L1025 250V470H785Z" fill="#cfe4ef" opacity=".75"/>
+  <path d="M905 110V470M785 290H1025" stroke="#ffffff" stroke-width="10"/>
+  <ellipse cx="485" cy="775" rx="360" ry="52" fill="#b8afa8" opacity=".32"/>
+  <rect x="160" y="505" width="600" height="230" rx="42" fill="url(#sofa)"/>
+  <rect x="185" y="455" width="550" height="180" rx="50" fill="#e6e1e5"/>
+  <rect x="220" y="510" width="175" height="120" rx="26" fill="#c8c0c9"/>
+  <rect x="430" y="510" width="170" height="120" rx="26" fill="#d4cdd5"/>
+  <rect x="620" y="510" width="80" height="120" rx="24" fill="#bcb4be"/>
+  <rect x="330" y="680" width="260" height="26" rx="13" fill="#9d938d"/>
+  <rect x="380" y="705" width="22" height="90" fill="#8f857f"/>
+  <rect x="515" y="705" width="22" height="90" fill="#8f857f"/>
+  <circle cx="930" cy="720" r="78" fill="#c5b7a6" opacity=".45"/>
+  <rect x="860" y="650" width="140" height="14" rx="7" fill="#7c6b5d"/>
+  <rect x="900" y="662" width="12" height="105" fill="#7c6b5d"/>
+  <rect x="950" y="662" width="12" height="105" fill="#7c6b5d"/>
+  <path d="M1030 690C1045 590 1058 510 1080 430" stroke="#665a50" stroke-width="8" fill="none"/>
+  <path d="M1080 445C1020 410 1025 350 1080 365C1135 350 1140 410 1080 445Z" fill="#79a56c"/>
+  <path d="M1080 475C1020 440 1035 395 1080 410C1125 395 1140 440 1080 475Z" fill="#8db87c"/>
+  <path d="M1080 505C1030 480 1040 440 1080 450C1120 440 1130 480 1080 505Z" fill="#6e9d63"/>
+  <rect x="1068" y="500" width="26" height="180" rx="10" fill="#a47b59"/>
+</svg>

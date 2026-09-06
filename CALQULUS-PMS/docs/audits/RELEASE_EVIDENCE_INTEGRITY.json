@@ -1,0 +1,96 @@
+{
+  "generatedAt": "2026-09-03T15:54:18.301Z",
+  "status": "PASS",
+  "algorithm": "SHA-256",
+  "entryCount": 17,
+  "expectedEntryCount": 17,
+  "entries": [
+    {
+      "file": "LIVE_RELEASE_EVIDENCE.json",
+      "sha256": "8ae1eca33b56502e2b777427abf124ec38307b890d34bf39b219093605e3580d",
+      "bytes": 2454
+    },
+    {
+      "file": "RELEASE_RECONCILIATION.json",
+      "sha256": "6ed9ccacb548e2172c8475a42caffa97b1bc5ad798be70923618abd929869055",
+      "bytes": 2240
+    },
+    {
+      "file": "SIGNED_RELEASE_MANIFEST.json",
+      "sha256": "c34297bfb54420af228a6e150e11e0195ba06085ccad6af618b7d10eaf4d8f53",
+      "bytes": 33258
+    },
+    {
+      "file": "SIGNED_RELEASE_MANIFEST_AUDIT.json",
+      "sha256": "b76b7b65e078f20fafe8917e9cbd9fadf324358024ee2eb39541532d97aa95a1",
+      "bytes": 373
+    },
+    {
+      "file": "DEPLOYMENT_ATTESTATION.json",
+      "sha256": "a7066667a7e641fb802e16aa08cfac2244fefe8631bc304907e686d37d8c9927",
+      "bytes": 654
+    },
+    {
+      "file": "DEPLOYMENT_ATTESTATION_AUDIT.json",
+      "sha256": "f299a35c7451d06c19e878b8184344f36b9f4e6cb61664f550895b861263ebf0",
+      "bytes": 485
+    },
+    {
+      "file": "ROLLBACK_EXECUTION_EVIDENCE.json",
+      "sha256": "fd10b42345bf79ede6eb67ffc232b0bd7c7803957b37d56b4b6439d88a21af42",
+      "bytes": 702
+    },
+    {
+      "file": "RELEASE_ARTIFACT_PROVENANCE.json",
+      "sha256": "20f8816c038ba8998cb4737523fa3d74b020761cd3a1cf4f1ae21baca1d51e1d",
+      "bytes": 526
+    },
+    {
+      "file": "DEPLOYMENT_DRIFT.json",
+      "sha256": "53e854de4c61e21c133ea9abecc9b37be4c979db790c3210f84ae52dfb064f34",
+      "bytes": 605
+    },
+    {
+      "file": "ROLLBACK_READINESS.json",
+      "sha256": "26052d03d92ce8aab574ac720c4c9edebbbc6f95a3ca456415d6e2934fc3bfc7",
+      "bytes": 839
+    },
+    {
+      "file": "RELEASE_PROMOTION_LOCK.json",
+      "sha256": "aede8f3b83759af2dd46e52c61b627c0f05d94b2fe9663a2ce0e227700b3a481",
+      "bytes": 1067
+    },
+    {
+      "file": "PRODUCTION_CHANGE_TRACE.json",
+      "sha256": "d8e98c1b24519a242151d6279c065ecc0ba7a0359a1741adc24fd71cfe756a1d",
+      "bytes": 30059
+    },
+    {
+      "file": "PRODUCTION_CHANGE_TRACE_AUDIT.json",
+      "sha256": "6bdb6bba9fd5d0422b741e7146f7b9928389c32d2a5a9e030b62bd5f9cd9b661",
+      "bytes": 652
+    },
+    {
+      "file": "SECURITY_REGRESSION_MATRIX.json",
+      "sha256": "c11c8189b093eee76b090a7f229fb36a4d85aff4711d638531e7134d64490754",
+      "bytes": 6058
+    },
+    {
+      "file": "SECURITY_REGRESSION_DIFF.json",
+      "sha256": "4bb0cd7c4f9dba1ef75350225d99c0dc999cf6fd1d5ca00fe8e9fad15e70aa75",
+      "bytes": 515
+    },
+    {
+      "file": "CI_RELEASE_GATE.json",
+      "sha256": "50f8952af9d84320c3ee914bc806bd5458a532ef63f480abba980fa7061099e2",
+      "bytes": 680
+    },
+    {
+      "file": "EXTERNAL_EVIDENCE_BINDING.json",
+      "sha256": "63d6889ca1377581acfcc0f0c71a90ea9d13ba8fbb96ad60bc3030d170c684aa",
+      "bytes": 1198
+    }
+  ],
+  "chainHash": "0a51ad7984bb0a3a454f528ca6fbd4f4ad83d8f186af510156a5cf4f598ea1f2",
+  "rule": "This ledger detects subsequent changes to recorded release evidence. It is a tamper-evident repository control, not an external immutable archive; final release certification still requires an independently retained copy or signing key."
+}

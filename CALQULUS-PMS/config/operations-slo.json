@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "service": "CALQULUS-PMS",
+  "availabilityTargetPct": 99.5,
+  "latencyTargetsMs": {"interactive_p95": 3000, "webhook_p95": 10000, "background_p95": 30000},
+  "errorBudgetPct": 0.5,
+  "alerts": {
+    "http_5xx_pct": 5,
+    "health_unhealthy": 1,
+    "webhook_dead_letter_growth": 1,
+    "notification_failure_growth": 1
+  },
+  "externalEvidenceRequired": ["Supabase logs", "staging smoke test", "restore drill", "production synthetic check"]
+}

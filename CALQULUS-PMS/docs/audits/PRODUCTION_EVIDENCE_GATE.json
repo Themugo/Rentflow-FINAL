@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-09-04T06:31:04.477Z",
+  "status": "BLOCKED",
+  "requiredEvidence": [
+    "releaseCommit",
+    "stagingMigrationRun",
+    "stagingSmokeRun",
+    "stagingRestoreRun",
+    "productionApproval"
+  ],
+  "missingEvidence": [
+    "releaseCommit"
+  ],
+  "smokeEvidenceStatus": "EXTERNAL_REQUIRED",
+  "goLiveRule": "Never infer live deployment success from repository audits alone."
+}

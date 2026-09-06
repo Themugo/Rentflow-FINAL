@@ -1,0 +1,198 @@
+{
+  "project": "https://aelzsqxllkypbzslxyju.supabase.co",
+  "generatedAt": "2026-08-19T15:45:28.252Z",
+  "note": "Anon-key live probe. 404 on /rpc/name means the function is not in the PostgREST schema cache. 401/400/403 means it exists. schema_migrations is not granted to anon.",
+  "restRoot": {
+    "json": 401,
+    "head": 401,
+    "openApi": 401
+  },
+  "tableProbes": [
+    {
+      "table": "properties",
+      "status": 200,
+      "body": "[]"
+    },
+    {
+      "table": "invoices",
+      "status": 500,
+      "body": "{\"code\":\"42P17\",\"details\":null,\"hint\":null,\"message\":\"infinite recursion detected in policy for relation \\\"tenants\\\"\"}"
+    },
+    {
+      "table": "leases",
+      "status": 200,
+      "body": "[]"
+    },
+    {
+      "table": "tenants",
+      "status": 500,
+      "body": "{\"code\":\"42P17\",\"details\":null,\"hint\":null,\"message\":\"infinite recursion detected in policy for relation \\\"tenants\\\"\"}"
+    },
+    {
+      "table": "user_roles",
+      "status": 200,
+      "body": "[{\"id\":\"5fa1c3ae-43b5-4641-a71d-3f307910cb7f\"}]"
+    },
+    {
+      "table": "platform_admins",
+      "status": 500,
+      "body": "{\"code\":\"42P17\",\"details\":null,\"hint\":null,\"message\":\"infinite recursion detected in policy for relation \\\"platform_admi"
+    }
+  ],
+  "liveTables": 0,
+  "repoCreateTable": 127,
+  "liveRpcs": 0,
+  "recentMigrationFiles": [
+    "20260803000000_activation_token_functions.sql",
+    "20260811000000_multi_tenant_rls_hardening.sql",
+    "20260811000001_security_definer_rpc_hardening.sql",
+    "20260811000002_storage_security_hardening.sql",
+    "20260811000003_auth_privileged_action_hardening.sql",
+    "20260812000000_phase1_invitation_audit_rls_tightening.sql",
+    "20260812000001_fix_platform_admins_rls_recursion.sql",
+    "20260812000002_fix_user_roles_rls_recursion.sql",
+    "20260819000000_phase2_landlord_finance_rpc.sql",
+    "20260819000001_phase3_audit_log_insert.sql",
+    "20260819000002_phase3_leftover_hardening.sql",
+    "20260819000003_phase4_financial_integrity.sql",
+    "20260819000004_manager_dashboard_stats_complete.sql"
+  ],
+  "missingFromLive": [
+    "account_activations",
+    "activity_logs",
+    "admin_permissions",
+    "agencies",
+    "agency_members",
+    "api_rate_limits",
+    "arrears_schedule",
+    "audit_logs",
+    "bank_details",
+    "bank_integration_settings",
+    "bank_transactions",
+    "billing_events",
+    "broadcast_campaigns",
+    "commission_configs",
+    "commissions",
+    "company_settings",
+    "contract_templates",
+    "contracts",
+    "customer_billing_blocks",
+    "dead_letter_queue",
+    "deposit_deductions",
+    "deposit_refunds",
+    "disputes",
+    "expenditures",
+    "fraud_flags",
+    "in_app_notifications",
+    "invoice_counters",
+    "invoice_line_items",
+    "invoices",
+    "kenya_water_companies",
+    "landlord_bank_details",
+    "landlord_documents",
+    "landlord_invitations",
+    "landlord_invoices",
+    "landlord_messages",
+    "landlord_mpesa_settings",
+    "landlord_notification_preferences",
+    "landlord_team_members",
+    "landlord_wallets",
+    "leases",
+    "maintenance_requests",
+    "manager_contracts",
+    "manager_ewallet_settings",
+    "manager_invoices",
+    "manager_mpesa_settings",
+    "manager_notification_settings",
+    "manager_profiles",
+    "manager_status_log",
+    "manager_submanagers",
+    "manager_subscriptions",
+    "messages",
+    "move_condition_photos",
+    "notification_failures",
+    "orphan_payment_entries",
+    "orphan_tenant_records",
+    "payment_allocations",
+    "payment_logs",
+    "payment_payers",
+    "payment_receipts",
+    "payment_transactions",
+    "payout_requests",
+    "physical_invoices",
+    "physical_receipts",
+    "platform_admins",
+    "platform_billing_rules",
+    "profiles",
+    "properties",
+    "property_amenity_charges",
+    "property_billing_config",
+    "property_categories",
+    "property_deductions",
+    "property_history",
+    "property_landlords",
+    "property_tier_limits",
+    "provider_reviews",
+    "provider_services",
+    "push_subscriptions",
+    "receipt_settings",
+    "rent_report_schedules",
+    "security_audit_log"
+  ],
+  "liveNotInRepoCreate": [],
+  "rpcProbes": [
+    {
+      "name": "get_manager_dashboard_stats",
+      "status": 404,
+      "body": "{\"code\":\"PGRST202\",\"details\":\"Searched for the function public.get_manager_dashboard_stats with parameter p_manager_id or with a single unnamed json/jsonb parameter, but no matches"
+    },
+    {
+      "name": "get_landlord_portfolio_stats",
+      "status": 404,
+      "body": "{\"code\":\"PGRST202\",\"details\":\"Searched for the function public.get_landlord_portfolio_stats without parameters or with a single unnamed json/jsonb parameter, but no matches were fo"
+    },
+    {
+      "name": "log_activity",
+      "status": 401,
+      "body": "{\"code\":\"42501\",\"details\":null,\"hint\":null,\"message\":\"permission denied for table users\"}"
+    },
+    {
+      "name": "validate_activation_token",
+      "status": 404,
+      "body": "{\"code\":\"PGRST202\",\"details\":\"Searched for the function public.validate_activation_token with parameter token_value or with a single unnamed json/jsonb parameter, but no matches we"
+    },
+    {
+      "name": "validate_invitation_token",
+      "status": 400,
+      "body": "{\"code\":\"42804\",\"details\":\"Returned type text does not match expected type uuid in column 7.\",\"hint\":null,\"message\":\"structure of query does not match function result type\"}"
+    }
+  ],
+  "functionProbes": [
+    {
+      "name": "health-check",
+      "status": 404,
+      "body": "{\"code\":\"NOT_FOUND\",\"message\":\"Requested function was not found\"}"
+    },
+    {
+      "name": "process-payment",
+      "status": 401,
+      "body": "{\"error\":\"Unauthorized\"}"
+    },
+    {
+      "name": "stripe-webhook",
+      "status": 400,
+      "body": "Webhook Error"
+    },
+    {
+      "name": "send-tenant-invitation",
+      "status": 401,
+      "body": "{\"error\":\"Unauthorized\"}"
+    },
+    {
+      "name": "create-tenant-account",
+      "status": 401,
+      "body": "{\"error\":\"Invalid authentication\"}"
+    }
+  ],
+  "healthCheckDeployed": false
+}

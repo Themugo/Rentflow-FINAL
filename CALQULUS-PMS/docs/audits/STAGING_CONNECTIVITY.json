@@ -1,0 +1,7 @@
+{
+  "generatedAt": "2026-09-03T13:59:58.340Z",
+  "status": "EXTERNAL_REQUIRED",
+  "checks": [],
+  "secretsExposed": false,
+  "reason": "STAGING_BASE_URL/SMOKE_BASE_URL or STAGING_SUPABASE_URL is required."
+}

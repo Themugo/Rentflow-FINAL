@@ -1,0 +1,197 @@
+{
+  "dashboard": {
+    "title": "CALQULUS RMS Database Performance",
+    "uid": "calqulusrms-database-performance",
+    "tags": ["calqulusrms", "database", "performance"],
+    "timezone": "browser",
+    "schemaVersion": 16,
+    "version": 0,
+    "refresh": "30s",
+    "panels": [
+      {
+        "id": 1,
+        "title": "Database Connection Pool",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+        "targets": [
+          {
+            "expr": "pg_stat_database_numbackends{datname='calqulusrms'}",
+            "legendFormat": "Active connections"
+          },
+          {
+            "expr": "pg_settings_max_connections",
+            "legendFormat": "Max connections"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "short",
+            "label": "Connections"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Connection Pool Usage %",
+        "type": "gauge",
+        "gridPos": {"h": 8, "w": 6, "x": 12, "y": 0},
+        "targets": [
+          {
+            "expr": "pg_stat_database_numbackends{datname='calqulusrms'} / pg_settings_max_connections * 100",
+            "legendFormat": "Pool usage %"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percent",
+            "min": 0,
+            "max": 100,
+            "thresholds": {
+              "steps": [
+                {"color": "green", "value": 0},
+                {"color": "yellow", "value": 70},
+                {"color": "red", "value": 90}
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 3,
+        "title": "Query Duration (P95)",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 6, "x": 18, "y": 0},
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, rate(pg_stat_statements_total_exec_time[5m]))",
+            "legendFormat": "P95 query duration"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "s",
+            "label": "Duration"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Slow Queries (>1s)",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+        "targets": [
+          {
+            "expr": "rate(pg_stat_statements_calls[5m]) * (pg_stat_statements_total_exec_time / pg_stat_statements_calls) > 1",
+            "legendFormat": "{{query}}"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "ops",
+            "label": "Queries/sec"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Transaction Throughput",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8},
+        "targets": [
+          {
+            "expr": "rate(pg_stat_database_xact_commit{datname='calqulusrms'}[5m])",
+            "legendFormat": "Commits/sec"
+          },
+          {
+            "expr": "rate(pg_stat_database_xact_rollback{datname='calqulusrms'}[5m])",
+            "legendFormat": "Rollbacks/sec"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "ops",
+            "label": "Transactions/sec"
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "title": "Cache Hit Ratio",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 16},
+        "targets": [
+          {
+            "expr": "sum(pg_stat_database_blks_hit) / (sum(pg_stat_database_blks_hit) + sum(pg_stat_database_blks_read))",
+            "legendFormat": "Cache hit ratio"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "percentunit",
+            "label": "Hit ratio"
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "title": "Database Size",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 16},
+        "targets": [
+          {
+            "expr": "pg_database_size_bytes{datname='calqulusrms'} / 1024 / 1024 / 1024",
+            "legendFormat": "Database size (GB)"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "bytes",
+            "label": "Size"
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "title": "Lock Waiting",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 24},
+        "targets": [
+          {
+            "expr": "pg_locks_waiting",
+            "legendFormat": "Waiting locks"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "short",
+            "label": "Locks"
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "title": "Deadlocks",
+        "type": "stat",
+        "gridPos": {"h": 4, "w": 6, "x": 12, "y": 24},
+        "targets": [
+          {
+            "expr": "rate(pg_stat_database_deadlocks[5m])",
+            "legendFormat": "Deadlocks/sec"
+          }
+        ]
+      },
+      {
+        "id": 10,
+        "title": "Table Row Counts",
+        "type": "table",
+        "gridPos": {"h": 8, "w": 6, "x": 18, "y": 24},
+        "targets": [
+          {
+            "expr": "pg_stat_user_tables_nlive_tup",
+            "legendFormat": "{{relname}}"
+          }
+        ]
+      }
+    ]
+  }
+}

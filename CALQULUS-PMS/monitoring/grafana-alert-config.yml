@@ -1,0 +1,172 @@
+# Grafana Alert Notification Channels
+# Configure how alerts are sent from Grafana
+
+# Email notification channel
+email:
+  enabled: true
+  addresses:
+    - alerts@calqulusrms.com
+    - platform@calqulusrms.com
+  from: noreply@calqulusrms.com
+  subject: Grafana Alert: ${alertname}
+  message: |
+    Alert: ${alertname}
+    Severity: ${severity}
+    Status: ${status}
+    
+    Summary:
+    ${summary}
+    
+    Details:
+    ${description}
+    
+    Time: ${startsAt}
+    Labels:
+    ${labels}
+
+# Slack notification channel
+slack:
+  enabled: true
+  webhook_url: ${SLACK_WEBHOOK_URL}
+  channel: "#calqulusrms-alerts"
+  username: "Grafana"
+  icon_emoji: ":warning:"
+  title: "Grafana Alert: ${alertname}"
+  title_link: "${externalURL}"
+  text: |
+    *Severity:* ${severity}
+    *Status:* ${status}
+    
+    ${summary}
+    
+    ${description}
+    
+    *Time:* ${startsAt}
+  fields:
+    - title: "Labels"
+      value: "${labels}"
+      short: false
+
+# PagerDuty notification channel
+pagerduty:
+  enabled: true
+  integration_key: ${PAGERDUTY_INTEGRATION_KEY}
+  severity_mapping:
+    critical: critical
+    warning: warning
+    info: info
+  description: |
+    Alert: ${alertname}
+    Severity: ${severity}
+    Status: ${status}
+    
+    ${summary}
+    
+    ${description}
+
+# Discord notification channel
+discord:
+  enabled: true
+  webhook_url: ${DISCORD_WEBHOOK_URL}
+  content: "**Grafana Alert: ${alertname}**"
+  embeds:
+    - title: "${alertname}"
+      description: "${summary}\n\n${description}"
+      color: ${severity_color}
+      fields:
+        - name: "Severity"
+          value: "${severity}"
+          inline: true
+        - name: "Status"
+          value: "${status}"
+          inline: true
+        - name: "Time"
+          value: "${startsAt}"
+          inline: false
+      footer:
+        text: "CALQULUS RMS Monitoring"
+        icon_url: "https://calqulusrms.com/logo.png"
+
+# Microsoft Teams notification channel
+teams:
+  enabled: true
+  webhook_url: ${TEAMS_WEBHOOK_URL}
+  title: "Grafana Alert: ${alertname}"
+  text: "**Severity:** ${severity}\n**Status:** ${status}\n\n${summary}\n\n${description}"
+  themeColor: ${severity_color}
+
+# Telegram notification channel
+telegram:
+  enabled: true
+  bot_token: ${TELEGRAM_BOT_TOKEN}
+  chat_id: ${TELEGRAM_CHAT_ID}
+  parse_mode: "Markdown"
+  message: |
+    *Grafana Alert: ${alertname}*
+    
+    *Severity:* ${severity}
+    *Status:* ${status}
+    
+    ${summary}
+    
+    ${description}
+    
+    *Time:* ${startsAt}
+
+# Alert routing rules
+alert_routing:
+  # Critical alerts go to all channels
+  critical:
+    channels:
+      - email
+      - slack
+      - pagerduty
+      - discord
+      - teams
+      - telegram
+    escalation:
+      - delay: 5m
+        channels: [pagerduty]
+      - delay: 15m
+        channels: [pagerduty, slack]
+      - delay: 30m
+        channels: [pagerduty, slack, email]
+
+  # Warning alerts go to email and Slack
+  warning:
+    channels:
+      - email
+      - slack
+      - discord
+    escalation:
+      - delay: 15m
+        channels: [slack, email]
+
+  # Info alerts go to Slack only
+  info:
+    channels:
+      - slack
+
+# Severity color mappings for Discord/Teams
+severity_colors:
+  critical: "16711680"  # Red
+  warning: "16776960"   # Orange
+  info: "65280"        # Green
+  error: "16711680"     # Red
+
+# Alert grouping rules
+grouping:
+  by:
+    - alertname
+    - severity
+  interval: 5m
+  wait: 10s
+
+# Alert inhibition rules
+inhibit_rules:
+  # Inhibit lower severity alerts if a higher severity alert exists
+  - source_match:
+      severity: critical
+    target_match:
+      severity: warning
+    equal: ['alertname', 'instance']

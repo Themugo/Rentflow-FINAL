@@ -1,0 +1,6 @@
+{
+  "name": "CALQULUS PMS",
+  "description": "Modern property management platform for Kenya and East Africa",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

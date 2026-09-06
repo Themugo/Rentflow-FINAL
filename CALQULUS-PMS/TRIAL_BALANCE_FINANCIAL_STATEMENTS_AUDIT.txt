@@ -1,0 +1,25 @@
+CALQULUS PMS — Trial Balance, General Ledger & Financial Statements
+Initiative: 41
+Date: 2026-09-04
+
+IMPLEMENTED
+- Added migration 20260904000041_trial_balance_general_ledger_financial_statements.sql.
+- Trial balance is derived from ledger_journal_entries + ledger_journal_lines.
+- General ledger detail is derived from the same journal source.
+- Profit & loss is derived from posted income and expense journal balances.
+- Balance sheet is derived from posted asset, liability and equity balances, with current-period earnings as the explicit equity bridge.
+- Manager scope checks and authenticated-only execution are enforced on all reporting RPCs.
+- Added TrialBalanceFinancialStatementsCenter to the manager dashboard.
+- No duplicate accounting source or write path was introduced.
+
+VERIFICATION
+- TypeScript: PASS (tsc --noEmit --pretty false)
+- Migration chain: PASS; 200 SQL migrations, 0 unexpected duplicate versions, 0 ordering warnings.
+- Cross-role isolation audit: PASS.
+- Deployment-controls audit: PASS.
+- ZIP integrity: PASS.
+- Full Vitest suite: NOT RUN — workspace has no node_modules, so claiming a test-suite pass would be false.
+- Live Supabase migration reconciliation: REQUIRED before deployment; no claim of remote migration deployment is made.
+
+ACCOUNTING NOTE
+The balance sheet deliberately does not create a second retained-earnings/opening-balance source. Current-period earnings are presented as the derived equity bridge from the same journal. This keeps the reporting layer reconciled to the canonical ledger.

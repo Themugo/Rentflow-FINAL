@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-09-04T06:31:09.078Z",
+  "status": "PASS",
+  "packageManager": "npm",
+  "packageJsonPresent": true,
+  "lockfilePresent": true,
+  "lockfileVersion": 3,
+  "lockfileSha256": "16764a542eb0efc6431ba30c25da33a9052207e35d0b1dda8fa82f581a79510e",
+  "directDependencyCount": 89,
+  "missingRootDependencies": [],
+  "unresolvedRegistryPackages": [],
+  "nonRegistryDependencies": [],
+  "missingIntegrity": [],
+  "lifecycleScripts": [],
+  "credentialsPersisted": false,
+  "rule": "Production dependencies must be represented by the committed npm lockfile with registry resolution and integrity metadata. Non-registry dependencies require explicit review."
+}

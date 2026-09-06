@@ -1,0 +1,19 @@
+CALQULUS PMS — Revenue Leakage & Receivables Intelligence
+
+Scope
+- Canonical manager-scoped revenue leakage intelligence RPC.
+- Overdue receivables and ageing bands.
+- Completed but unallocated payment value.
+- Persistent 60+ day arrears.
+- Payer concentration signal.
+- Property-level open receivable/leakage ranking.
+- Dashboard decision-support panel and recovery priorities.
+
+Verification
+- Migration-chain audit: PASS (181 migrations; 0 unexpected duplicates; 0 ordering warnings).
+- Cross-role isolation audit: PASS.
+- Deployment-controls audit: PASS.
+- Targeted source assertions: PASS.
+- Full dependency-backed Vitest/TypeScript build: NOT CLAIMED (node_modules unavailable).
+- Live migration reconciliation: REQUIRED before deployment.
+- Remote deployment: NOT CLAIMED.

@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "requestIdHeader": "X-Request-Id",
+  "requiredEvents": [
+    "request.start",
+    "request.finish",
+    "request.error"
+  ],
+  "privacy": {
+    "forbiddenLogKeys": [
+      "authorization",
+      "apikey",
+      "service_role_key",
+      "access_token",
+      "refresh_token",
+      "password",
+      "secret",
+      "token"
+    ]
+  },
+  "latencyBudgetsMs": {
+    "interactive": 3000,
+    "webhook": 10000,
+    "background": 30000
+  },
+  "errorRateAlertPct": 5,
+  "availabilityTargetPct": 99.5,
+  "note": "External log retention, alert routing, and provider dashboards must be configured outside the repository.",
+  "requiredFunctions": [
+    "health-check"
+  ]
+}

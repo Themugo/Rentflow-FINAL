@@ -1,0 +1,9 @@
+TENANT_RETENTION_CHURN_INTELLIGENCE_AUDIT=PASS
+Scope: manager/submanager authenticated users only.
+Signals: overdue balances/invoice count, maintenance experience, renewal decision signals, renewal window.
+Scoring: explainable deterministic 0-100 score; no predictive probability claim.
+UI: dashboard priority tenants and retention actions.
+Migration chain: PASS (186 migrations, 0 unexpected duplicates, 0 ordering warnings).
+Deployment controls: PASS.
+Full dependency-backed build/tests: NOT CLAIMED (node_modules unavailable).
+Live migration reconciliation: REQUIRED before deployment.

@@ -1,0 +1,39 @@
+{
+  "generatedAt": "2026-09-03T15:53:49.025Z",
+  "status": "EXTERNAL_REQUIRED",
+  "releaseCommit": null,
+  "deploymentId": null,
+  "deploymentTarget": null,
+  "artifactManifest": [
+    {
+      "path": "package.json",
+      "sha256": "0c48f10ad0588706ace18a3625a7fe95568d5e5ffbcfd81f98cac1d42225eb11",
+      "bytes": 11111
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "16764a542eb0efc6431ba30c25da33a9052207e35d0b1dda8fa82f581a79510e",
+      "bytes": 475133
+    },
+    {
+      "path": "vite.config.ts",
+      "sha256": "286b9d9d9b3ce6247196fd35de068d523280e8213e95a5d3f7aa20cb4cc83bce",
+      "bytes": 7014
+    },
+    {
+      "path": "supabase/config.toml",
+      "sha256": "3afd384240c5fd10851e11d809a89dd880717f2fc54d3324460c79f18aacf6d2",
+      "bytes": 4764
+    }
+  ],
+  "productionDeploymentObserved": false,
+  "edgeFunctionsDeploymentObserved": false,
+  "frontendDeploymentObserved": false,
+  "requiredExternalEvidence": [
+    "deploymentId",
+    "deploymentTarget",
+    "frontendDeploymentObserved",
+    "edgeFunctionsDeploymentObserved"
+  ],
+  "note": "This report records repository identity and deployment evidence fields only. It never claims a deployment occurred without explicit external evidence."
+}

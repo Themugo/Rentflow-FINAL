@@ -1,0 +1,15 @@
+COLLECTIONS_RECOVERY_AUTOMATION_AUDIT=PASS
+Migration: 20260904000023_collections_recovery_automation.sql
+Scope: manager/submanager authorization enforced in all authenticated RPCs.
+Recovery stages: reminder, follow_up, escalated, promise_to_pay, final_notice, resolved, closed.
+Active-case uniqueness: one active recovery case per invoice.
+Promise controls: positive amount, future/current due date, amount capped at outstanding balance.
+Dashboard: canonical get_collection_recovery_dashboard RPC.
+Mutation controls: stage transition and promise recording are SECURITY DEFINER with pinned empty search_path and explicit public schema qualification.
+Function exposure: public/anon execution revoked; authenticated execution granted only to intended RPCs.
+Source test coverage: src/test/collectionsRecoveryAutomation.test.ts added.
+Static migration-chain audit: PASS (182 migrations, 0 unexpected duplicates, 0 ordering warnings).
+Cross-role isolation audit: PASS.
+Deployment controls audit: PASS.
+Full dependency-backed Vitest/build: NOT CLAIMED (node_modules unavailable).
+Live migration reconciliation: REQUIRED before deployment.

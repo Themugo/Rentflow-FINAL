@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-09-04T06:25:25.810Z",
+  "status": "BLOCKED",
+  "currentReleaseCommit": null,
+  "expectedReleaseCommit": null,
+  "manifestPresent": true,
+  "artifactCount": 4,
+  "artifactMismatches": [
+    {
+      "path": "package.json",
+      "reason": "hash-or-size-mismatch"
+    }
+  ],
+  "immutableIdentityRule": "A release is immutable only when the recorded release commit and artifact SHA-256 manifest match the candidate being promoted.",
+  "requiredExternalEvidence": [],
+  "note": "This is a provenance check, not a digital signature. Promotion must use the exact reviewed commit/artifact set."
+}

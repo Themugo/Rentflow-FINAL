@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-09-03T15:54:17.563Z",
+  "status": "EXTERNAL_REQUIRED",
+  "algorithm": "Ed25519",
+  "attestationPresent": true,
+  "signatureProvided": false,
+  "publicKeyProvided": false,
+  "canonicalFields": [
+    "attestationId",
+    "attestor",
+    "attestedAt",
+    "scope",
+    "evidenceSha256"
+  ],
+  "findings": [
+    "External Ed25519 public key and signature are required for independent attestation verification."
+  ],
+  "rule": "Independent release approval is cryptographically valid only when an external Ed25519 signature verifies the canonical attestation fields. Missing signature evidence remains EXTERNAL_REQUIRED; an invalid signature is a release-blocking FAIL."
+}

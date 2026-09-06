@@ -1,0 +1,18 @@
+CALQULUS PMS — Initiative 42 Audit
+Budget, Forecast & Variance Control
+
+IMPLEMENTATION
+- Added management_budgets and management_budget_lines planning layer.
+- Added approval lifecycle: draft -> submitted -> approved/rejected -> archived.
+- Added manager-scoped RLS and SECURITY DEFINER RPC authorization.
+- Added plan-vs-actual variance RPC using existing invoices and expenditures as source truth.
+- Added dashboard creation, approval and variance monitoring centre.
+- No duplicate accounting ledger or posting mechanism introduced.
+
+VERIFICATION
+- TypeScript: PASS (tsc --noEmit --pretty false)
+- Migration chain: PASS; 201 SQL migrations; 0 unexpected duplicate versions; 0 ordering warnings.
+- Deployment controls: PASS.
+- Static migration control audit: PASS.
+- Full Vitest: NOT RUN because dependencies/node_modules are unavailable in packaged workspace.
+- Live Supabase migration reconciliation: REQUIRED before deployment.

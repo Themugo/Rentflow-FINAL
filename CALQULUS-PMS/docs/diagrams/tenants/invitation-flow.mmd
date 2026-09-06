@@ -1,0 +1,79 @@
+%%{ init: { "sequence": { "mirrorActors": false, "actorMargin": 80 } } }%%
+sequenceDiagram
+    title Tenant Invitation Flow
+
+    participant Manager as Property Manager
+    participant App as Manager Dashboard
+    participant API as API Server
+    participant EdgeFn as Edge Function
+    participant DB as Supabase DB
+    participant Email as Email Service
+    participant SMS as SMS Gateway
+
+    Manager->>App: Navigate to Tenants → Invite
+    App-->>Manager: Show invitation form
+
+    Manager->>App: Fill: Name, Phone, Unit, Rent, Move-in
+    App->>API: POST /send-tenant-invitation
+    API->>EdgeFn: Invoke edge function
+
+    EdgeFn->>EdgeFn: Validate input
+    EdgeFn->>EdgeFn: Validate phone (Kenyan format)
+    EdgeFn->>EdgeFn: Generate idempotency key
+
+    EdgeFn->>DB: Check for existing tenant
+    DB-->>EdgeFn: No existing tenant
+
+    EdgeFn->>DB: Create invitation record
+    DB-->>EdgeFn: Invitation created (expires in 14 days)
+
+    EdgeFn->>DB: Generate unique invitation ID
+    DB-->>EdgeFn: Invitation ID
+
+    alt Phone available (send SMS)
+        EdgeFn->>SMS: Send SMS with invitation link
+        SMS-->>EdgeFn: SMS sent
+    end
+
+    alt Email available
+        EdgeFn->>Email: Send invitation email
+        Email-->>EdgeFn: Email sent
+    end
+
+    EdgeFn-->>API: 201 Created (invitation ID)
+    API-->>Manager: Success: Invitation sent
+
+    Note over Tenant,EdgeFn: Tenant receives SMS/Email
+
+    Tenant->>Tenant: Click invitation link
+    Tenant->>API: GET /tenant/signup?invitation_id=xxx
+    API->>EdgeFn: Validate invitation
+
+    EdgeFn->>DB: Fetch invitation
+    DB-->>EdgeFn: Invitation details
+
+    alt Invitation valid and not expired
+        EdgeFn-->>API: Invitation valid
+        API-->>Tenant: Show signup form with pre-filled details
+    else Invitation expired/cancelled
+        EdgeFn-->>API: 410 Gone
+        API-->>Tenant: Error: Invitation expired
+    end
+
+    Tenant->>API: POST /tenant/signup (accept invitation)
+    API->>EdgeFn: Create tenant account
+    EdgeFn->>DB: Create auth user
+    DB-->>EdgeFn: User created
+
+    EdgeFn->>DB: Create tenant profile
+    EdgeFn->>DB: Update invitation status
+    EdgeFn->>DB: Create lease record
+
+    EdgeFn->>DB: Generate first rent invoice
+    DB-->>EdgeFn: Invoice created
+
+    EdgeFn-->>API: 201 Created
+    API-->>Tenant: Account created, redirect to portal
+
+    EdgeFn->>Manager: Notify: Tenant signed up
+    EdgeFn->>SMS: Send welcome message to tenant

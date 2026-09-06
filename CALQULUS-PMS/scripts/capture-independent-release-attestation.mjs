@@ -1,0 +1,18 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+const root=process.cwd(); const audits=path.join(root,'docs','audits');
+const out=path.join(audits,'INDEPENDENT_RELEASE_ATTESTATION.json');
+const evidencePath=path.join(audits,'PRODUCTION_EVIDENCE_INGESTION.json');
+const get=k=>process.env[k]||''; const required=['INDEPENDENT_ATTESTATION_ID','INDEPENDENT_ATTESTOR','INDEPENDENT_ATTESTED_AT','ATTESTATION_SCOPE','ATTESTATION_EVIDENCE_SHA256'];
+const missing=required.filter(k=>!get(k).trim());
+const evidenceSha=fs.existsSync(evidencePath)?crypto.createHash('sha256').update(fs.readFileSync(evidencePath)).digest('hex'):null;
+const sourceSha=get('ATTESTATION_EVIDENCE_SHA256');
+const timestamp=get('INDEPENDENT_ATTESTED_AT');
+if(timestamp && Number.isNaN(Date.parse(timestamp))) missing.push('VALID_INDEPENDENT_ATTESTED_AT');
+const attestor=get('INDEPENDENT_ATTESTOR');
+const deploymentOperator=get('DEPLOYMENT_OPERATOR')||get('EVIDENCE_OPERATOR');
+if(attestor && deploymentOperator && attestor.toLowerCase()===deploymentOperator.toLowerCase()) missing.push('INDEPENDENT_ATTESTOR_MUST_DIFFER_FROM_DEPLOYMENT_OPERATOR');
+const status=missing.length?'EXTERNAL_REQUIRED':'PASS';
+const report={generatedAt:new Date().toISOString(),status,attestationId:get('INDEPENDENT_ATTESTATION_ID')||null,attestor:get('INDEPENDENT_ATTESTOR')||null,attestedAt:get('INDEPENDENT_ATTESTED_AT')||null,scope:get('ATTESTATION_SCOPE')||null,evidenceSha256:sourceSha||null,currentEvidenceSha256:evidenceSha,hashMatches:Boolean(sourceSha&&evidenceSha&&sourceSha===evidenceSha),missingExternalEvidence:missing,signatureProvided:Boolean(get('INDEPENDENT_ATTESTATION_SIGNATURE')),rule:'Independent attestation must bind to the exact ingested evidence hash and must be performed by an attestor distinct from the deployment operator. A missing external attestation is not treated as approval.'};
+fs.writeFileSync(out,JSON.stringify(report,null,2)+'\n'); console.log(`independent-release-attestation: ${status}`);

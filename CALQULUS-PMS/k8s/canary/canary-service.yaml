@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: calqulusrms-canary
+  labels:
+    app: calqulusrms
+    track: canary
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 5173
+    protocol: TCP
+    name: http
+  selector:
+    app: calqulusrms
+    track: canary

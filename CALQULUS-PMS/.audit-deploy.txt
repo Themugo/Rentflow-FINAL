@@ -1,0 +1,6 @@
+fatal: not a git repository (or any of the parent directories): .git
+deployment-controls: PASS
+- migrations: 185
+- destructive migration candidates: 69
+- verify_jwt=false functions: 36
+- git: not available in packaged workspace (external clean-commit gate required)

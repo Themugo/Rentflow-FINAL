@@ -1,0 +1,7 @@
+migration-chain-audit: 185 SQL migrations inspected
+- Known historical duplicate versions: 10
+- Unexpected duplicate versions: 0
+- Known historical malformed filenames: 3
+- Ordering warnings: 0
+migration-chain-audit: LIVE_RECONCILIATION_REQUIRED — verify supabase_migrations.schema_migrations before deployment
+migration-chain-audit: PASS (historical exceptions acknowledged; no new chain violations)

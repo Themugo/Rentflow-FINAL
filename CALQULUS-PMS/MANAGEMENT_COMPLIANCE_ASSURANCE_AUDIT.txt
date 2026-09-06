@@ -1,0 +1,22 @@
+CALQULUS PMS — MANAGEMENT & COMPLIANCE ASSURANCE AUDIT
+
+Scope:
+- Explicit management review lifecycle over existing financial close, reconciliation,
+  evidence, work queue and audit-pack controls.
+- No duplicate financial source-of-truth introduced.
+- Uses can_manage_property_scope and authenticated-only SECURITY DEFINER RPCs.
+
+Assertions:
+PASS: review records are manager scoped and RLS protected.
+PASS: draft -> in_review -> approved/rejected lifecycle is explicit.
+PASS: approval is blocked below control score 80/100.
+PASS: decision actions are appended to the existing activity_logs audit trail.
+PASS: review snapshot includes authoritative reconciliation/evidence/work controls.
+PASS: public/anon execution of assurance RPCs is revoked.
+PASS: dashboard uses existing financial_close_periods and manager scope.
+PASS: no new parallel task/work queue is created.
+
+Verification note:
+Full application typecheck/Vitest requires the project's installed dependencies and
+remains subject to the pre-existing ReceiptsTab.tsx syntax error documented in the
+prior release. Live Supabase deployment is not claimed by this package.

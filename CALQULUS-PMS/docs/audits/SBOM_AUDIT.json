@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-09-03T15:47:18.848Z",
+  "status": "PASS",
+  "sbomPresent": true,
+  "lockfilePresent": true,
+  "lockfileSha256": "16764a542eb0efc6431ba30c25da33a9052207e35d0b1dda8fa82f581a79510e",
+  "componentCount": 886,
+  "duplicatePurls": [],
+  "externalVulnerabilityScan": "EXTERNAL_REQUIRED",
+  "errors": [],
+  "rule": "SBOM must be reproducible from the committed lockfile; vulnerability severity is not claimed without a current scanner result."
+}

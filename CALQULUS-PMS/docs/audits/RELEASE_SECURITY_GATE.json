@@ -1,0 +1,38 @@
+{
+  "generatedAt": "2026-09-03T15:54:18.611Z",
+  "status": "EXTERNAL_REQUIRED",
+  "checkCount": 19,
+  "failures": [],
+  "missing": [],
+  "externalRequired": [
+    "securityRegressionMatrix",
+    "securityRegressionDiff",
+    "externalEvidenceBinding",
+    "productionEvidenceIngestion",
+    "independentReleaseAttestation",
+    "attestationSignature",
+    "productionReleaseCertification"
+  ],
+  "checks": {
+    "securityBoundary": "PASS",
+    "crossRole": "PASS",
+    "finalSecurity": "PASS",
+    "migrationChain": "PASS",
+    "dependencyProvenance": "PASS",
+    "runtimeDependencyGovernance": "PASS",
+    "runtimeUpdatePolicy": "PASS",
+    "sbom": "PASS",
+    "secretSupplyChain": "PASS",
+    "vulnerabilityGovernance": "PASS",
+    "ciReleaseGate": "PASS",
+    "securityRegressionMatrix": "EXTERNAL_REQUIRED",
+    "securityRegressionDiff": "EXTERNAL_REQUIRED",
+    "releaseEvidenceIntegrity": "PASS",
+    "externalEvidenceBinding": "EXTERNAL_REQUIRED",
+    "productionEvidenceIngestion": "EXTERNAL_REQUIRED",
+    "independentReleaseAttestation": "EXTERNAL_REQUIRED",
+    "attestationSignature": "EXTERNAL_REQUIRED",
+    "productionReleaseCertification": "EXTERNAL_REQUIRED"
+  },
+  "rule": "The consolidated security gate fails on an actual security regression or missing required repository control. Infrastructure-dependent evidence remains EXTERNAL_REQUIRED and cannot be converted to PASS by local automation."
+}

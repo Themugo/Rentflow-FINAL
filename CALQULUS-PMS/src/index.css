@@ -1,0 +1,1232 @@
+@import "tailwindcss";
+
+/* Outfit font — self-hosted from @fontsource/outfit (see public/fonts) */
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('/fonts/outfit-latin-ext-400-normal.woff2') format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('/fonts/outfit-latin-400-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url('/fonts/outfit-latin-ext-500-normal.woff2') format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url('/fonts/outfit-latin-500-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url('/fonts/outfit-latin-ext-600-normal.woff2') format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url('/fonts/outfit-latin-600-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url('/fonts/outfit-latin-ext-700-normal.woff2') format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url('/fonts/outfit-latin-700-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+/* Dark mode via `.dark` class on `html` */
+@variant dark (&:where(.dark, .dark *));
+
+/* ── Theme (design tokens) ──────────────────────────────────────────── */
+@theme {
+  --font-sans: "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", sans-serif;
+  --font-heading: "Outfit", sans-serif;
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-active: var(--primary-active);
+
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-danger: var(--destructive);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+
+  --color-navy-primary: var(--navy-primary);
+  --color-navy-deep: var(--navy-deep);
+  --color-navy-mid: var(--navy-mid);
+  --color-navy-surface: var(--navy-surface);
+  --color-secondary-navy: var(--secondary-navy);
+  --color-soft-blue: var(--soft-blue);
+  --color-secondary-background: var(--secondary-background);
+  --color-glow: var(--glow);
+  --color-spark: var(--spark);
+
+  --color-purple: var(--purple);
+  --color-purple-foreground: var(--purple-foreground);
+  --color-purple-bg: var(--purple-bg);
+  --color-indigo: var(--indigo);
+  --color-indigo-foreground: var(--indigo-foreground);
+  --color-indigo-bg: var(--indigo-bg);
+  --color-teal: var(--teal);
+  --color-teal-foreground: var(--teal-foreground);
+  --color-teal-bg: var(--teal-bg);
+  --color-gold: var(--gold);
+  --color-gold-foreground: var(--gold-foreground);
+  --color-gold-bg: var(--gold-bg);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-sidebar: var(--sidebar-background);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-muted: var(--sidebar-muted);
+
+  --breakpoint-xs: 24.375rem; /* 390px — phones in the certification set */
+  --container-padding: 2rem;
+  --container-screens-2xl: 1400px;
+
+  /* ── CALQULUS palette remap ──────────────────────────────────────────
+     Raw Tailwind palette utilities across the app resolve to the muted
+     CALQULUS families instead of the default bright scales. One token
+     system: blue = brand, green = success, amber/yellow = warning,
+     red = danger, greys = slate-navy, violet/purple/pink = navy identity. */
+  --color-blue-50: #EAF1FF;
+  --color-blue-100: #D8E5FD;
+  --color-blue-200: #B9CFFB;
+  --color-blue-300: #8FB0F5;
+  --color-blue-400: #5F8CEC;
+  --color-blue-500: #356FE5;
+  --color-blue-600: #285FCC;
+  --color-blue-700: #214FAE;
+  --color-blue-800: #1D4189;
+  --color-blue-900: #1A386F;
+  --color-blue-950: #12264A;
+
+  --color-slate-50: #F6F8FB;
+  --color-slate-100: #EEF3F8;
+  --color-slate-200: #DCE5EF;
+  --color-slate-300: #C8D5E4;
+  --color-slate-400: #9DADBF;
+  --color-slate-500: #7D8DA0;
+  --color-slate-600: #5F7185;
+  --color-slate-700: #4A5A6E;
+  --color-slate-800: #33445A;
+  --color-slate-900: #1E3247;
+  --color-slate-950: #102A43;
+  --color-gray-50: var(--color-slate-50);
+  --color-gray-100: var(--color-slate-100);
+  --color-gray-200: var(--color-slate-200);
+  --color-gray-300: var(--color-slate-300);
+  --color-gray-400: var(--color-slate-400);
+  --color-gray-500: var(--color-slate-500);
+  --color-gray-600: var(--color-slate-600);
+  --color-gray-700: var(--color-slate-700);
+  --color-gray-800: var(--color-slate-800);
+  --color-gray-900: var(--color-slate-900);
+  --color-gray-950: var(--color-slate-950);
+  --color-green-50: #E8F5EF;
+  --color-green-100: #D2EBE0;
+  --color-green-200: #A8D7C4;
+  --color-green-300: #7ABFA4;
+  --color-green-400: #52A386;
+  --color-green-500: #3D9673;
+  --color-green-600: #2F8061;
+  --color-green-700: #276A50;
+  --color-green-800: #1F5440;
+  --color-green-900: #173F31;
+  --color-green-950: #0C241B;
+  --color-amber-50: #FFF4DF;
+  --color-amber-100: #FDEAC8;
+  --color-amber-200: #F5D49A;
+  --color-amber-300: #E8B96A;
+  --color-amber-400: #D39A3D;
+  --color-amber-500: #BC7F22;
+  --color-amber-600: #A66A16;
+  --color-amber-700: #855512;
+  --color-amber-800: #64400E;
+  --color-amber-900: #432B09;
+  --color-amber-950: #2A1B06;
+  --color-yellow-50: var(--color-amber-50);
+  --color-yellow-100: var(--color-amber-100);
+  --color-yellow-200: var(--color-amber-200);
+  --color-yellow-300: var(--color-amber-300);
+  --color-yellow-400: var(--color-amber-400);
+  --color-yellow-500: var(--color-amber-500);
+  --color-yellow-600: var(--color-amber-600);
+  --color-yellow-700: var(--color-amber-700);
+  --color-yellow-800: var(--color-amber-800);
+  --color-yellow-900: var(--color-amber-900);
+  --color-yellow-950: var(--color-amber-950);
+  --color-orange-50: var(--color-amber-50);
+  --color-orange-100: var(--color-amber-100);
+  --color-orange-200: var(--color-amber-200);
+  --color-orange-300: var(--color-amber-300);
+  --color-orange-400: var(--color-amber-400);
+  --color-orange-500: var(--color-amber-500);
+  --color-orange-600: var(--color-amber-600);
+  --color-orange-700: var(--color-amber-700);
+  --color-orange-800: var(--color-amber-800);
+  --color-orange-900: var(--color-amber-900);
+  --color-orange-950: var(--color-amber-950);
+
+  --color-cyan-50: var(--color-blue-50);
+  --color-cyan-100: var(--color-blue-100);
+  --color-cyan-200: var(--color-blue-200);
+  --color-cyan-300: var(--color-blue-300);
+  --color-cyan-400: var(--color-blue-400);
+  --color-cyan-500: var(--color-blue-500);
+  --color-cyan-600: var(--color-blue-600);
+  --color-cyan-700: var(--color-blue-700);
+  --color-cyan-800: var(--color-blue-800);
+  --color-cyan-900: var(--color-blue-900);
+  --color-cyan-950: var(--color-blue-950);
+
+  --color-red-50: #FBEAEA;
+  --color-red-100: #F6DADA;
+  --color-red-200: #ECBABA;
+  --color-red-300: #DE9494;
+  --color-red-400: #CD6B6A;
+  --color-red-500: #B94A48;
+  --color-red-600: #A53E3C;
+  --color-red-700: #863231;
+  --color-red-800: #672726;
+  --color-red-900: #481B1B;
+  --color-red-950: #2E1111;
+  --color-rose-50: var(--color-red-50);
+  --color-rose-100: var(--color-red-100);
+  --color-rose-200: var(--color-red-200);
+  --color-rose-300: var(--color-red-300);
+  --color-rose-400: var(--color-red-400);
+  --color-rose-500: var(--color-red-500);
+  --color-rose-600: var(--color-red-600);
+  --color-rose-700: var(--color-red-700);
+  --color-rose-800: var(--color-red-800);
+  --color-rose-900: var(--color-red-900);
+  --color-rose-950: var(--color-red-950);
+  --color-pink-50: var(--color-red-50);
+  --color-pink-100: var(--color-red-100);
+  --color-pink-200: var(--color-red-200);
+  --color-pink-300: var(--color-red-300);
+  --color-pink-400: var(--color-red-400);
+  --color-pink-500: var(--color-red-500);
+  --color-pink-600: var(--color-red-600);
+  --color-pink-700: var(--color-red-700);
+  --color-pink-800: var(--color-red-800);
+  --color-pink-900: var(--color-red-900);
+  --color-pink-950: var(--color-red-950);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-fade-in: fade-in 0.3s ease-out;
+  --animate-slide-in: slide-in 0.3s ease-out;
+  --animate-scale-in: scale-in 0.2s ease-out;
+  --animate-pulse-soft: pulse-soft 2s ease-in-out infinite;
+  --animate-shimmer-gold: shimmer-brand 2s ease-in-out infinite;
+  --animate-shimmer-brand: shimmer-brand 2s ease-in-out infinite;
+}
+
+/* ── Keyframes ─────────────────────────────────────────────────────── */
+@keyframes accordion-down {
+  from { height: 0; }
+  to { height: var(--radix-accordion-content-height); }
+}
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); }
+  to { height: 0; }
+}
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slide-in {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+@keyframes enter {
+  from {
+    opacity: var(--tw-enter-opacity, 1);
+    transform: translate3d(var(--tw-enter-translate-x, 0), var(--tw-enter-translate-y, 0), 0)
+               scale3d(var(--tw-enter-scale, 1), var(--tw-enter-scale, 1), 1)
+               rotate(var(--tw-enter-rotate, 0));
+  }
+}
+@keyframes exit {
+  to {
+    opacity: var(--tw-exit-opacity, 1);
+    transform: translate3d(var(--tw-exit-translate-x, 0), var(--tw-exit-translate-y, 0), 0)
+               scale3d(var(--tw-exit-scale, 1), var(--tw-exit-scale, 1), 1)
+               rotate(var(--tw-exit-rotate, 0));
+  }
+}
+
+@utility animate-in {
+  animation-name: enter;
+  animation-duration: 0.2s;
+  animation-timing-function: ease-out;
+}
+@utility animate-out {
+  animation-name: exit;
+  animation-duration: 0.15s;
+  animation-timing-function: ease-in;
+}
+
+/* Enter/exit utilities */
+@utility fade-in-0 { --tw-enter-opacity: 0; }
+@utility fade-in-80 { --tw-enter-opacity: 0.8; }
+@utility fade-out-0 { --tw-exit-opacity: 0; }
+@utility fade-out-80 { --tw-exit-opacity: 0.8; }
+@utility zoom-in-95 { --tw-enter-scale: 0.95; }
+@utility zoom-in-90 { --tw-enter-scale: 0.9; }
+@utility zoom-out-95 { --tw-exit-scale: 0.95; }
+@utility slide-in-from-top-2 { --tw-enter-translate-y: -0.5rem; }
+@utility slide-in-from-top-5 { --tw-enter-translate-y: -1.25rem; }
+@utility slide-in-from-top-full { --tw-enter-translate-y: -100%; }
+@utility slide-in-from-top-48pct { --tw-enter-translate-y: -48%; }
+@utility slide-in-from-bottom-2 { --tw-enter-translate-y: 0.5rem; }
+@utility slide-in-from-bottom-4 { --tw-enter-translate-y: 1rem; }
+@utility slide-in-from-bottom-5 { --tw-enter-translate-y: 1.25rem; }
+@utility slide-in-from-bottom-full { --tw-enter-translate-y: 100%; }
+@utility slide-in-from-left-2 { --tw-enter-translate-x: -0.5rem; }
+@utility slide-in-from-left-half { --tw-enter-translate-x: -50%; }
+@utility slide-in-from-right-2 { --tw-enter-translate-x: 0.5rem; }
+@utility slide-in-from-right-52 { --tw-enter-translate-x: 13rem; }
+@utility slide-out-to-top { --tw-exit-translate-y: -100%; }
+@utility slide-out-to-bottom { --tw-exit-translate-y: 100%; }
+@utility slide-out-to-left { --tw-exit-translate-x: -100%; }
+@utility slide-out-to-right { --tw-exit-translate-x: 100%; }
+
+/* ── CALQULUS PMS Design Tokens ──────────────────────────────────────── */
+/* One visual language. Hex values match src/shared/theme/tokens.ts.
+   White = desks. Navy = chrome. Interactive blue = buttons/links/focus.
+   Portal accents are 2px only. Green/amber/red = success / attention /
+   danger. Leftover purple/indigo/teal/gold aliases resolve to navy or
+   interactive blue so they cannot introduce a second palette. */
+
+@layer base {
+  :root {
+    /* ── CALQULUS canonical premium navy palette (single source of truth) ── */
+    --calqulus-navy-50: #F4F7FB;
+    --calqulus-navy-100: #E8EEF7;
+    --calqulus-navy-200: #D5E0EF;
+    --calqulus-navy-300: #B8C9DE;
+    --calqulus-navy-400: #8EA8C5;
+    --calqulus-navy-500: #6388AE;
+    --calqulus-navy-600: #426B94;
+    --calqulus-navy-700: #31577E;
+    --calqulus-navy-800: #244766;
+    --calqulus-navy-900: #173650;
+    --calqulus-navy-950: #0B2239;
+
+    --calqulus-primary: #123FB7;
+    --calqulus-primary-hover: #0F35A0;
+    --calqulus-primary-active: #0B2B7A;
+    --calqulus-primary-soft: #EAF0FF;
+    --calqulus-primary-light: #8AAFFF;
+    --calqulus-manager: #356FE5;
+    --calqulus-agency: #123FB7;
+
+    /* WebHost accent — cyan/teal. Thin chrome only; status colours stay semantic. */
+    --calqulus-teal: #3BB7A6;
+    --calqulus-teal-deep: #2C9183;
+    /* Admin accent — indigo. Platform-control surfaces only; status colours stay semantic. */
+    --calqulus-indigo: #4658C9;
+    /* Portal accent hues (deep steps chosen to pass a white-desk check) */
+    --calqulus-emerald: #2F9B74;
+    /* Agency — indigo/cyan family, matches agency portal chrome + marketing role accent. */
+    --calqulus-cyan: #0F766E;
+    /* Tenant — sky/cool blue, matches tenant portal chrome + marketing role accent. */
+    --calqulus-sky: #0284C7;
+    /* Deprecated portal-identity hues kept for design-preview history; not bound to data-portal. */
+    --calqulus-amber: #C08A37;
+    --calqulus-violet: #7C5FD3;
+
+    --calqulus-background: #F6F8FB;
+    --calqulus-background-soft: #EEF3F8;
+    --calqulus-background-muted: #E8EEF5;
+
+    --calqulus-surface: #FFFFFF;
+    --calqulus-surface-raised: #FFFFFF;
+    --calqulus-surface-soft: #F8FAFC;
+    --calqulus-surface-navy: #EDF3F9;
+
+    --calqulus-text: #102A43;
+    --calqulus-text-strong: #0B2239;
+    --calqulus-text-muted: #5F7185;
+    --calqulus-text-subtle: #7D8DA0;
+    --calqulus-text-on-navy: #FFFFFF;
+    --calqulus-text-on-navy-muted: #C7D5E5;
+
+    --calqulus-border: #DCE5EF;
+    --calqulus-border-strong: #C8D5E4;
+    --calqulus-border-soft: #E9EFF5;
+
+    --calqulus-success: #2F8061;
+    --calqulus-success-soft: #E8F5EF;
+    /* Small status text on soft tints needs darker steps for 4.5:1. */
+    --calqulus-success-text: #276A50;
+    --calqulus-warning: #A66A16;
+    --calqulus-warning-soft: #FFF4DF;
+    /* Small amber text needs a darker step to reach 4.5:1 on white. */
+    --calqulus-warning-text: #855512;
+    --calqulus-danger: #B94A48;
+    --calqulus-danger-soft: #FBEAEA;
+    --calqulus-danger-text: #A53E3C;
+    --calqulus-info: #3E6FAE;
+    --calqulus-info-soft: #EAF2FB;
+
+    --calqulus-shadow-sm: 0 1px 2px rgba(16, 42, 67, 0.05);
+    --calqulus-shadow-md: 0 8px 24px rgba(16, 42, 67, 0.08);
+    --calqulus-shadow-lg: 0 20px 50px rgba(16, 42, 67, 0.12);
+
+    /* ── Semantic tokens re-pointed to the CALQULUS palette ── */
+    --background: var(--calqulus-background);
+    --secondary-background: var(--calqulus-background);
+    --foreground: var(--calqulus-text);
+
+    --card: var(--calqulus-surface);
+    --card-foreground: var(--calqulus-text);
+    --surface: var(--calqulus-surface);
+    --surface-elevated: var(--calqulus-background);
+
+    --popover: var(--calqulus-surface);
+    --popover-foreground: var(--calqulus-text);
+
+    /* Interactive blue — buttons, links, focus */
+    --primary: var(--calqulus-primary);
+    --primary-foreground: #FFFFFF;
+    --primary-hover: var(--calqulus-primary-hover);
+    --primary-active: var(--calqulus-primary-active);
+    --primary-text: var(--calqulus-primary-active);
+    /* Organization accent. Design-system --primary stays CALQULUS. */
+    --brand-primary: var(--primary);
+    --brand-primary-hover: var(--primary-hover);
+    --brand-primary-active: var(--primary-active);
+    --brand-primary-muted: color-mix(in srgb, var(--brand-primary) 18%, #FFFFFF);
+    --brand-primary-border: color-mix(in srgb, var(--brand-primary) 45%, #FFFFFF);
+    --brand-primary-surface: color-mix(in srgb, var(--brand-primary) 10%, #FFFFFF);
+    --brand-primary-focus: var(--brand-primary);
+    --brand-primary-foreground: #FFFFFF;
+
+    /* Portal identity stripe — overridden by [data-portal] */
+    --portal-accent: var(--navy-mid);
+    --portal-accent-foreground: #FFFFFF;
+    --portal-accent-muted: color-mix(in srgb, var(--portal-accent) 18%, #FFFFFF);
+    --portal-accent-border: color-mix(in srgb, var(--portal-accent) 28%, transparent);
+    --portal-accent-surface: color-mix(in srgb, var(--portal-accent) 10%, #FFFFFF);
+
+    /* Navy identity — chrome only, never a page fill. Deep-navy alias is
+       remapped to the mid step so every `*-navy-deep` utility renders mid. */
+    --navy-primary: var(--calqulus-navy-900);
+    --navy-deep: var(--calqulus-navy-700);
+    --navy-mid: var(--calqulus-navy-700);
+    --navy-surface: var(--calqulus-navy-800);
+    --secondary-navy: var(--calqulus-navy-700);
+    --soft-blue: var(--calqulus-primary-soft);
+    --glow: var(--calqulus-primary);
+    --spark: var(--calqulus-warning-soft);
+
+    --secondary: var(--calqulus-background);
+    --secondary-foreground: var(--calqulus-text-muted);
+
+    --muted: var(--calqulus-background);
+    --muted-foreground: var(--calqulus-text-muted);
+
+    --accent: var(--calqulus-primary);
+    --accent-foreground: #FFFFFF;
+
+    --destructive: var(--calqulus-danger);
+    --destructive-foreground: #FFFFFF;
+    --destructive-text: var(--calqulus-danger-text);
+    --destructive-bg: var(--calqulus-danger-soft);
+
+    --success: var(--calqulus-success);
+    --success-foreground: #FFFFFF;
+    --success-text: var(--calqulus-success-text);
+    --success-bg: var(--calqulus-success-soft);
+
+    --warning: var(--calqulus-warning);
+    --warning-foreground: #FFFFFF;
+    --warning-text: var(--calqulus-warning-text);
+    --warning-bg: var(--calqulus-warning-soft);
+
+    --info: var(--calqulus-info);
+    --info-foreground: #FFFFFF;
+    --info-bg: var(--calqulus-info-soft);
+
+    /* Legacy class aliases — identity or interaction, never a second palette */
+    --purple: var(--navy-mid);
+    --purple-foreground: #FFFFFF;
+    --purple-bg: color-mix(in srgb, var(--navy-mid) 10%, #FFFFFF);
+    --indigo: var(--navy-mid);
+    --indigo-foreground: #FFFFFF;
+    --indigo-bg: color-mix(in srgb, var(--navy-mid) 10%, #FFFFFF);
+    --teal: var(--primary);
+    --teal-foreground: var(--primary-foreground);
+    --teal-bg: color-mix(in srgb, var(--primary) 10%, #FFFFFF);
+    --gold: var(--primary);
+    --gold-foreground: var(--primary-foreground);
+    --gold-bg: color-mix(in srgb, var(--primary) 10%, #FFFFFF);
+
+    --border: var(--calqulus-border);
+    --input: var(--calqulus-border-strong);
+    --ring: var(--calqulus-primary);
+
+    --radius: 0.75rem;
+
+    /* App shell sidebar: CALQULUS mid-navy chrome carrying white/slate
+       text. One chrome for every portal — role identity stays the 2px
+       stripe, never a separate sidebar color system. Active = blue wash. */
+    --sidebar-background: var(--calqulus-navy-700);
+    --sidebar-foreground: var(--calqulus-text-on-navy);
+    --sidebar-primary: var(--calqulus-primary);
+    --sidebar-primary-foreground: #FFFFFF;
+    --sidebar-accent: var(--calqulus-navy-800);
+    --sidebar-accent-foreground: var(--calqulus-text-on-navy);
+    --sidebar-border: var(--calqulus-navy-800);
+    --sidebar-ring: var(--calqulus-primary-light);
+    --sidebar-muted: var(--calqulus-text-on-navy-muted);
+  }
+
+  /* Portal identity stripes — secondary accents only. Brand stays
+     CALQULUS NAVY + BLUE; status colors are never brand accents. */
+  [data-portal="manager"] { --portal-accent: var(--calqulus-manager); }
+  [data-portal="landlord"] { --portal-accent: var(--calqulus-emerald); }
+  [data-portal="agency"] { --portal-accent: var(--calqulus-agency); }
+  [data-portal="tenant"] { --portal-accent: var(--calqulus-violet); }
+  [data-portal="platform_admin"] { --portal-accent: var(--calqulus-teal-deep); }
+
+  /* Portal identity becomes the default interactive theme. White-label
+     organization branding can override --primary at runtime. */
+  [data-active-portal="manager"] {
+    --primary: var(--portal-primary, var(--calqulus-primary));
+    --primary-hover: var(--portal-primary-hover, var(--calqulus-primary-hover));
+    --primary-active: var(--portal-primary-active, var(--calqulus-primary-active));
+    --primary-text: var(--portal-primary-active, var(--calqulus-primary-active));
+    --ring: var(--portal-primary-focus, var(--calqulus-primary));
+    --accent: var(--primary);
+  }
+  [data-active-portal="landlord"] {
+    --primary: var(--portal-primary, var(--calqulus-emerald));
+    --primary-hover: var(--portal-primary-hover, var(--calqulus-emerald));
+    --primary-active: var(--portal-primary-active, var(--calqulus-emerald));
+    --primary-text: var(--portal-primary-active, var(--calqulus-emerald));
+    --ring: var(--portal-primary-focus, var(--calqulus-emerald));
+    --accent: var(--primary);
+  }
+  [data-active-portal="agency"] {
+    --primary: var(--portal-primary, var(--calqulus-cyan));
+    --primary-hover: var(--portal-primary-hover, var(--calqulus-cyan));
+    --primary-active: var(--portal-primary-active, var(--calqulus-cyan));
+    --primary-text: var(--portal-primary-active, var(--calqulus-cyan));
+    --ring: var(--portal-primary-focus, var(--calqulus-cyan));
+    --accent: var(--primary);
+  }
+  [data-active-portal="tenant"] {
+    --primary: var(--portal-primary, var(--calqulus-sky));
+    --primary-hover: var(--portal-primary-hover, var(--calqulus-sky));
+    --primary-active: var(--portal-primary-active, var(--calqulus-sky));
+    --primary-text: var(--portal-primary-active, var(--calqulus-sky));
+    --ring: var(--portal-primary-focus, var(--calqulus-sky));
+    --accent: var(--primary);
+  }
+  [data-active-portal="platform_admin"] {
+    --primary: var(--portal-primary, var(--calqulus-teal-deep));
+    --primary-hover: var(--portal-primary-hover, var(--calqulus-teal-deep));
+    --primary-active: var(--portal-primary-active, var(--calqulus-teal-deep));
+    --primary-text: var(--portal-primary-active, var(--calqulus-teal-deep));
+    --ring: var(--portal-primary-focus, var(--calqulus-teal-deep));
+    --accent: var(--primary);
+  }
+
+  .portal-identity-background {
+    background-image: var(--portal-background-image);
+    background-size: cover;
+    background-position: center;
+  }
+
+  /* Dark theme is CLASSIFIED DORMANT. `.dark` mirrors the light tokens so
+     leftover `dark:` utilities cannot reintroduce a heavy dashboard.
+     Production experience is always light. */
+  .dark {
+    /* Tokens cascade from :root — the light CALQULUS palette is the single
+       theme. No dark-only overrides. */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    overflow-x: clip;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    overflow-x: clip;
+    overscroll-behavior-x: none;
+  }
+
+  @media (max-width: 767px) {
+    html, body, #root {
+      min-height: 100%;
+      width: 100%;
+    }
+
+    html {
+      overscroll-behavior-y: none;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      overscroll-behavior-y: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button, a, [role="button"] {
+      -webkit-tap-highlight-color: transparent;
+    }
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', sans-serif;
+  }
+}
+
+/* ── Custom Enterprise utilities & classes ────────────────────────────────────── */
+/* Production chrome is light. navy-executive-gradient is dormant (non-product). */
+.hero-gradient,
+.auth-gradient {
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
+}
+
+.sidebar-gradient {
+  background-color: var(--sidebar-background) !important;
+}
+
+@utility text-gradient {
+  background: linear-gradient(135deg, var(--navy-primary) 0%, var(--primary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+}
+
+/* Dormant decorative surface — do not use on production dashboards. */
+@utility navy-executive-gradient {
+  background: linear-gradient(135deg, var(--navy-deep) 0%, var(--navy-primary) 100%);
+  color: var(--primary-foreground);
+}
+
+@utility card-shadow {
+  box-shadow: 0 1px 2px 0 rgb(13 39 68 / 0.06), 0 1px 1px -1px rgb(13 39 68 / 0.04);
+}
+
+@utility enterprise-card {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 2px 0 rgb(13 39 68 / 0.06), 0 1px 3px 0 rgb(13 39 68 / 0.04);
+}
+
+@utility night-card {
+  background-color: color-mix(in srgb, var(--navy-surface) 42%, var(--navy-primary));
+  border: 1px solid color-mix(in srgb, var(--primary) 28%, transparent);
+  border-radius: var(--radius);
+  box-shadow: 0 12px 28px -18px color-mix(in srgb, var(--glow) 40%, transparent);
+  position: relative;
+  background-image: linear-gradient(var(--primary), var(--primary));
+  background-repeat: no-repeat;
+  background-size: 100% 2px;
+  background-position: top;
+}
+
+@utility desk-canvas {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+/* Public website — same light workspace as desks. CALQULUS blue anchors header/footer chrome. */
+@utility public-canvas {
+  background-color: var(--background);
+  background-image: radial-gradient(70% 36% at 50% 0%, color-mix(in srgb, var(--calqulus-primary) 5%, transparent) 0%, transparent 72%), linear-gradient(180deg, #F8FAFD 0%, var(--background) 48%, #F7FAFC 100%);
+  color: var(--foreground);
+  font-family: "Outfit", sans-serif;
+}
+
+/* Premium dark hero (public homepage). Navy chrome + soft blue atmosphere. */
+@utility public-hero-surface {
+  background-color: var(--navy-deep);
+  background-image:
+    radial-gradient(58% 78% at 86% 8%, color-mix(in srgb, var(--primary) 26%, transparent) 0%, transparent 62%),
+    radial-gradient(46% 62% at 4% 96%, color-mix(in srgb, var(--navy-secondary) 72%, transparent) 0%, transparent 66%),
+    linear-gradient(180deg, var(--navy-deep) 0%, #0A2036 58%, var(--navy-primary) 100%);
+}
+
+@utility public-hero-title-dark {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2.125rem;
+  line-height: 1.12;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #FFFFFF;
+}
+@media (min-width: 768px) {
+  .public-hero-title-dark { font-size: 2.5rem; }
+}
+@media (min-width: 1280px) {
+  .public-hero-title-dark { font-size: 2.75rem; } /* 44px */
+}
+
+@utility public-hero-grid-dark {
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 92% 78% at 22% 0%, #000 8%, transparent 76%);
+}
+
+@utility public-section-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.75rem;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--foreground);
+}
+@media (min-width: 768px) {
+  .public-section-title { font-size: 2rem; } /* 32px */
+}
+
+/* Premium light hero — tinted blue/navy atmosphere on the shared page
+   background. Dark navy stays reserved for chrome, not the page fill. */
+@utility public-hero-surface-light {
+  background-color: #F4F7FB;
+  background-image:
+    radial-gradient(62% 70% at 84% 4%, color-mix(in srgb, var(--primary) 10%, transparent) 0%, transparent 60%),
+    radial-gradient(50% 60% at 2% 96%, color-mix(in srgb, var(--calqulus-navy-200) 55%, transparent) 0%, transparent 68%),
+    linear-gradient(180deg, #FAFCFE 0%, #F4F7FB 100%);
+}
+
+@utility public-hero-title-light {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2.375rem;
+  line-height: 1.08;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--foreground);
+}
+@media (min-width: 768px) {
+  .public-hero-title-light { font-size: 3rem; }
+}
+@media (min-width: 1280px) {
+  .public-hero-title-light { font-size: 3.25rem; }
+}
+
+@utility public-hero-grid-light {
+  background-image:
+    linear-gradient(rgb(23 54 80 / 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(23 54 80 / 0.05) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 88% 70% at 50% 0%, #000 10%, transparent 74%);
+}
+
+/* Plain CSS so Tailwind does not nest @supports inside these backgrounds. */
+/* Property type cards share ONE CALQULUS navy treatment — no per-card
+   brand colors (green/violet/amber overlays removed). */
+.public-arch-residential,
+.public-arch-commercial,
+.public-arch-office {
+  background-color: var(--navy-primary);
+  background-image: linear-gradient(180deg, rgba(11, 34, 57, 0.05) 0%, rgba(11, 34, 57, 0.78) 100%);
+}
+
+@utility btn-brand {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  font-weight: 600;
+  box-shadow: var(--calqulus-shadow-sm);
+  transition: all 0.15s ease-in-out;
+}
+
+@utility btn-tenant {
+  background-color: #7c5fd3;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: var(--calqulus-shadow-sm);
+  transition: all 0.15s ease-in-out;
+}
+
+@utility hero-gradient {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+@utility auth-gradient {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+@utility sidebar-gradient {
+  background-color: var(--sidebar-background);
+}
+
+@layer utilities {
+  .btn-brand:hover {
+    background-color: var(--primary-hover);
+  }
+
+  .btn-tenant:hover {
+    background-color: #6a4fc0;
+  }
+
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .touch-manipulation {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--muted-foreground);
+  }
+
+  *:focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background transition-all duration-150;
+  }
+
+  .prose { max-width: 65ch; line-height: 1.6; }
+  .prose-sm { font-size: 0.875rem; line-height: 1.5; }
+  .prose p { margin-top: 0.75em; margin-bottom: 0.75em; }
+  .prose h1, .prose h2, .prose h3, .prose h4 { font-weight: 600; margin-top: 1.25em; margin-bottom: 0.5em; }
+  .prose ul, .prose ol { padding-left: 1.25em; margin-top: 0.5em; margin-bottom: 0.5em; }
+  .prose li { margin-top: 0.25em; margin-bottom: 0.25em; }
+  .prose a { color: var(--primary); text-decoration: underline; }
+  .prose strong { font-weight: 600; }
+  .prose code { font-size: 0.875em; background: var(--muted); padding: 0.2em 0.4em; border-radius: 4px; }
+  .prose blockquote { border-left: 3px solid var(--primary); padding-left: 1em; color: var(--muted-foreground); }
+  .prose img { max-width: 100%; border-radius: var(--radius); }
+  .dark .prose { color: var(--foreground); }
+
+  /* ── Executive typography hierarchy ────────────────────────────────
+     Strong, deliberate scale so page titles dominate, section titles are
+     medium/strong, supporting text recedes, and metrics stand out.
+     Headings use Outfit (installed) for a professional enterprise feel. */
+  /* Tailwind v4 @apply only accepts real utilities — alias type-* by grouping. */
+  /* Sizes below are the floor of the master brief's application ranges
+     (H1 36-44px, H2 26-32px, H3 20-24px) - picking the low end keeps
+     density for data-heavy desks while still clearing the spec. */
+  .page-title,
+  .type-page-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.75rem; /* 28px — phones; do not clip, wrap */
+    line-height: 1.2;
+    font-weight: 700;
+    color: var(--foreground);
+    letter-spacing: -0.02em;
+    overflow-wrap: anywhere;
+  }
+  @media (min-width: 480px) {
+    .page-title,
+    .type-page-title { font-size: 2rem; } /* 32px */
+  }
+  @media (min-width: 768px) {
+    .page-title,
+    .type-page-title { font-size: 2.25rem; } /* 36px */
+  }
+  @media (min-width: 1024px) {
+    .page-title,
+    .type-page-title { font-size: 2.5rem; } /* 40px */
+  }
+  .amount-display {
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+  .chart-frame {
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+  }
+  .section-title,
+  .type-section-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.625rem; /* 26px */
+    line-height: 1.3;
+    font-weight: 700;
+    color: var(--foreground);
+    letter-spacing: -0.01em;
+  }
+  .card-title-exec,
+  .type-card-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.25rem; /* 20px */
+    line-height: 1.35;
+    font-weight: 650;
+    color: var(--foreground);
+  }
+  /* H4 (16-18px per the brief) - subsection labels within a card/section. */
+  .type-subtitle {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.0625rem; /* 17px */
+    line-height: 1.4;
+    font-weight: 600;
+    color: var(--foreground);
+  }
+  .supporting-text {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--muted-foreground);
+  }
+  .metric-value,
+  .type-metric {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.875rem;
+    line-height: 1.1;
+    font-weight: 700;
+    color: var(--foreground);
+    letter-spacing: -0.02em;
+  }
+  .meta-text,
+  .type-meta {
+    font-size: 0.6875rem;
+    line-height: 1.4;
+    color: var(--muted-foreground);
+    font-weight: 500;
+  }
+  .type-body {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--foreground);
+  }
+  .type-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--muted-foreground);
+  }
+  /* Light cool-blue secondary surface for grouped panels. */
+  .surface-subtle {
+    background-color: var(--surface-elevated);
+  }
+  .dark .surface-subtle {
+    background-color: var(--surface-elevated);
+  }
+
+  /* ── Semantic status badges ─────────────────────────────────────────
+     Color communicates meaning only: success=green, warning=amber,
+     danger=red, info=sky. Tinted background + semantic border. */
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    padding: 0.1875rem 0.5625rem;
+    border-radius: 9999px;
+    border: 1px solid transparent;
+    line-height: 1.4;
+  }
+  .status-success {
+    background-color: var(--success-bg);
+    color: var(--success-text);
+    border-color: color-mix(in srgb, var(--success) 35%, #FFFFFF);
+  }
+  .status-warning {
+    background-color: var(--warning-bg);
+    color: var(--warning-text);
+    border-color: color-mix(in srgb, var(--warning) 35%, #FFFFFF);
+  }
+  .status-danger {
+    background-color: var(--destructive-bg);
+    color: var(--destructive-text);
+    border-color: color-mix(in srgb, var(--destructive) 35%, #FFFFFF);
+  }
+  .status-info {
+    background-color: var(--info-bg);
+    color: var(--info);
+    border-color: color-mix(in srgb, var(--info) 35%, #FFFFFF);
+  }
+  .status-neutral {
+    background-color: var(--muted);
+    color: var(--muted-foreground);
+    border-color: var(--border);
+  }
+
+  /* ── Executive table system ─────────────────────────────────────────
+     Soft navy-tinted header, white rows, subtle borders, generous row height. */
+  .exec-table { width: 100%; border-collapse: collapse; }
+  .exec-table thead th {
+    background-color: var(--muted);
+    color: var(--muted-foreground);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  .exec-table tbody td {
+    padding: 0.875rem 1rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.875rem;
+    color: var(--foreground);
+    vertical-align: middle;
+  }
+  .exec-table tbody tr:hover td {
+    background-color: var(--muted);
+  }
+  .exec-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Fill tokens stay locked. Small text uses darker on-surface companions so WCAG AA 4.5:1 holds on white desks. */
+.text-primary,
+.text-info {
+  color: var(--primary-text);
+}
+.text-success {
+  color: var(--success-text);
+}
+.text-destructive {
+  color: var(--destructive-text);
+}
+.text-warning {
+  color: var(--warning-text);
+}
+
+/* Dashboard chrome: hierarchy comes from spacing and type, not decoration. */
+@utility dashboard-surface {
+  background-color: var(--card);
+  border: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
+  border-radius: 1rem;
+  box-shadow: 0 8px 28px -24px rgb(13 39 68 / 0.28);
+}
+
+@utility dashboard-kpi-value {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.45rem;
+  line-height: 1.1;
+  font-weight: 650;
+  letter-spacing: -0.025em;
+}
+
+/* Accessible touch target: keeps compact visual controls usable on touch devices. */
+@media (pointer: coarse) {
+  .touch-target { min-width: 44px; min-height: 44px; }
+}
+
+
+/* ── CALQULUS mobile application chrome ───────────────────────────────
+   Phone layouts are app-like: compact app bar, thumb-friendly actions,
+   bottom navigation and no desktop-style page chrome. */
+@media (max-width: 767px) {
+  .mobile-app-surface {
+    min-height: 100dvh;
+    padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .mobile-app-card {
+    border-radius: 1rem;
+  }
+
+  input, select, textarea {
+    font-size: 16px;
+  }
+}
+
+/* ── CALQULUS native-feel phone layer ───────────────────────────────────
+   The responsive shell remains one codebase, but phones get an app chrome
+   treatment: edge-to-edge safe areas, quieter page chrome, hidden scrollbars,
+   thumb-sized controls and a sheet-style navigation surface. */
+@media (max-width: 767px) {
+  html {
+    min-height: 100dvh;
+    background: var(--background);
+    overscroll-behavior: none;
+  }
+
+  body {
+    min-height: 100dvh;
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #root {
+    min-height: 100dvh;
+    isolation: isolate;
+  }
+
+  .mobile-app-surface {
+    min-height: 100dvh;
+    padding-bottom: calc(4.25rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .mobile-app-background {
+    display: none;
+  }
+
+  .mobile-app-content {
+    padding-top: .75rem;
+    padding-left: .75rem;
+    padding-right: .75rem;
+    scroll-margin-top: 4.5rem;
+  }
+
+  .mobile-app-content :is(table) {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobile-app-surface main,
+  .mobile-app-surface nav,
+  .mobile-app-surface aside {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .mobile-app-surface ::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  .mobile-app-surface {
+    scrollbar-width: none;
+  }
+
+  .mobile-app-surface :is(button, a, input, select, textarea, [role="button"]) {
+    touch-action: manipulation;
+  }
+
+  .mobile-app-surface :is(button, a, [role="button"]) {
+    min-height: 44px;
+  }
+
+  .mobile-app-surface .mobile-app-card,
+  .mobile-app-surface [data-mobile-card="true"] {
+    border-radius: 1rem;
+  }
+
+  /* Prevent iOS Safari from zooming focused form controls. */
+  .mobile-app-surface :is(input, select, textarea) {
+    font-size: 16px;
+  }
+}

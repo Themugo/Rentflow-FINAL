@@ -1,0 +1,57 @@
+title = "CALQULUS PMS gitleaks config"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Documented demo and test account credentials"
+paths = [
+  '''AGENTS\.md''',
+  '''README\.md''',
+  '''docs/.*''',
+  '''FULL_SYSTEM_AUDIT.*\.md''',
+  '''API_DOCUMENTATION\.md''',
+  '''supabase/functions/seed-demo-data/index\.ts''',
+  '''scripts/test-demo-auth\.mjs''',
+]
+
+[[allowlists]]
+description = "Supabase project refs in config and docs (not secrets)"
+paths = [
+  '''supabase/config\.toml''',
+  '''index\.html''',
+  '''k8s/secrets\.yaml''',
+  '''monitoring/runbooks/.*''',
+  '''scripts/deploy-production\.mjs''',
+  '''MANAGEMENT_STRUCTURE_MIGRATION_GUIDE\.md''',
+]
+
+[[allowlists]]
+description = "Placeholder env examples"
+paths = [
+  '''\.env\.example''',
+]
+
+[[allowlists]]
+description = "CI placeholder anon key string (JWT-shaped) and demo API key samples in sandbox-lab components"
+paths = [
+  '''src/integrations/supabase/client\.ts''',
+  '''src/shared/components/integrations/DeveloperPortal\.tsx''',
+  '''src/shared/components/integrations/RestApiExplorer\.tsx''',
+  '''src/shared/components/integrations/WebhookManager\.tsx''',
+  '''src/shared/components/admin/FeatureFlagCenter\.tsx''',
+  '''src/shared/hooks/useNavHistory\.ts''',
+]
+
+[[allowlists]]
+description = "M-Pesa sandbox passkey and fixture credentials in API contract tests"
+paths = [
+  '''src/test/api-contracts/mpesa-api-contracts\.test\.ts''',
+  '''src/test/api-contracts/tenant-invitation-api-contracts\.test\.ts''',
+]
+
+[[allowlists]]
+description = "Placeholder bearer-token and secret examples in function doc comments"
+paths = [
+  '''supabase/functions/bootstrap-webhost/index\.ts''',
+]

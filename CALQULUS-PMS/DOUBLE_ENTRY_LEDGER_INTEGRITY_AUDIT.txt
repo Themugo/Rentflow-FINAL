@@ -1,0 +1,19 @@
+CALQULUS PMS — DOUBLE-ENTRY LEDGER INTEGRITY AUDIT
+
+Scope
+- Canonical journal representation over existing financial source records.
+- No replacement of invoices, payment transactions, allocations, expenditures, payout requests or bank transactions.
+- Closed periods are immutable through the posting RPC.
+
+Controls
+PASS — manager/submanager scope uses can_manage_property_scope.
+PASS — journal source uniqueness prevents duplicate posting of the same source record.
+PASS — journal lines require exactly one positive debit or credit.
+PASS — public/anonymous table and function access revoked.
+PASS — SECURITY DEFINER functions use SET search_path = ''.
+PASS — integrity audit reports unposted source records and unbalanced journals.
+PASS — posting refuses closed periods.
+
+Verification limitation
+- Full application test suite requires installed project dependencies.
+- Live Supabase migration reconciliation remains required; this audit does not claim migration 00039 is deployed remotely.

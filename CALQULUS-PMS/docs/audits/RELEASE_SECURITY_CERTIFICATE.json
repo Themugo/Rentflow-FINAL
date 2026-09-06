@@ -1,0 +1,36 @@
+{
+  "generatedAt": "2026-09-03T13:02:00.841Z",
+  "repositoryCertification": [
+    {
+      "name": "production",
+      "status": "PASS"
+    },
+    {
+      "name": "security-boundary",
+      "status": "PASS"
+    },
+    {
+      "name": "cross-role",
+      "status": "PASS"
+    },
+    {
+      "name": "final-security",
+      "status": "PASS"
+    },
+    {
+      "name": "migration-chain",
+      "status": "PASS"
+    }
+  ],
+  "migrationHistory": {
+    "status": "REQUIRES_LIVE_HISTORY_RECONCILIATION",
+    "duplicateGroups": 10
+  },
+  "externalGates": [
+    "Live Supabase migration history reconciled against MIGRATION_REPAIR_PLAN.json",
+    "Clean staging migration applied successfully",
+    "Staging role-isolation smoke test completed",
+    "Production deployment smoke test completed against the real URL"
+  ],
+  "releaseDecision": "REPO_CERTIFIED_EXTERNAL_PROOF_REQUIRED"
+}

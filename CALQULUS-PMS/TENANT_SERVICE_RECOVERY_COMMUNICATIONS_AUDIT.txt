@@ -1,0 +1,15 @@
+TENANT_SERVICE_RECOVERY_COMMUNICATIONS_AUDIT=PASS
+
+Implemented:
+- Scoped tenant service recovery cases.
+- Active-case deduplication by manager + tenant + driver.
+- Recovery lifecycle: open/contacted/in_progress/resolved/closed/cancelled.
+- Auditable follow-up communication queue with channel, schedule, attempts and delivery status.
+- Manager/submanager authorization on all mutating RPCs.
+- Dashboard control centre integrated with existing tenant experience intelligence.
+- No predictive or probabilistic tenant claims.
+
+Verification:
+- Migration chain expected next version: 20260904000029.
+- Full dependency-backed Vitest/build not claimed unless node_modules is available.
+- Remote Supabase migration reconciliation remains a deployment step.

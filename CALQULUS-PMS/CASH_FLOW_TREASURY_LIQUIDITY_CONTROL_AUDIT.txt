@@ -1,0 +1,27 @@
+CALQULUS PMS — Initiative 43 Audit
+Cash Flow, Treasury & Liquidity Control
+
+IMPLEMENTED
+- Added manager treasury guardrails: minimum cash buffer and 30–365 day forecast horizon.
+- Current cash derives only from canonical double-entry account 1100 Cash / Bank.
+- Forward collections derive from outstanding, unallocated invoice balances and due dates.
+- Approved owner payouts are treated as known future cash obligations.
+- Approved management budget expenses feed the conservative liquidity floor.
+- Approved budget revenue is reported separately and is not counted as realized cash.
+- Added manager-scoped RPCs and RLS.
+- Added dashboard Treasury & Liquidity Control centre.
+- Added static regression tests.
+
+SECURITY
+- Treasury table protected by manager scope RLS.
+- RPC execution restricted to authenticated users.
+- RPCs enforce manager scope before returning data.
+- No service-role or client secret introduced.
+
+VERIFICATION
+- TypeScript: PASS (`npx tsc --noEmit --pretty false`).
+- Migration-chain audit: PASS — 202 SQL migrations, 0 unexpected duplicate versions, 0 ordering warnings.
+- Cross-role isolation audit: PASS.
+- Deployment-controls audit: PASS; packaged workspace has no git metadata, so clean-commit gate remains external.
+- Full Vitest: NOT RUN — `vitest` is unavailable because `node_modules` is not installed.
+- Live Supabase reconciliation: REQUIRED. Live project check confirms the new treasury table and prior ledger table are not deployed in the remote database. No false deployment claim is made.

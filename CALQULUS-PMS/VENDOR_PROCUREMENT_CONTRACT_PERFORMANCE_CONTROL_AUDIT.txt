@@ -1,0 +1,20 @@
+CALQULUS PMS — Initiative 45 Audit
+Vendor Procurement, Contract & Performance Control
+
+Implemented:
+- Manager-scoped vendor master records.
+- Contract lifecycle governance with renewal dates and property scope.
+- Vendor performance reviews with four explicit 0-100 dimensions.
+- Expense commitments can link to governed vendors.
+- Procurement control report exposes active vendors, active contracts, upcoming expiries, approved commitments and unlinked approved commitments.
+- Existing ledger/expenditure sources remain the financial source of truth; no duplicate accounting or cash table created.
+- RLS and authenticated-only RPC execution applied.
+
+Required verification:
+- TypeScript compilation.
+- Migration chain integrity.
+- Cross-role isolation.
+- Deployment controls.
+- ZIP integrity.
+- Full Vitest requires installed node_modules.
+- LIVE_RECONCILIATION_REQUIRED until remote migration chain is actually applied.

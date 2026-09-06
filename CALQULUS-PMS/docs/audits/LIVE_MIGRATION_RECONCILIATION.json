@@ -1,0 +1,9 @@
+{
+  "generatedAt": "2026-09-04T06:31:03.862Z",
+  "status": "EXTERNAL_REQUIRED",
+  "expectedMigrationCount": 169,
+  "appliedMigrationCount": null,
+  "missingMigrations": null,
+  "unexpectedAppliedMigrations": null,
+  "note": "Set DATABASE_URL or SUPABASE_DB_URL and rerun this command against the target Supabase database."
+}

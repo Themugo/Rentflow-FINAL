@@ -1,0 +1,15 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+const root=process.cwd();
+const mig=path.join(root,'docs','audits','LIVE_MIGRATION_RECONCILIATION.json');
+const integ=path.join(root,'docs','audits','MIGRATION_INTEGRITY_REPORT.json');
+const read=p=>{try{return JSON.parse(fs.readFileSync(p,'utf8'));}catch{return {};}};
+const m=read(mig), i=read(integ);
+const releaseCommit=process.env.RELEASE_COMMIT||'';
+const migrationRunId=process.env.MIGRATION_RUN_ID||'';
+const migrationAppliedAt=process.env.MIGRATION_APPLIED_AT||'';
+const migrationOperator=process.env.MIGRATION_OPERATOR||'';
+const report={generatedAt:new Date().toISOString(),status:'EXTERNAL_REQUIRED',releaseCommit:releaseCommit||null,migrationRunId:migrationRunId||null,migrationAppliedAt:migrationAppliedAt||null,migrationOperatorRecorded:Boolean(migrationOperator),liveMigrationStatus:m.status||'NOT_RECORDED',migrationIntegrityStatus:i.status||'NOT_RECORDED',migrationEvidenceSha256:fs.existsSync(mig)?crypto.createHash('sha256').update(fs.readFileSync(mig)).digest('hex'):null,requiredExternalEvidence:['releaseCommit','migrationRunId','migrationAppliedAt','migrationOperator','liveMigrationStatus=PASS','migrationIntegrityStatus=PASS'],note:'Attestation is valid only when live reconciliation and migration integrity are PASS and the external migration run is explicitly identified.'};
+if(releaseCommit&&migrationRunId&&migrationAppliedAt&&migrationOperator&&m.status==='PASS'&&i.status==='PASS')report.status='PASS';
+const out=path.join(root,'docs','audits','PRODUCTION_MIGRATION_ATTESTATION.json');fs.writeFileSync(out,JSON.stringify(report,null,2)+'\n');console.log(`production-migration-attestation: ${report.status}`);if(report.status==='BLOCKED')process.exit(1);

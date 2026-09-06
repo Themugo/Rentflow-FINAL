@@ -1,0 +1,20 @@
+CALQULUS PMS — Initiative 44
+Expense Commitment & Payables Control
+
+Implemented:
+- Manager-scoped expense commitments for future vendor obligations.
+- Draft -> submitted -> approved/rejected workflow.
+- Requester cannot approve their own commitment.
+- Property scope validation when a property is attached.
+- Approved commitments feed the existing treasury forecast.
+- No second cash ledger and no fabricated settlement transaction.
+- Actual cash remains represented by the canonical double-entry ledger and existing expenditure/bank controls.
+- RLS and authenticated-only RPC execution.
+
+Verification:
+- TypeScript: PASS (tsc --noEmit --pretty false)
+- Migration chain: PASS; 203 migrations, 0 unexpected duplicate versions, 0 ordering warnings.
+- Cross-role isolation: PASS.
+- Deployment controls: PASS; external clean-commit gate required.
+- Full Vitest: NOT RUN because node_modules/Vitest are unavailable in the packaged workspace.
+- Live Supabase migration reconciliation: REQUIRED before deployment.

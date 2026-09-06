@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-09-03T15:54:17.705Z",
+  "status": "EXTERNAL_REQUIRED",
+  "missing": [
+    "releaseCommit",
+    "deploymentId",
+    "deploymentTarget",
+    "migrationRunId",
+    "deployedAt",
+    "deployedBy",
+    "attestationId"
+  ],
+  "manifestMatch": true,
+  "commitMatch": true,
+  "credentialsPersisted": true,
+  "rule": "The deployment attestation must bind the deployed artifact manifest and release commit to externally recorded deployment and migration identifiers."
+}

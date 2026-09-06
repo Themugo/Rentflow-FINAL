@@ -1,0 +1,18 @@
+CALQULUS PMS — OWNER PORTAL FINANCIAL DELIVERY & SETTLEMENT TRANSPARENCY
+
+Implementation
+- Added migration 20260904000033_landlord_settlement_transparency.sql.
+- Added landlord-scoped settlement transparency RPC.
+- Added LandlordSettlementTransparency component to the landlord Statements page.
+- Added CSV export and print statement action.
+- RPC enforces auth.uid() == requested landlord id and revokes PUBLIC/anon execution.
+- Response excludes tenant names, emails, phones and payment-party identities.
+
+Verification
+- Static source assertions: PASS
+- Migration 00033 presence: PASS
+- Settlement UI integration: PASS
+- Self-scope SQL assertion: PASS
+- Anonymous execution revocation assertion: PASS
+- Full TypeScript/Vitest: NOT RUN (node_modules absent in build workspace)
+- Remote deployment: NOT CLAIMED; live Supabase reconciliation remains pending.

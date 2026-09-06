@@ -1,0 +1,34 @@
+CALQULUS PMS — Initiative 46 Audit
+Maintenance Procurement & Work-Order Cost Control
+
+IMPLEMENTATION
+- Added vendor, vendor-contract and expense-commitment linkage to maintenance requests.
+- Added maintenance request linkage to expense commitments.
+- Added maintenance request, vendor, contract and commitment linkage to expenditures.
+- Added atomic procurement assignment RPC.
+- Added atomic maintenance expense-commitment creation RPC.
+- Added atomic expenditure-to-maintenance linkage RPC.
+- Added manager-scoped maintenance procurement/cost control RPC.
+- Added dashboard control centre.
+- Added focused test coverage.
+
+CONTROL PRINCIPLES
+- Existing maintenance lifecycle remains canonical for work orders.
+- Existing management_vendors/vendor_contracts remain canonical for vendor governance.
+- Existing expense_commitments remain canonical for future commitments.
+- Existing expenditures and double-entry ledger remain canonical for actual financial posting.
+- No second cash/accounting ledger introduced.
+- Manager/property scope enforced in RPCs and existing RLS model.
+- Vendor and contract linkage is validated against manager scope.
+
+VERIFICATION
+- TypeScript: PASS (npx tsc --noEmit --pretty false)
+- Migration chain: PASS — 205 SQL migrations; 0 unexpected duplicate versions; 0 ordering warnings.
+- Cross-role isolation audit: PASS.
+- Deployment controls audit: PASS.
+- Full Vitest: NOT RUN — node_modules unavailable in packaged workspace.
+- Live Supabase reconciliation: REQUIRED before production deployment.
+- Remote project is not claimed as migrated because the live database previously lacked the local application schema chain.
+
+KNOWN DEPLOYMENT GATE
+- The migration must be applied only after the full CALQULUS migration chain is reconciled on the target Supabase project.

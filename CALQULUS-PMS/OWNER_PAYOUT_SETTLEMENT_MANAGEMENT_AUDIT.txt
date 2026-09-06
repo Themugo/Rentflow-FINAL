@@ -1,0 +1,27 @@
+CALQULUS PMS — OWNER PAYOUT & SETTLEMENT MANAGEMENT AUDIT
+Date: 2026-09-04
+
+SCOPE
+- Closed-period gating for owner payout batches.
+- Atomic batch creation from approved payout requests.
+- Duplicate payout assignment prevention.
+- Controlled approval -> processing -> settled lifecycle.
+- Settlement reference requirement and payout status convergence.
+- Manager-scoped RLS and SECURITY DEFINER RPC grants.
+
+STATIC VERIFICATION
+- Migration 20260904000032 present: PASS
+- Closed-period requirement: PASS
+- Approved-payout requirement: PASS
+- Duplicate payout assignment constraint: PASS
+- Settlement reference requirement: PASS
+- Atomic payout settlement update: PASS
+- Manager scope authorization: PASS
+- Anonymous/public RPC execution revoked: PASS
+- Dashboard integration: PASS
+- TypeScript compiler (npx tsc --noEmit): PASS
+- Vitest suite: not executed in this environment unless dependencies are installed; do not interpret this as a live DB test.
+
+LIVE DEPLOYMENT
+- This initiative is repository-complete but is NOT claimed as deployed to the production Supabase project.
+- Production migration reconciliation remains a separate deployment gate.

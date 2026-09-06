@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-09-03T14:13:21.314Z",
+  "status": "EXTERNAL_REQUIRED",
+  "releaseCommit": null,
+  "rollbackExecutionId": null,
+  "rollbackExecutedAt": null,
+  "rollbackOperatorRecorded": false,
+  "restoreRunId": null,
+  "rollbackVerified": false,
+  "runbookPresent": true,
+  "runbookSha256": "f755245c882ccd25e1ca5c24f6e28ac61113b0ae8d3ca12cfc7fd2b54b96aceb",
+  "requiredExternalEvidence": [
+    "rollbackExecutionId",
+    "rollbackExecutedAt",
+    "rollbackOperator",
+    "rollbackRestoreRunId",
+    "rollbackVerified=true"
+  ],
+  "note": "Rollback evidence is attestation-only. This script never executes rollback SQL, deletes data, or claims recovery without explicit external evidence."
+}

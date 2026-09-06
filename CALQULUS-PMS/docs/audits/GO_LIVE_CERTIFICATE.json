@@ -1,0 +1,60 @@
+{
+  "generatedAt": "2026-09-04T06:31:04.616Z",
+  "status": "BLOCKED",
+  "checks": [
+    {
+      "name": "environment",
+      "status": "PASS",
+      "output": "\n> calqulus-pms@1.0.0 audit:production-environment\n> node scripts/audit-production-environment.mjs\n\nproduction-environment: PASS\n- verify_jwt=false functions: 36\n"
+    },
+    {
+      "name": "deployment",
+      "status": "PASS",
+      "output": "\n> calqulus-pms@1.0.0 audit:deployment-controls\n> node scripts/audit-deployment-controls.mjs\n\ndeployment-controls: PASS\n- migrations: 169\n- destructive migration candidates: 65\n- verify_jwt=false functions: 36\n- git: not available in packaged workspace (external clean-commit gate required)\n"
+    },
+    {
+      "name": "release",
+      "status": "FAIL",
+      "output": "\n> calqulus-pms@1.0.0 audit:release-readiness\n> node scripts/audit-release-readiness.mjs\n\nrelease-readiness: BLOCKED\nPASS prod\nPASS security\nPASS cross-role\nPASS final-security\nFAIL migration\nPASS staging\nPASS recovery\nPASS observability\nPASS edge-reliability\nPASS operations\nFAIL release-evidence\n"
+    },
+    {
+      "name": "live-migrations",
+      "status": "PASS",
+      "output": "\n> calqulus-pms@1.0.0 reconcile:live-migrations\n> node scripts/reconcile-live-migrations.mjs\n\nlive-migration-reconciliation: EXTERNAL_REQUIRED\n"
+    },
+    {
+      "name": "staging-e2e",
+      "status": "PASS",
+      "output": "\n> calqulus-pms@1.0.0 staging:e2e\n> node scripts/staging-e2e-evidence.mjs\n\nstaging-e2e-evidence: EXTERNAL_REQUIRED\n- missing environment: E2E_MANAGER_EMAIL, E2E_MANAGER_PASSWORD, E2E_LANDLORD_EMAIL, E2E_LANDLORD_PASSWORD, E2E_TENANT_EMAIL, E2E_TENANT_PASSWORD, E2E_WEBHOST_EMAIL, E2E_WEBHOST_PASSWORD\n"
+    },
+    {
+      "name": "staging-certification",
+      "status": "PASS",
+      "output": "\n> calqulus-pms@1.0.0 staging:certify\n> node scripts/run-staging-certification.mjs\n\nstaging-certification: EXTERNAL_REQUIRED\n"
+    },
+    {
+      "name": "live-security",
+      "status": "PASS",
+      "output": "\n> calqulus-pms@1.0.0 capture:live-security\n> node scripts/capture-live-security-evidence.mjs\n\nlive-security-evidence: EXTERNAL_REQUIRED\n"
+    },
+    {
+      "name": "release-evidence",
+      "status": "PASS",
+      "output": "\n> calqulus-pms@1.0.0 capture:release-evidence\n> node scripts/capture-release-evidence.mjs\n\nrelease-evidence-captured: EXTERNAL_REQUIRED\n"
+    },
+    {
+      "name": "production-evidence",
+      "status": "FAIL",
+      "output": "\n> calqulus-pms@1.0.0 audit:production-evidence\n> node scripts/audit-production-evidence.mjs\n\nproduction-evidence-gate: BLOCKED\n- missing: releaseCommit\n"
+    },
+    {
+      "name": "release-evidence-gate",
+      "status": "FAIL",
+      "output": "\n> calqulus-pms@1.0.0 audit:release-evidence\n> node scripts/audit-release-evidence.mjs\n\nrelease-evidence-audit: BLOCKED\n- missing: releaseCommit, stagingMigrationRun, stagingSmokeRun, stagingRestoreRun, productionApproval\n"
+    }
+  ],
+  "missingEvidence": [
+    "releaseCommit"
+  ],
+  "decision": "Fix failed automated release checks."
+}

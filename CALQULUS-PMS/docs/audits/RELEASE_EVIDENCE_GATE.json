@@ -1,0 +1,27 @@
+{
+  "generatedAt": "2026-09-04T07:00:43.952Z",
+  "status": "BLOCKED",
+  "requiredEvidence": [
+    "releaseCommit",
+    "stagingMigrationRun",
+    "stagingSmokeRun",
+    "stagingRestoreRun",
+    "productionApproval"
+  ],
+  "missingEvidence": [
+    "releaseCommit",
+    "stagingMigrationRun",
+    "stagingSmokeRun",
+    "stagingRestoreRun",
+    "productionApproval"
+  ],
+  "automatedChecks": {
+    "migrationReconciliation": "EXTERNAL_REQUIRED",
+    "stagingSmoke": "EXTERNAL_REQUIRED",
+    "stagingE2E": "EXTERNAL_REQUIRED",
+    "stagingRoleCertification": "EXTERNAL_REQUIRED",
+    "liveSecurity": "EXTERNAL_REQUIRED"
+  },
+  "secretLeakDetected": false,
+  "rule": "External evidence must be explicitly recorded; repository automation never invents staging, recovery, or production approval evidence."
+}

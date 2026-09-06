@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">CALQULUS property mark</title>
+  <desc id="desc">Geometric property and building mark forming a C.</desc>
+  <defs>
+    <linearGradient id="brand" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1B56D6"/>
+      <stop offset="1" stop-color="#123FB7"/>
+    </linearGradient>
+  </defs>
+  <path d="M32 4.5 55.5 18v28L32 59.5 8.5 46V18L32 4.5Z" fill="url(#brand)"/>
+  <path d="M33 12.5c-9.8 0-17.8 7.9-17.8 17.5S23.2 47.5 33 47.5c4.4 0 8.5-1.6 11.7-4.5l-4.9-5.3a9.9 9.9 0 1 1-6.8-17.1 10.1 10.1 0 0 1 6.8 2.6l4.9-5.2A17.6 17.6 0 0 0 33 12.5Z" fill="#fff" opacity=".97"/>
+  <path d="M27.3 42.6V25.1l5.3-3.3 10.5 6.2v14.6h-4V30.3l-6.5-3.8-1.4.9v15.2h-3.9Z" fill="#55D4C0"/>
+  <path d="M23 44.2h22" stroke="#fff" stroke-width="2.8" stroke-linecap="round" opacity=".96"/>
+</svg>

@@ -1,0 +1,130 @@
+{
+  "generatedAt": "2026-09-03T15:47:19.657Z",
+  "status": "EXTERNAL_REQUIRED",
+  "checkCount": 15,
+  "failCount": 0,
+  "externalRequiredCount": 1,
+  "results": [
+    {
+      "name": "securityBoundary",
+      "command": "npm run audit:security-boundary",
+      "exitCode": 0,
+      "reportStatus": "PASS",
+      "stdoutTail": "\n> calqulus-pms@1.0.0 audit:security-boundary\n> node scripts/security-boundary-audit.mjs\n\nsecurity-boundary-audit: PASS\n",
+      "stderrTail": ""
+    },
+    {
+      "name": "crossRoleIsolation",
+      "command": "npm run audit:cross-role",
+      "exitCode": 0,
+      "reportStatus": "PASS",
+      "stdoutTail": "\n> calqulus-pms@1.0.0 audit:cross-role\n> node scripts/cross-role-isolation-audit.mjs\n\ncross-role-isolation-audit: PASS\n",
+      "stderrTail": ""
+    },
+    {
+      "name": "finalSecurity",
+      "command": "npm run audit:final-security",
+      "exitCode": 0,
+      "reportStatus": "PASS",
+      "stdoutTail": "\n> calqulus-pms@1.0.0 audit:final-security\n> node scripts/audit-final-security.mjs\n\nfinal-security-audit: PASS (689 app source files; 158 migration files)\n",
+      "stderrTail": ""
+    },
+    {
+      "name": "migrationChain",
+      "command": "npm run audit:migration-chain",
+      "exitCode": 0,
+      "reportStatus": "EXTERNAL_REQUIRED",
+      "stdoutTail": "\n> calqulus-pms@1.0.0 audit:migration-chain\n> node scripts/audit-migration-chain.mjs\n\nmigration-chain-audit: 158 SQL migrations inspected\n- Known historical duplicate versions: 10\n- Unexpected duplicate versions: 0\n- Known historical malformed filenames: 3\n- Ordering warnings: 0\nmigration-chain-audit: PASS (historical exceptions acknowledged; no new chain violations)\n",
+      "stderrTail": "migration-chain-audit: LIVE_RECONCILIATION_REQUIRED — verify supabase_migrations.schema_migrations before deployment\n"
+    },
+    {
+      "name": "observability",
+      "command": "npm run audit:observability",
+      "exitCode": 0,
+      "reportStatus": "PASS",
+      "stdoutTail": "\n> calqulus-pms@1.0.0 audit:observability\n> node scripts/audit-observability.mjs\n\nobservability-audit: PASS (1/91 instrumented)\n",
+      "stderrTail": ""
+    },
+    {
+      "name": "operationsReadiness",
+      "command": "npm run audit:operations-readiness",
+      "exitCode": 0,
+      "reportStatus": "PASS",
+      "stdoutTail": "\n> calqulus-pms@1.0.0 audit:operations-readiness\n> node scripts/audit-operations-readiness.mjs\n\noperations-readiness: PASS\n",
+      "stderrTail": ""
+    },
+    {
+      "name": "edgeReliability",
+      "command": "npm run audit:edge-reliability",
+      "exitCode": 0,
+      "reportStatus": "PASS",
+      "stdoutTail": "\n> calqulus-pms@1.0.0 audit:edge-reliability\n> node scripts/audit-edge-reliability.mjs\n\nedge-reliability-audit: PASS (90 functions)\n",
+      "stderrTail": ""
+    },
+    {
+      "name": "deploymentControls",
+      "command": "npm run audit:deployment-controls",
+      "exitCode": 0,
+      "reportStatus": "PASS",
+      "stdoutTail": "\n> calqulus-pms@1.0.0 audit:deployment-controls\n> node scripts/audit-deployment-controls.mjs\n\ndeployment-controls: PASS\n- migrations: 158\n- destructive migration candidates: 58\n- verify_jwt=false functions: 36\n- git: not available in packaged workspace (external clean-commit gate required)\n",
+      "stderrTail": "fatal: not a git repository (or any of the parent directories): .git\n"
+    },
+    {
+      "name": "dependencyProvenance",
+      "command": "npm run audit:dependency-provenance",
+      "exitCode": 0,
+      "reportStatus": "PASS",
+      "stdoutTail": "\n> calqulus-pms@1.0.0 audit:dependency-provenance\n> node scripts/audit-dependency-provenance.mjs\n\ndependency-provenance: PASS\n",
+      "stderrTail": ""
+    },
+    {
+      "name": "sbomAudit",
+      "command": "npm run audit:sbom",
+      "exitCode": 0,
+      "reportStatus": "PASS",
+      "stdoutTail": "\n> calqulus-pms@1.0.0 audit:sbom\n> node scripts/audit-sbom.mjs\n\nsbom-audit: PASS\n",
+      "stderrTail": ""
+    },
+    {
+      "name": "secretSupplyChain",
+      "command": "npm run audit:secret-supply-chain",
+      "exitCode": 0,
+      "reportStatus": "PASS",
+      "stdoutTail": "\n> calqulus-pms@1.0.0 audit:secret-supply-chain\n> node scripts/scan-secret-supply-chain.mjs\n\nsecret-supply-chain: PASS\n",
+      "stderrTail": ""
+    },
+    {
+      "name": "vulnerabilityGovernance",
+      "command": "npm run audit:vulnerability-governance",
+      "exitCode": 0,
+      "reportStatus": "PASS",
+      "stdoutTail": "\n> calqulus-pms@1.0.0 audit:vulnerability-governance\n> node scripts/audit-vulnerability-governance.mjs\n\nvulnerability-governance: PASS (EXTERNAL_REQUIRED)\n",
+      "stderrTail": ""
+    },
+    {
+      "name": "runtimeDependencyGovernance",
+      "command": "npm run audit:runtime-dependency-governance",
+      "exitCode": 0,
+      "reportStatus": "PASS",
+      "stdoutTail": "\n> calqulus-pms@1.0.0 audit:runtime-dependency-governance\n> node scripts/audit-runtime-dependency-governance.mjs\n\nruntime-dependency-governance: PASS (outdated=EXTERNAL_REQUIRED)\n",
+      "stderrTail": ""
+    },
+    {
+      "name": "runtimeUpdatePolicy",
+      "command": "npm run audit:runtime-update-policy",
+      "exitCode": 0,
+      "reportStatus": "PASS",
+      "stdoutTail": "\n> calqulus-pms@1.0.0 audit:runtime-update-policy\n> node scripts/audit-runtime-update-policy.mjs\n\nruntime-update-policy: PASS (89 direct dependencies)\n",
+      "stderrTail": ""
+    },
+    {
+      "name": "ciReleaseGate",
+      "command": "npm run audit:ci-release-gate",
+      "exitCode": 0,
+      "reportStatus": "PASS",
+      "stdoutTail": "\n> calqulus-pms@1.0.0 audit:ci-release-gate\n> node scripts/audit-ci-release-gate.mjs\n\nci-release-gate: PASS\n",
+      "stderrTail": ""
+    }
+  ],
+  "rule": "Security regression is PASS only when all repository-local checks pass and every check produces a recognized status. Any FAIL blocks certification. External-dependent checks remain EXTERNAL_REQUIRED until executed against real staging/production infrastructure."
+}

@@ -1,0 +1,159 @@
+{
+  "dashboard": {
+    "title": "CALQULUS RMS Application Performance",
+    "uid": "calqulusrms-app-performance",
+    "tags": ["calqulusrms", "application", "performance"],
+    "timezone": "browser",
+    "schemaVersion": 16,
+    "version": 0,
+    "refresh": "30s",
+    "panels": [
+      {
+        "id": 1,
+        "title": "Request Rate (RPS)",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+        "targets": [
+          {
+            "expr": "sum(rate(http_requests_total{job='calqulusrms-app'}[5m])) by (method, status)",
+            "legendFormat": "{{method}} {{status}}"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "reqps",
+            "label": "Requests/sec"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Response Time (P50, P95, P99)",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.50, sum(rate(http_request_duration_seconds_bucket{job='calqulusrms-app'}[5m])) by (le))",
+            "legendFormat": "P50"
+          },
+          {
+            "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{job='calqulusrms-app'}[5m])) by (le))",
+            "legendFormat": "P95"
+          },
+          {
+            "expr": "histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket{job='calqulusrms-app'}[5m])) by (le))",
+            "legendFormat": "P99"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "s",
+            "label": "Duration"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Error Rate by Endpoint",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+        "targets": [
+          {
+            "expr": "sum(rate(http_requests_total{job='calqulusrms-app',status=~\"5..\"}[5m])) by (endpoint) / sum(rate(http_requests_total{job='calqulusrms-app'}[5m])) by (endpoint)",
+            "legendFormat": "{{endpoint}}"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "percentunit",
+            "label": "Error rate"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Active Connections",
+        "type": "stat",
+        "gridPos": {"h": 4, "w": 6, "x": 12, "y": 8},
+        "targets": [
+          {
+            "expr": "http_active_connections{job='calqulusrms-app'}",
+            "legendFormat": "Active connections"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Memory Usage",
+        "type": "graph",
+        "gridPos": {"h": 4, "w": 6, "x": 18, "y": 8},
+        "targets": [
+          {
+            "expr": "process_resident_memory_bytes{job='calqulusrms-app'} / 1024 / 1024 / 1024",
+            "legendFormat": "Memory (GB)"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "bytes",
+            "label": "Memory"
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "title": "CPU Usage",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 16},
+        "targets": [
+          {
+            "expr": "rate(process_cpu_seconds_total{job='calqulusrms-app'}[5m])",
+            "legendFormat": "CPU usage"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "percentunit",
+            "label": "CPU"
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "title": "Response Time Distribution",
+        "type": "heatmap",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 16},
+        "targets": [
+          {
+            "expr": "sum(rate(http_request_duration_seconds_bucket{job='calqulusrms-app'}[5m])) by (le)",
+            "legendFormat": "{{le}}"
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "title": "Top 10 Slowest Endpoints",
+        "type": "table",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 24},
+        "targets": [
+          {
+            "expr": "topk(10, avg(rate(http_request_duration_seconds_sum{job='calqulusrms-app'}[5m])) by (endpoint) / avg(rate(http_request_duration_seconds_count{job='calqulusrms-app'}[5m])) by (endpoint))",
+            "legendFormat": "{{endpoint}}"
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "title": "Request Volume by Endpoint",
+        "type": "piechart",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 24},
+        "targets": [
+          {
+            "expr": "sum(rate(http_requests_total{job='calqulusrms-app'}[5m])) by (endpoint)",
+            "legendFormat": "{{endpoint}}"
+          }
+        ]
+      }
+    ]
+  }
+}

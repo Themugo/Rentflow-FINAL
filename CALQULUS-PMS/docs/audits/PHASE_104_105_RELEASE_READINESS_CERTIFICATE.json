@@ -1,0 +1,59 @@
+{
+  "generatedAt": "2026-09-04T06:31:03.736Z",
+  "checks": [
+    {
+      "name": "prod",
+      "status": "PASS"
+    },
+    {
+      "name": "security",
+      "status": "PASS"
+    },
+    {
+      "name": "cross-role",
+      "status": "PASS"
+    },
+    {
+      "name": "final-security",
+      "status": "PASS"
+    },
+    {
+      "name": "migration",
+      "status": "FAIL",
+      "detail": "\n> calqulus-pms@1.0.0 audit:migration-chain\n> node scripts/audit-migration-chain.mjs\n\nmigration-chain-audit: 169 SQL migrations inspected\n- Known historical duplicate versions: 10\n- Unexpected duplicate versions: 1\n- Known historical malformed filenames: 3\n- Ordering warnings: 0\n"
+    },
+    {
+      "name": "staging",
+      "status": "PASS"
+    },
+    {
+      "name": "recovery",
+      "status": "PASS"
+    },
+    {
+      "name": "observability",
+      "status": "PASS"
+    },
+    {
+      "name": "edge-reliability",
+      "status": "PASS"
+    },
+    {
+      "name": "operations",
+      "status": "PASS"
+    },
+    {
+      "name": "release-evidence",
+      "status": "FAIL",
+      "detail": "\n> calqulus-pms@1.0.0 audit:release-evidence\n> node scripts/audit-release-evidence.mjs\n\nrelease-evidence-audit: BLOCKED\n- missing: releaseCommit, stagingMigrationRun, stagingSmokeRun, stagingRestoreRun, productionApproval\n"
+    }
+  ],
+  "status": "BLOCKED",
+  "externalGates": [
+    "live migration history reconciliation",
+    "staging migration execution",
+    "staging restore test",
+    "role-isolation smoke test",
+    "production smoke test"
+  ]
+}

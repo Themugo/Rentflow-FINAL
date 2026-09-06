@@ -1,0 +1,13 @@
+apiVersion: v2
+name: calqulusrms
+description: A Helm chart for CALQULUS RMS property management platform
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - calqulusrms
+  - property-management
+  - real-estate
+maintainers:
+  - name: CALQULUS RMS Team
+    email: team@calqulusrms.com

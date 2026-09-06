@@ -1,0 +1,19 @@
+CALQULUS PMS — Production Truth & Data Integrity Hardening
+
+Scope
+- Replace the active Executive Analytics mock dataset with the existing authoritative management analytics RPC.
+- Remove two unreferenced webhost analytics components that contained fabricated tenant/property forecasts and probabilities.
+- Preserve existing production intelligence layers rather than introducing duplicate calculations.
+
+Controls
+1. Executive analytics reads get_manager_management_analytics for the current manager scope.
+2. Executive analytics no longer contains hardcoded revenue, occupancy, collection, arrears, or forecast values.
+3. Unreferenced OccupancyForecastingDashboard and TenantLTVAnalytics mock analytics components were removed.
+4. Existing explainable tenant retention intelligence remains the source for retention/churn signals.
+5. No new database migration is required for this frontend truthfulness hardening.
+
+Verification
+- TypeScript: run tsc --noEmit --pretty false.
+- Static assertions: verify removed mock components, live RPC usage, and absence of hardcoded executive metrics.
+- Migration-chain, deployment-control, and cross-role audits should remain green.
+- Vitest/build require installed node_modules; do not claim execution when dependencies are unavailable.

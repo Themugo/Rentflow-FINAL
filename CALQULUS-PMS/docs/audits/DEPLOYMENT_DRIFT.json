@@ -1,0 +1,22 @@
+{
+  "generatedAt": "2026-09-04T06:25:25.847Z",
+  "status": "FAIL",
+  "releaseCommit": null,
+  "expectedReleaseCommit": null,
+  "gitCheckoutAvailable": false,
+  "gitDirty": null,
+  "manifestPresent": true,
+  "artifactCount": 4,
+  "artifactMismatches": [
+    {
+      "path": "package.json",
+      "reason": "hash-or-size-mismatch"
+    }
+  ],
+  "driftDetected": true,
+  "requiredExternalEvidence": [
+    "RELEASE_COMMIT_EXPECTED and a real git checkout for commit identity when promoting",
+    "deployment artifact manifest must match candidate files"
+  ],
+  "rule": "Promotion is blocked when the candidate differs from the certified release commit or recorded artifact hashes."
+}

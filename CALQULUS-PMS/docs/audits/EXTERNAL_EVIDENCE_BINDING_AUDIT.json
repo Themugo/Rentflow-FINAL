@@ -1,0 +1,11 @@
+{
+  "generatedAt": "2026-09-03T15:47:05.416Z",
+  "status": "EXTERNAL_REQUIRED",
+  "findings": [
+    "Release commit is not bound."
+  ],
+  "boundReleaseCommit": null,
+  "manifestHashVerified": true,
+  "evidenceHashVerified": true,
+  "rule": "Any tamper or contradiction is a release-blocking FAIL. Missing externally supplied identifiers remain EXTERNAL_REQUIRED."
+}

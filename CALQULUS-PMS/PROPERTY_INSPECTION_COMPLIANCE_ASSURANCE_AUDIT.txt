@@ -1,0 +1,36 @@
+CALQULUS PMS — Initiative 50 Audit
+Property Inspections, Compliance & Condition Assurance
+
+IMPLEMENTED
+- Scheduled inspection programmes and generated inspection runs.
+- Inspection findings with pass/attention/fail/not-applicable states, scores, notes and evidence URLs.
+- Optional escalation from failed/attention findings into the canonical maintenance request workflow.
+- Optional linkage of findings to existing maintenance assets.
+- Property compliance obligation register with status, authority/reference and existing landlord document evidence linkage.
+- Manager dashboard control center for programmes, runs, findings, compliance obligations and high-risk asset signals.
+- All writes are scoped atomic RPCs; exposed tables have RLS and direct authenticated writes revoked.
+
+SOURCE-OF-TRUTH CONVERGENCE
+Inspection does not create a second maintenance ledger. Escalated defects become maintenance_requests and can therefore continue through existing asset, SLA, vendor, commitment, expenditure and double-entry controls.
+Compliance evidence reuses landlord_documents.
+Existing unit_inspections remains the tenant/unit inspection record; this initiative adds the portfolio/property assurance layer rather than replacing it.
+
+SECURITY
+- RPCs use SECURITY DEFINER with pinned search_path = ''.
+- Manager scope is checked with can_manage_property_scope.
+- Property and evidence-document ownership is checked before mutation.
+- Tables are RLS protected and authenticated SELECT is scoped to manager ownership.
+- Direct authenticated INSERT/UPDATE/DELETE are not granted.
+
+VERIFICATION
+- TypeScript: baseline project failure remains in src/features/billing/components/ReceiptsTab.tsx (pre-existing syntax errors); new component is included in the compile surface.
+- Migration chain: to be rerun after packaging.
+- Full Vitest: unavailable without installed node_modules in this workspace.
+- Live Supabase reconciliation: required before production deployment; local migration is not claimed as remotely deployed.
+
+Verification run results:
+- Migration chain audit: PASS (209 migrations; 0 unexpected duplicates; 0 ordering warnings; live reconciliation required).
+- Cross-role isolation audit: PASS.
+- Deployment controls audit: PASS (packaged workspace has no git metadata; external clean-commit gate required).
+- TypeScript: NOT PASS due pre-existing syntax errors in src/features/billing/components/ReceiptsTab.tsx lines 156-162; no new-file error was reported before parser failure.
+- Target Vitest: NOT RUN because vitest is not installed in packaged workspace.

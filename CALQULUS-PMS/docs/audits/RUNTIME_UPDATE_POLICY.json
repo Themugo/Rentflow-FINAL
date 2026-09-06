@@ -1,0 +1,556 @@
+{
+  "generatedAt": "2026-09-03T15:47:19.509Z",
+  "status": "PASS",
+  "policyVersion": "1.0",
+  "directDependencyCount": 89,
+  "issues": [],
+  "dependencies": [
+    {
+      "name": "@capacitor/android",
+      "spec": "^8.4.0",
+      "lockedVersion": "8.5.0",
+      "majorPinned": false
+    },
+    {
+      "name": "@capacitor/camera",
+      "spec": "^8.2.0",
+      "lockedVersion": "8.2.2",
+      "majorPinned": false
+    },
+    {
+      "name": "@capacitor/cli",
+      "spec": "^8.4.0",
+      "lockedVersion": "8.5.0",
+      "majorPinned": false
+    },
+    {
+      "name": "@capacitor/core",
+      "spec": "^8.4.0",
+      "lockedVersion": "8.5.0",
+      "majorPinned": false
+    },
+    {
+      "name": "@capacitor/filesystem",
+      "spec": "^8.1.2",
+      "lockedVersion": "8.1.2",
+      "majorPinned": false
+    },
+    {
+      "name": "@capacitor/ios",
+      "spec": "^8.4.0",
+      "lockedVersion": "8.5.0",
+      "majorPinned": false
+    },
+    {
+      "name": "@capacitor/local-notifications",
+      "spec": "^8.2.0",
+      "lockedVersion": "8.2.1",
+      "majorPinned": false
+    },
+    {
+      "name": "@capacitor/push-notifications",
+      "spec": "^8.1.1",
+      "lockedVersion": "8.1.2",
+      "majorPinned": false
+    },
+    {
+      "name": "@radix-ui/react-accordion",
+      "spec": "^1.2.11",
+      "lockedVersion": "1.2.20",
+      "majorPinned": false
+    },
+    {
+      "name": "@radix-ui/react-alert-dialog",
+      "spec": "^1.1.14",
+      "lockedVersion": "1.1.23",
+      "majorPinned": false
+    },
+    {
+      "name": "@radix-ui/react-aspect-ratio",
+      "spec": "^1.1.7",
+      "lockedVersion": "1.1.15",
+      "majorPinned": false
+    },
+    {
+      "name": "@radix-ui/react-avatar",
+      "spec": "^1.1.10",
+      "lockedVersion": "1.2.6",
+      "majorPinned": false
+    },
+    {
+      "name": "@radix-ui/react-checkbox",
+      "spec": "^1.3.2",
+      "lockedVersion": "1.3.11",
+      "majorPinned": false
+    },
+    {
+      "name": "@radix-ui/react-collapsible",
+      "spec": "^1.1.11",
+      "lockedVersion": "1.1.20",
+      "majorPinned": false
+    },
+    {
+      "name": "@radix-ui/react-context-menu",
+      "spec": "^2.2.15",
+      "lockedVersion": "2.3.7",
+      "majorPinned": false
+    },
+    {
+      "name": "@radix-ui/react-dialog",
+      "spec": "^1.1.14",
+      "lockedVersion": "1.1.23",
+      "majorPinned": false
+    },
+    {
+      "name": "@radix-ui/react-dropdown-menu",
+      "spec": "^2.1.15",
+      "lockedVersion": "2.1.24",
+      "majorPinned": false
+    },
+    {
+      "name": "@radix-ui/react-hover-card",
+      "spec": "^1.1.14",
+      "lockedVersion": "1.1.23",
+      "majorPinned": false
+    },
+    {
+      "name": "@radix-ui/react-label",
+      "spec": "^2.1.7",
+      "lockedVersion": "2.1.15",
+      "majorPinned": false
+    },
+    {
+      "name": "@radix-ui/react-menubar",
+      "spec": "^1.1.15",
+      "lockedVersion": "1.1.24",
+      "majorPinned": false
+    },
+    {
+      "name": "@radix-ui/react-navigation-menu",
+      "spec": "^1.2.13",
+      "lockedVersion": "1.2.22",
+      "majorPinned": false
+    },
+    {
+      "name": "@radix-ui/react-popover",
+      "spec": "^1.1.14",
+      "lockedVersion": "1.1.23",
+      "majorPinned": false
+    },
+    {
+      "name": "@radix-ui/react-progress",
+      "spec": "^1.1.7",
+      "lockedVersion": "1.1.16",
+      "majorPinned": false
+    },
+    {
+      "name": "@radix-ui/react-radio-group",
+      "spec": "^1.3.7",
+      "lockedVersion": "1.4.7",
+      "majorPinned": false
+    },
+    {
+      "name": "@radix-ui/react-scroll-area",
+      "spec": "^1.2.9",
+      "lockedVersion": "1.2.18",
+      "majorPinned": false
+    },
+    {
+      "name": "@radix-ui/react-select",
+      "spec": "^2.2.5",
+      "lockedVersion": "2.3.7",
+      "majorPinned": false
+    },
+    {
+      "name": "@radix-ui/react-separator",
+      "spec": "^1.1.7",
+      "lockedVersion": "1.1.15",
+      "majorPinned": false
+    },
+    {
+      "name": "@radix-ui/react-slider",
+      "spec": "^1.3.5",
+      "lockedVersion": "1.4.7",
+      "majorPinned": false
+    },
+    {
+      "name": "@radix-ui/react-slot",
+      "spec": "^1.2.3",
+      "lockedVersion": "1.3.3",
+      "majorPinned": false
+    },
+    {
+      "name": "@radix-ui/react-switch",
+      "spec": "^1.2.5",
+      "lockedVersion": "1.3.7",
+      "majorPinned": false
+    },
+    {
+      "name": "@radix-ui/react-tabs",
+      "spec": "^1.1.12",
+      "lockedVersion": "1.1.21",
+      "majorPinned": false
+    },
+    {
+      "name": "@radix-ui/react-toast",
+      "spec": "^1.2.14",
+      "lockedVersion": "1.2.23",
+      "majorPinned": false
+    },
+    {
+      "name": "@radix-ui/react-toggle",
+      "spec": "^1.1.9",
+      "lockedVersion": "1.1.18",
+      "majorPinned": false
+    },
+    {
+      "name": "@radix-ui/react-toggle-group",
+      "spec": "^1.1.10",
+      "lockedVersion": "1.1.19",
+      "majorPinned": false
+    },
+    {
+      "name": "@radix-ui/react-tooltip",
+      "spec": "^1.2.7",
+      "lockedVersion": "1.2.16",
+      "majorPinned": false
+    },
+    {
+      "name": "@sentry/browser",
+      "spec": "^10.53.1",
+      "lockedVersion": "10.70.0",
+      "majorPinned": false
+    },
+    {
+      "name": "@supabase/supabase-js",
+      "spec": "^2.108.1",
+      "lockedVersion": "2.112.3",
+      "majorPinned": false
+    },
+    {
+      "name": "@tanstack/react-query",
+      "spec": "^5.101.0",
+      "lockedVersion": "5.101.4",
+      "majorPinned": false
+    },
+    {
+      "name": "@types/dompurify",
+      "spec": "^3.0.5",
+      "lockedVersion": "3.0.5",
+      "majorPinned": false
+    },
+    {
+      "name": "capacitor-native-biometric",
+      "spec": "^4.2.2",
+      "lockedVersion": "4.2.2",
+      "majorPinned": false
+    },
+    {
+      "name": "class-variance-authority",
+      "spec": "^0.7.1",
+      "lockedVersion": "0.7.1",
+      "majorPinned": false
+    },
+    {
+      "name": "clsx",
+      "spec": "^2.1.1",
+      "lockedVersion": "2.1.1",
+      "majorPinned": false
+    },
+    {
+      "name": "cmdk",
+      "spec": "^1.1.1",
+      "lockedVersion": "1.1.1",
+      "majorPinned": false
+    },
+    {
+      "name": "date-fns",
+      "spec": "^4.4.0",
+      "lockedVersion": "4.4.0",
+      "majorPinned": false
+    },
+    {
+      "name": "dompurify",
+      "spec": "^3.3.1",
+      "lockedVersion": "3.4.13",
+      "majorPinned": false
+    },
+    {
+      "name": "embla-carousel-react",
+      "spec": "^8.6.0",
+      "lockedVersion": "8.6.0",
+      "majorPinned": false
+    },
+    {
+      "name": "input-otp",
+      "spec": "^1.4.2",
+      "lockedVersion": "1.4.2",
+      "majorPinned": false
+    },
+    {
+      "name": "jspdf",
+      "spec": "^4.0.0",
+      "lockedVersion": "4.2.1",
+      "majorPinned": false
+    },
+    {
+      "name": "jspdf-autotable",
+      "spec": "^5.0.7",
+      "lockedVersion": "5.0.8",
+      "majorPinned": false
+    },
+    {
+      "name": "lucide-react",
+      "spec": "^1.16.0",
+      "lockedVersion": "1.31.0",
+      "majorPinned": false
+    },
+    {
+      "name": "qrcode.react",
+      "spec": "^4.2.0",
+      "lockedVersion": "4.2.0",
+      "majorPinned": false
+    },
+    {
+      "name": "react",
+      "spec": "^19.2.7",
+      "lockedVersion": "19.2.8",
+      "majorPinned": false
+    },
+    {
+      "name": "react-day-picker",
+      "spec": "^10.0.1",
+      "lockedVersion": "10.0.1",
+      "majorPinned": false
+    },
+    {
+      "name": "react-dom",
+      "spec": "^19.2.7",
+      "lockedVersion": "19.2.8",
+      "majorPinned": false
+    },
+    {
+      "name": "react-easy-crop",
+      "spec": "^6.2.3",
+      "lockedVersion": "6.2.3",
+      "majorPinned": false
+    },
+    {
+      "name": "react-hook-form",
+      "spec": "^7.77.0",
+      "lockedVersion": "7.85.0",
+      "majorPinned": false
+    },
+    {
+      "name": "react-resizable-panels",
+      "spec": "^4.11.2",
+      "lockedVersion": "4.12.2",
+      "majorPinned": false
+    },
+    {
+      "name": "react-router-dom",
+      "spec": "^7.18.1",
+      "lockedVersion": "7.18.2",
+      "majorPinned": false
+    },
+    {
+      "name": "recharts",
+      "spec": "^3.8.1",
+      "lockedVersion": "3.10.1",
+      "majorPinned": false
+    },
+    {
+      "name": "sonner",
+      "spec": "^2.0.7",
+      "lockedVersion": "2.0.8",
+      "majorPinned": false
+    },
+    {
+      "name": "tailwind-merge",
+      "spec": "^3.6.0",
+      "lockedVersion": "3.6.0",
+      "majorPinned": false
+    },
+    {
+      "name": "vaul",
+      "spec": "^1.1.2",
+      "lockedVersion": "1.1.2",
+      "majorPinned": false
+    },
+    {
+      "name": "vite-plugin-pwa",
+      "spec": "^1.3.0",
+      "lockedVersion": "1.3.0",
+      "majorPinned": false
+    },
+    {
+      "name": "zod",
+      "spec": "^4.4.3",
+      "lockedVersion": "4.4.3",
+      "majorPinned": false
+    },
+    {
+      "name": "@axe-core/playwright",
+      "spec": "^4.13.0",
+      "lockedVersion": "4.13.0",
+      "majorPinned": false
+    },
+    {
+      "name": "@eslint/js",
+      "spec": "^10.0.1",
+      "lockedVersion": "10.0.1",
+      "majorPinned": false
+    },
+    {
+      "name": "@playwright/test",
+      "spec": "^1.60.0",
+      "lockedVersion": "1.62.1",
+      "majorPinned": false
+    },
+    {
+      "name": "@tailwindcss/postcss",
+      "spec": "^4.3.0",
+      "lockedVersion": "4.3.3",
+      "majorPinned": false
+    },
+    {
+      "name": "@testing-library/dom",
+      "spec": "^10.4.1",
+      "lockedVersion": "10.4.1",
+      "majorPinned": false
+    },
+    {
+      "name": "@testing-library/jest-dom",
+      "spec": "^7.0.0",
+      "lockedVersion": "7.0.1",
+      "majorPinned": false
+    },
+    {
+      "name": "@testing-library/react",
+      "spec": "^16.3.2",
+      "lockedVersion": "16.3.2",
+      "majorPinned": false
+    },
+    {
+      "name": "@types/node",
+      "spec": "^26.1.2",
+      "lockedVersion": "26.2.0",
+      "majorPinned": false
+    },
+    {
+      "name": "@types/react",
+      "spec": "^19.2.15",
+      "lockedVersion": "19.2.18",
+      "majorPinned": false
+    },
+    {
+      "name": "@types/react-dom",
+      "spec": "^19.2.3",
+      "lockedVersion": "19.2.4",
+      "majorPinned": false
+    },
+    {
+      "name": "@vitejs/plugin-react",
+      "spec": "^6.0.2",
+      "lockedVersion": "6.0.5",
+      "majorPinned": false
+    },
+    {
+      "name": "@vitest/coverage-v8",
+      "spec": "^4.1.8",
+      "lockedVersion": "4.1.10",
+      "majorPinned": false
+    },
+    {
+      "name": "esbuild",
+      "spec": "^0.28.1",
+      "lockedVersion": "0.28.2",
+      "majorPinned": false
+    },
+    {
+      "name": "eslint",
+      "spec": "^10.4.1",
+      "lockedVersion": "10.8.1",
+      "majorPinned": false
+    },
+    {
+      "name": "eslint-plugin-react-hooks",
+      "spec": "^7.1.1",
+      "lockedVersion": "7.1.1",
+      "majorPinned": false
+    },
+    {
+      "name": "eslint-plugin-react-refresh",
+      "spec": "^0.5.2",
+      "lockedVersion": "0.5.4",
+      "majorPinned": false
+    },
+    {
+      "name": "fast-check",
+      "spec": "^4.9.0",
+      "lockedVersion": "4.9.0",
+      "majorPinned": false
+    },
+    {
+      "name": "globals",
+      "spec": "^17.6.0",
+      "lockedVersion": "17.11.0",
+      "majorPinned": false
+    },
+    {
+      "name": "jsdom",
+      "spec": "^30.0.0",
+      "lockedVersion": "30.0.1",
+      "majorPinned": false
+    },
+    {
+      "name": "postcss",
+      "spec": "^8.5.6",
+      "lockedVersion": "8.5.26",
+      "majorPinned": false
+    },
+    {
+      "name": "tailwindcss",
+      "spec": "^4.3.0",
+      "lockedVersion": "4.3.3",
+      "majorPinned": false
+    },
+    {
+      "name": "typescript",
+      "spec": "^6.0.3",
+      "lockedVersion": "6.0.3",
+      "majorPinned": false
+    },
+    {
+      "name": "typescript-eslint",
+      "spec": "^8.60.0",
+      "lockedVersion": "8.67.0",
+      "majorPinned": false
+    },
+    {
+      "name": "vite",
+      "spec": "^8.0.15",
+      "lockedVersion": "8.2.1",
+      "majorPinned": false
+    },
+    {
+      "name": "vitest",
+      "spec": "^4.1.8",
+      "lockedVersion": "4.1.10",
+      "majorPinned": false
+    }
+  ],
+  "controls": {
+    "lockfileRequired": "npm lockfileVersion 3",
+    "majorUpdate": "requires explicit review and release evidence",
+    "minorPatchUpdate": "allowed through normal dependency refresh with CI security checks",
+    "unboundedRanges": "review required; major version must not silently advance",
+    "lockfileOnly": "package.json and package-lock.json must change together when versions are intentionally updated",
+    "networkEvidence": "registry-backed update/vulnerability evidence must be captured in CI, never fabricated offline"
+  },
+  "externalChecks": {
+    "registryOutdated": "EXTERNAL_REQUIRED",
+    "registryVulnerabilities": "EXTERNAL_REQUIRED"
+  },
+  "rule": "This audit validates repository-local update policy. It does not claim current registry freshness without a network-backed CI run."
+}

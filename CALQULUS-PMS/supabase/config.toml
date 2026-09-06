@@ -1,0 +1,259 @@
+project_id = "hmgpltrjlsescfquqxeg"
+
+[functions.backfill-tenant-accounts]
+verify_jwt = true
+
+[functions.send-overdue-notifications]
+verify_jwt = false
+
+[functions.send-payment-confirmation]
+verify_jwt = true
+
+[functions.send-invoice-email]
+verify_jwt = true
+
+[functions.create-invoice]
+verify_jwt = true
+
+[functions.create-invoice-checkout]
+verify_jwt = true
+
+[functions.get-payment-history]
+verify_jwt = true
+
+[functions.initiate-paystack-payment]
+verify_jwt = true
+
+[functions.initiate-manager-paystack-payment]
+verify_jwt = true
+
+[functions.verify-mpesa-payment]
+verify_jwt = true
+
+[functions.send-sms-notification]
+verify_jwt = true
+
+[functions.send-contract-notification]
+verify_jwt = true
+
+[functions.send-tenant-notice]
+verify_jwt = true
+
+[functions.send-monthly-report]
+verify_jwt = false
+
+[functions.create-manager-invoice-checkout]
+verify_jwt = true
+
+[functions.generate-manager-invoices]
+verify_jwt = false
+
+[functions.create-manager-subscription]
+verify_jwt = true
+
+[functions.check-manager-subscription]
+verify_jwt = true
+
+[functions.initiate-mpesa-stk-push]
+verify_jwt = true
+
+[functions.mpesa-callback]
+verify_jwt = false
+
+[functions.verify-mpesa-stk-status]
+verify_jwt = true
+
+[functions.send-welcome-email]
+verify_jwt = false
+
+[functions.auto-generate-invoices]
+verify_jwt = false
+
+[functions.send-tenant-invitation]
+verify_jwt = false
+
+[functions.create-tenant-account]
+verify_jwt = true
+
+[functions.generate-monthly-invoices]
+verify_jwt = false
+
+[functions.notify-new-manager-signup]
+verify_jwt = true
+
+[functions.send-signature-notification]
+verify_jwt = false
+
+[functions.send-manager-approval-notification]
+verify_jwt = false
+
+[functions.stripe-webhook]
+verify_jwt = false
+
+[functions.paystack-webhook]
+verify_jwt = false
+
+[functions.reconcile-paystack]
+verify_jwt = false
+
+[functions.activate-account]
+verify_jwt = false
+
+[functions.send-manager-contract-notification]
+verify_jwt = false
+
+[functions.parse-contract-document]
+verify_jwt = true
+
+[functions.notify-manager-payment]
+verify_jwt = false
+
+[functions.notify-manager-receipt-upload]
+verify_jwt = false
+
+[functions.send-push-notification]
+verify_jwt = false
+
+[functions.send-receipt-email]
+verify_jwt = false
+
+[functions.send-receipt-status-notification]
+verify_jwt = false
+
+[functions.manage-mpesa-settings]
+verify_jwt = true
+
+[functions.parse-receipt]
+verify_jwt = true
+
+[functions.send-bank-details-notification]
+verify_jwt = false
+
+[functions.send-bulk-sms]
+verify_jwt = true
+
+[functions.send-property-assignment-notification]
+verify_jwt = false
+
+[functions.send-whatsapp-notification]
+verify_jwt = false
+
+[functions.notify-manager-tenant-signup]
+verify_jwt = false
+
+[functions.send-payment-push-notification]
+verify_jwt = false
+
+[functions.send-invoice-due-push-notification]
+verify_jwt = false
+
+[functions.process-due-invoice-notifications]
+verify_jwt = false
+
+[functions.self-register-tenant]
+verify_jwt = true
+
+[functions.claim-tenant]
+verify_jwt = true
+
+[functions.apply-credit]
+verify_jwt = true
+
+[functions.apply-penalties]
+verify_jwt = false
+
+[functions.auto-send-receipt]
+verify_jwt = false
+
+[functions.bank-webhook]
+verify_jwt = false
+
+[functions.bootstrap-webhost]
+verify_jwt = true
+
+[functions.calculate-tenant-score]
+verify_jwt = true
+
+[functions.check-feature]
+verify_jwt = true
+
+[functions.create-dispute]
+verify_jwt = true
+
+[functions.create-payout]
+verify_jwt = true
+
+[functions.create-tenant]
+verify_jwt = true
+
+[functions.detect-fraud]
+verify_jwt = true
+
+[functions.execute-payout]
+verify_jwt = true
+
+[functions.export-excel]
+verify_jwt = true
+
+[functions.export-pdf]
+verify_jwt = true
+
+[functions.generate-cashflow]
+verify_jwt = true
+
+[functions.generate-landlord-statement]
+verify_jwt = true
+
+[functions.generate-pnl]
+verify_jwt = true
+
+[functions.log-audit]
+verify_jwt = true
+
+[functions.process-payment]
+verify_jwt = true
+
+[functions.reconcile]
+verify_jwt = true
+
+[functions.reconcile-bank]
+verify_jwt = true
+
+[functions.record-payment]
+verify_jwt = true
+
+[functions.resolve-dispute]
+verify_jwt = true
+
+[functions.seed-demo-data]
+verify_jwt = true
+
+[functions.seed-maintenance]
+verify_jwt = true
+
+[functions.send-deposit-refund-notification]
+verify_jwt = false
+
+[functions.send-invoice-notification]
+verify_jwt = false
+
+[functions.send-maintenance-notification]
+verify_jwt = false
+
+[functions.send-manager-invoice-notification]
+verify_jwt = false
+
+[functions.send-manager-receipt-email]
+verify_jwt = false
+
+[functions.send-overdue-maintenance-notifications]
+verify_jwt = false
+
+[functions.send-payment-reminders]
+verify_jwt = false
+
+[functions.auto-send-rent-report]
+verify_jwt = true
+
+[functions.health-check]
+verify_jwt = false

@@ -1,0 +1,221 @@
+{
+  "dashboard": {
+    "title": "CALQULUS RMS SLA Tracking",
+    "uid": "calqulusrms-sla-tracking",
+    "tags": ["calqulusrms", "sla", "uptime"],
+    "timezone": "browser",
+    "schemaVersion": 16,
+    "version": 0,
+    "refresh": "1m",
+    "panels": [
+      {
+        "id": 1,
+        "title": "Overall Uptime (30d)",
+        "type": "stat",
+        "gridPos": {"h": 4, "w": 6, "x": 0, "y": 0},
+        "targets": [
+          {
+            "expr": "avg_over_time(up{job='calqulusrms-app'}[30d]) * 100",
+            "legendFormat": "Uptime %"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percent",
+            "min": 0,
+            "max": 100,
+            "thresholds": {
+              "steps": [
+                {"color": "red", "value": 0},
+                {"color": "yellow", "value": 99.9},
+                {"color": "green", "value": 99.95}
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 2,
+        "title": "API Response Time SLA (P95 < 500ms)",
+        "type": "gauge",
+        "gridPos": {"h": 4, "w": 6, "x": 6, "y": 0},
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job='calqulusrms-app'}[5m])) * 1000",
+            "legendFormat": "P95 response time (ms)"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "ms",
+            "min": 0,
+            "max": 2000,
+            "thresholds": {
+              "steps": [
+                {"color": "green", "value": 0},
+                {"color": "yellow", "value": 300},
+                {"color": "red", "value": 500}
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 3,
+        "title": "Error Rate SLA (< 0.1%)",
+        "type": "gauge",
+        "gridPos": {"h": 4, "w": 6, "x": 12, "y": 0},
+        "targets": [
+          {
+            "expr": "rate(http_requests_total{job='calqulusrms-app',status=~\"5..\"}[5m]) / rate(http_requests_total{job='calqulusrms-app'}[5m]) * 100",
+            "legendFormat": "Error rate %"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percent",
+            "min": 0,
+            "max": 1,
+            "thresholds": {
+              "steps": [
+                {"color": "green", "value": 0},
+                {"color": "yellow", "value": 0.05},
+                {"color": "red", "value": 0.1}
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 4,
+        "title": "Payment Processing SLA (< 30s)",
+        "type": "gauge",
+        "gridPos": {"h": 4, "w": 6, "x": 18, "y": 0},
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, rate(payment_processing_duration_seconds_bucket[5m]))",
+            "legendFormat": "P95 payment time (s)"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "s",
+            "min": 0,
+            "max": 60,
+            "thresholds": {
+              "steps": [
+                {"color": "green", "value": 0},
+                {"color": "yellow", "value": 15},
+                {"color": "red", "value": 30}
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 5,
+        "title": "Uptime History (7d)",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 4},
+        "targets": [
+          {
+            "expr": "up{job='calqulusrms-app'}",
+            "legendFormat": "Application status"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "short",
+            "label": "Status (1=up, 0=down)"
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "title": "Response Time SLA Trend",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 4},
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job='calqulusrms-app'}[5m])) * 1000",
+            "legendFormat": "P95 (ms)"
+          },
+          {
+            "expr": "histogram_quantile(0.50, rate(http_request_duration_seconds_bucket{job='calqulusrms-app'}[5m])) * 1000",
+            "legendFormat": "P50 (ms)"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "ms",
+            "label": "Response time"
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "title": "Error Rate Trend",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 12},
+        "targets": [
+          {
+            "expr": "rate(http_requests_total{job='calqulusrms-app',status=~\"5..\"}[5m]) / rate(http_requests_total{job='calqulusrms-app'}[5m]) * 100",
+            "legendFormat": "Error rate %"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "percent",
+            "label": "Error rate"
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "title": "Payment Success Rate",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 12},
+        "targets": [
+          {
+            "expr": "rate(payment_transactions_total{status='completed'}[5m]) / rate(payment_transactions_total[5m]) * 100",
+            "legendFormat": "Success rate %"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "percent",
+            "label": "Success rate"
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "title": "SLA Compliance Summary",
+        "type": "table",
+        "gridPos": {"h": 8, "w": 24, "x": 0, "y": 20},
+        "targets": [
+          {
+            "expr": "avg_over_time(up{job='calqulusrms-app'}[30d]) * 100",
+            "legendFormat": "Uptime SLA (99.9%)",
+            "format": "table"
+          },
+          {
+            "expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job='calqulusrms-app'}[5m])) * 1000",
+            "legendFormat": "Response Time SLA (500ms)",
+            "format": "table"
+          },
+          {
+            "expr": "rate(http_requests_total{job='calqulusrms-app',status=~\"5..\"}[5m]) / rate(http_requests_total{job='calqulusrms-app'}[5m]) * 100",
+            "legendFormat": "Error Rate SLA (0.1%)",
+            "format": "table"
+          },
+          {
+            "expr": "rate(payment_transactions_total{status='completed'}[5m]) / rate(payment_transactions_total[5m]) * 100",
+            "legendFormat": "Payment Success SLA (99%)",
+            "format": "table"
+          }
+        ]
+      }
+    ]
+  }
+}

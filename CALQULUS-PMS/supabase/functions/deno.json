@@ -1,0 +1,38 @@
+{
+  "imports": {
+    "std/": "https://deno.land/std@0.224.0/",
+    "supabase/": "https://esm.sh/@supabase/supabase-js@2",
+    "stripe/": "https://esm.sh/stripe@18.5.0",
+    "resend/": "https://esm.sh/resend@2.0.0"
+  },
+  "tasks": {
+    "test": "deno test --allow-env --allow-net",
+    "test:watch": "deno test --allow-env --allow-net --watch",
+    "test:coverage": "deno test --allow-env --allow-net --coverage=cov_profile",
+    "lint": "deno lint",
+    "fmt": "deno fmt"
+  },
+  "compilerOptions": {
+    "strict": true
+  },
+  "lint": {
+    "include": ["supabase/functions/"],
+    "exclude": ["supabase/functions/_shared/*.test.ts", "supabase/functions/tests/"],
+    "rules": {
+      "tags": ["recommended"]
+    }
+  },
+  "fmt": {
+    "include": ["supabase/functions/"],
+    "useTabs": false,
+    "lineWidth": 100,
+    "indentWidth": 2,
+    "singleQuote": false
+  },
+  "test": {
+    "include": [
+      "supabase/functions/_shared/*.test.ts",
+      "supabase/functions/tests/*.test.ts"
+    ]
+  }
+}

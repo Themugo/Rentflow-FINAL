@@ -1,0 +1,25 @@
+CALQULUS PMS — LEDGER ADJUSTMENTS & REVERSALS GOVERNANCE AUDIT
+
+Scope
+- Approval-gated accounting adjustments
+- Immutable journal entries
+- Controlled reversals
+- Closed-period protection
+- Manager scope and authenticated execution
+
+Assertions
+PASS: adjustment requests require balanced debit/credit lines before submission.
+PASS: only submitted adjustments may be approved/rejected.
+PASS: requester cannot approve their own adjustment.
+PASS: approved adjustments cannot post into a closed period.
+PASS: journal entries are protected against UPDATE and DELETE by trigger.
+PASS: reversal requires a reason and an open reversal date.
+PASS: each posted journal entry can have at most one reversal.
+PASS: reversal swaps debit/credit lines and preserves original entry identity.
+PASS: public/anon execute privileges revoked for governance RPCs.
+PASS: manager scope enforced through can_manage_property_scope().
+PASS: new UI uses existing manager scope and Supabase client architecture.
+
+Known environment limitation
+- Full dependency-backed Vitest/application build verification depends on installed node_modules.
+- Live Supabase migration reconciliation remains required and is not claimed here.

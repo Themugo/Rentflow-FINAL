@@ -1,0 +1,20 @@
+CALQULUS PMS — Financial Close & Owner Statement Integrity
+
+Implemented:
+- Auditable financial_close_periods with immutable close snapshots.
+- financial_close_audit records close/reopen actions.
+- Manager-scoped period close readiness checks.
+- Checks for unmatched bank transactions, pending payments and pending owner payouts.
+- Atomic close RPC refuses to lock an unresolved period.
+- Reopen RPC requires an explicit reason and records an audit event.
+- Dashboard Financial Close Control Center consumes authoritative RPCs only.
+
+Truthfulness:
+- No predictive probability is introduced.
+- No hard-coded financial values are introduced.
+- Period totals derive from invoices, completed payment allocations, expenditures and payout/bank controls.
+
+Verification status:
+- Static source assertions: expected to PASS.
+- TypeScript/Vitest: run when dependencies are installed; do not infer success when node_modules is absent.
+- Remote migration deployment: still requires controlled promotion through the production deployment/reconciliation gate.

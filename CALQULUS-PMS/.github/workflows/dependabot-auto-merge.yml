@@ -1,0 +1,209 @@
+name: Dependabot Auto-Merge
+
+# Uses pull_request_target (not pull_request) so the GITHUB_TOKEN has write
+# permissions: runs triggered by dependabot[bot] via `pull_request` get a
+# read-only token, which cannot enable auto-merge. Safe here because this
+# workflow never checks out or executes code from the PR.
+#
+# Auto-merge semantics: once enabled, GitHub merges the PR automatically as
+# soon as all REQUIRED status checks (branch protection) pass. The
+# merge-when-green job below provides the same guarantee without branch
+# protection: it merges a Dependabot PR only when every check run on its head
+# commit has completed successfully (at least one check must exist).
+#
+# Repo settings required for the auto-merge path (must be enabled by a repo
+# admin — Settings → General → Pull Requests → "Allow auto-merge").
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+  workflow_run:
+    # When CI finishes on any ref, re-evaluate open Dependabot PRs and merge
+    # the green ones. This is the "tests must pass" gate: it works even if
+    # branch protection is not configured on the repository.
+    workflows: ["CI"]
+    types: [completed]
+  schedule:
+    # Daily fallback to enable auto-merge on any Dependabot PRs that were
+    # opened before this workflow existed or missed the pull_request events.
+    - cron: "0 6 * * *"
+
+permissions:
+  contents: write
+  pull-requests: write
+  checks: read
+
+jobs:
+  enable-auto-merge:
+    name: Enable Auto-Merge for Dependabot PR
+    runs-on: ubuntu-latest
+    if: >-
+      github.event_name == 'pull_request_target' &&
+      github.event.pull_request.user.login == 'dependabot[bot]'
+    steps:
+      - name: Enable auto-merge
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            if (!pr) {
+              console.log('No pull request data');
+              return;
+            }
+
+            if (pr.auto_merge) {
+              console.log('Auto-merge already enabled for PR #' + pr.number);
+              return;
+            }
+
+            try {
+              await github.rest.repos.enableAutoMerge({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: pr.number,
+                merge_method: 'squash'
+              });
+
+              console.log('Auto-merge enabled for PR #' + pr.number);
+
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body: '🤖 Auto-merge enabled! This Dependabot PR will be automatically merged once all required CI checks pass.'
+              });
+            } catch (error) {
+              console.log('Could not enable auto-merge:', error.message);
+              core.setFailed('enableAutoMerge failed: ' + error.message);
+            }
+
+  # Fallback job that runs on a schedule to catch any PRs that might have
+  # been missed. Auto-merge itself waits for required checks, so we don't
+  # need to inspect check statuses here.
+  check-missed-prs:
+    name: Check Missed Dependabot PRs
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    concurrency:
+      group: dependabot-check
+      cancel-in-progress: true
+    steps:
+      - name: Find and enable auto-merge for Dependabot PRs
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prs = await github.paginate(github.rest.pulls.list, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 100
+            });
+
+            const dependabotPrs = prs.filter(pr => pr.user?.login === 'dependabot[bot]');
+            console.log(`Found ${dependabotPrs.length} open Dependabot PRs`);
+
+            for (const pr of dependabotPrs) {
+              if (pr.auto_merge) {
+                console.log(`PR #${pr.number}: auto-merge already enabled`);
+                continue;
+              }
+
+              try {
+                await github.rest.repos.enableAutoMerge({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: pr.number,
+                  merge_method: 'squash'
+                });
+                console.log(`PR #${pr.number}: auto-merge enabled`);
+
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: pr.number,
+                  body: '🤖 Auto-merge enabled! This PR will be automatically merged once all required CI checks pass.'
+                });
+              } catch (error) {
+                console.log(`PR #${pr.number}: failed - ${error.message}`);
+              }
+            }
+
+  # Explicit "tests must pass" gate that does not depend on branch
+  # protection: after CI completes (or on the daily sweep), merge every open
+  # Dependabot PR whose head commit has all check runs completed successfully.
+  # PRs with no checks, pending checks, failing checks, or merge conflicts are
+  # skipped and re-evaluated on the next trigger.
+  merge-when-green:
+    name: Merge Dependabot PRs with passing checks
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_run' || github.event_name == 'schedule'
+    concurrency:
+      group: dependabot-merge
+      cancel-in-progress: false
+    steps:
+      - name: Merge green Dependabot PRs
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prs = await github.paginate(github.rest.pulls.list, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 100
+            });
+
+            const dependabotPrs = prs.filter(pr => pr.user?.login === 'dependabot[bot]');
+            console.log(`Found ${dependabotPrs.length} open Dependabot PRs`);
+
+            for (const prSummary of dependabotPrs) {
+              try {
+                const { data: pr } = await github.rest.pulls.get({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: prSummary.number
+                });
+
+                if (pr.mergeable === false) {
+                  console.log(`PR #${pr.number}: skipped - merge conflicts`);
+                  continue;
+                }
+                if (pr.mergeable === null) {
+                  console.log(`PR #${pr.number}: skipped - mergeability not computed yet`);
+                  continue;
+                }
+
+                const { data: checks } = await github.rest.checks.listForRef({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  ref: pr.head.sha,
+                  per_page: 100
+                });
+
+                if (checks.total_count === 0) {
+                  console.log(`PR #${pr.number}: skipped - no checks to gate on`);
+                  continue;
+                }
+                if (checks.check_runs.some(c => c.status !== 'completed')) {
+                  console.log(`PR #${pr.number}: skipped - checks still running`);
+                  continue;
+                }
+                if (checks.check_runs.some(c => !['success', 'neutral', 'skipped'].includes(c.conclusion))) {
+                  console.log(`PR #${pr.number}: skipped - failing checks`);
+                  continue;
+                }
+
+                await github.rest.pulls.merge({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: pr.number,
+                  merge_method: 'squash'
+                });
+                console.log(`PR #${pr.number}: merged (all ${checks.total_count} checks passed)`);
+              } catch (error) {
+                console.log(`PR #${prSummary.number}: merge failed - ${error.message}`);
+              }
+            }

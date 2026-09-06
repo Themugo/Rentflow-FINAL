@@ -1,0 +1,34 @@
+CALQULUS PMS — Initiative 49 Audit
+Maintenance Asset Register, Condition & Lifecycle Intelligence
+
+Scope
+- Asset register with manager/property/unit scope.
+- Condition assessment history.
+- Replacement lifecycle visibility.
+- Asset linkage to canonical maintenance requests and preventive plans.
+- Asset-level maintenance count and actual expenditure visibility.
+
+Controls
+PASS — RLS enabled on maintenance_assets and maintenance_asset_condition_assessments.
+PASS — Manager scope enforced by can_manage_property_scope in SECURITY DEFINER RPCs.
+PASS — Authenticated-only RPC execution; PUBLIC/anon execution revoked.
+PASS — No duplicate work-order ledger introduced.
+PASS — Existing maintenance_requests remain canonical service history.
+PASS — Existing expenditures remain canonical actual-cost source.
+PASS — Existing preventive maintenance plans remain canonical recurring schedule source.
+PASS — Preventive generation preserves asset_id linkage.
+PASS — Condition assessments append history and update current asset condition.
+PASS — Asset reference unique per manager.
+PASS — Property/unit ownership validated before asset creation.
+PASS — Maintenance and preventive asset-link operations require matching manager scope.
+
+Verification
+PASS — TypeScript: npx tsc --noEmit --pretty false
+PASS — Migration chain: 208 SQL migrations, 0 unexpected duplicate versions, 0 ordering warnings.
+PASS — Deployment controls.
+PASS — Cross-role isolation audit.
+NOT RUN — Full Vitest suite; node_modules/dependencies are unavailable in the packaged workspace.
+REQUIRED — Live Supabase migration reconciliation before production deployment.
+
+Architecture
+Asset intelligence is an operational layer over existing maintenance and financial records. It does not create a second work-order, expenditure, cash, or accounting source of truth.

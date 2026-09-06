@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-09-03T14:45:32.432Z",
+  "status": "EXTERNAL_REQUIRED",
+  "tracePresent": true,
+  "migrationCount": 158,
+  "traceMigrationCount": 158,
+  "artifactHashIntegrity": "PASS",
+  "migrationMismatches": [],
+  "missingProductionExecutionFields": [
+    "releaseCommit",
+    "deploymentId",
+    "migrationRunId",
+    "migrationAppliedAt",
+    "migrationOperator",
+    "authorizationId"
+  ],
+  "secretFieldsPersisted": true,
+  "rule": "Production change traceability is certified only when the recorded release, deployment, migration execution, and authorization identifiers are externally evidenced and all recorded hashes still match."
+}

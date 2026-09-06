@@ -1,0 +1,24 @@
+{
+  "generatedAt": "2026-09-04T06:25:08.528Z",
+  "status": "EXTERNAL_REQUIRED",
+  "checks": {
+    "rollbackRunbook": true,
+    "restoreDrillScript": true,
+    "migrationRepairPlan": true,
+    "deploymentRunbook": true,
+    "rollbackEvidenceRecorded": false,
+    "artifactProvenance": true,
+    "deploymentManifestPresent": true
+  },
+  "missingRepositoryPrerequisites": [
+    "rollbackEvidenceRecorded"
+  ],
+  "requiredExternalEvidence": [
+    "approved backup/PITR restore point",
+    "tested rollback execution or restore evidence",
+    "release operator and execution IDs"
+  ],
+  "rollbackEvidenceStatus": "EXTERNAL_REQUIRED",
+  "artifactProvenanceStatus": "PASS",
+  "rule": "Rollback readiness may be prepared in-repository, but production recovery is never certified without external backup/restore and approved execution evidence."
+}

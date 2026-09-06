@@ -1,0 +1,31 @@
+{
+  "generatedAt": "2026-09-03T15:46:21.579Z",
+  "status": "EXTERNAL_REQUIRED",
+  "evidenceVersion": "1.0",
+  "sourceFileProvided": false,
+  "sourceSha256": null,
+  "acceptedFields": [
+    "deploymentAt",
+    "deploymentId",
+    "deploymentOperator",
+    "deploymentTarget",
+    "migrationAppliedAt",
+    "migrationOperator",
+    "migrationRunId",
+    "productionApproval",
+    "productionApprovalId",
+    "productionApprovedAt",
+    "productionApprover",
+    "releaseCommit",
+    "rollbackExecutedAt",
+    "rollbackExecutionId",
+    "rollbackOperator",
+    "rollbackRestoreRunId",
+    "rollbackVerified",
+    "stagingMigrationRun",
+    "stagingRestoreRun",
+    "stagingSmokeRun"
+  ],
+  "findings": [],
+  "rule": "Production evidence ingestion accepts identifiers and timestamps only; secrets and unsupported fields are rejected. Raw external evidence is never copied into repository evidence."
+}

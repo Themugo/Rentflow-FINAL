@@ -1,0 +1,94 @@
+{
+  "releaseCommit": "",
+  "stagingMigrationRun": {
+    "timestamp": "",
+    "target": "",
+    "operator": "",
+    "outcome": ""
+  },
+  "stagingSmokeRun": {
+    "timestamp": "",
+    "target": "",
+    "operator": "",
+    "outcome": ""
+  },
+  "stagingRestoreRun": {
+    "timestamp": "",
+    "recoveryPoint": "",
+    "restoreTarget": "",
+    "operator": "",
+    "outcome": ""
+  },
+  "productionApproval": {
+    "timestamp": "",
+    "approver": "",
+    "decision": ""
+  },
+  "automatedEvidence": {
+    "capturedAt": "2026-09-04T06:31:04.363Z",
+    "migrationReconciliation": {
+      "status": "EXTERNAL_REQUIRED",
+      "generatedAt": "2026-09-04T06:31:03.862Z"
+    },
+    "stagingSmoke": {
+      "status": "EXTERNAL_REQUIRED",
+      "generatedAt": "2026-09-03T13:59:58.769Z"
+    },
+    "stagingE2E": {
+      "status": "EXTERNAL_REQUIRED",
+      "generatedAt": "2026-09-04T06:31:04.003Z"
+    },
+    "stagingRoleCertification": {
+      "status": "EXTERNAL_REQUIRED",
+      "generatedAt": "2026-09-04T06:31:04.115Z"
+    },
+    "liveSecurity": {
+      "status": "EXTERNAL_REQUIRED",
+      "generatedAt": "2026-09-04T06:31:04.231Z"
+    },
+    "disasterRecovery": {
+      "status": "PASS",
+      "generatedAt": "2026-09-04T06:31:03.191Z"
+    },
+    "rollbackExecution": {
+      "status": "EXTERNAL_REQUIRED",
+      "generatedAt": "2026-09-03T14:13:21.314Z"
+    },
+    "artifactProvenance": {
+      "status": "BLOCKED",
+      "generatedAt": "2026-09-04T06:25:25.810Z"
+    },
+    "deploymentDrift": {
+      "status": "FAIL",
+      "generatedAt": "2026-09-04T06:25:25.847Z"
+    },
+    "rollbackReadiness": {
+      "status": "EXTERNAL_REQUIRED",
+      "generatedAt": "2026-09-04T06:25:08.528Z"
+    },
+    "releasePromotionLock": {
+      "status": "EXTERNAL_REQUIRED",
+      "generatedAt": "2026-09-04T06:25:20.788Z"
+    },
+    "productionChangeTrace": {
+      "status": "EXTERNAL_REQUIRED",
+      "generatedAt": "2026-09-03T14:45:32.432Z"
+    },
+    "signedReleaseManifest": {
+      "status": "EXTERNAL_REQUIRED",
+      "generatedAt": "2026-09-03T15:54:17.602Z"
+    },
+    "deploymentAttestation": {
+      "status": "EXTERNAL_REQUIRED",
+      "generatedAt": "2026-09-03T15:54:17.705Z"
+    },
+    "productionEvidenceIngestion": {
+      "status": "EXTERNAL_REQUIRED",
+      "generatedAt": "2026-09-03T15:46:21.579Z"
+    },
+    "independentReleaseAttestation": {
+      "status": "EXTERNAL_REQUIRED",
+      "generatedAt": "2026-09-03T15:46:35.898Z"
+    }
+  }
+}

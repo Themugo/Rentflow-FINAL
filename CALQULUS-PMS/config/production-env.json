@@ -1,0 +1,74 @@
+{
+  "frontend": {
+    "required": [
+      "VITE_SUPABASE_URL",
+      "VITE_SUPABASE_PUBLISHABLE_KEY"
+    ],
+    "productionDefaults": {
+      "VITE_ENABLE_PUBLIC_DEMO": "false",
+      "VITE_ENABLE_DEMO_SEED": "false",
+      "VITE_DEMO_SEED_SECRET": ""
+    },
+    "optional": [
+      "VITE_SENTRY_DSN",
+      "VITE_SENTRY_ENV",
+      "VITE_APP_VERSION",
+      "VITE_AUTH_TIMEOUT_MS",
+      "VITE_ENABLE_DEV_ACCESS",
+      "VITE_DEV_ACCESS_EMAIL",
+      "VITE_DEV_ACCESS_PASSWORD",
+      "VITE_WEBHOOK_PAYMENT_FAILURES",
+      "VITE_WEBHOOK_SECRET",
+      "VITE_WEBHOOK_SECURITY_ALERTS",
+      "VITE_WEBHOOK_CALLBACK_FAILURES",
+      "VITE_WEBHOOK_DATABASE_ANOMALIES",
+      "VITE_UPSTASH_REDIS_REST_URL",
+      "VITE_UPSTASH_REDIS_REST_TOKEN",
+      "VITE_OTEL_EXPORTER_OTLP_ENDPOINT"
+    ]
+  },
+  "supabase": {
+    "providedBySupabase": [
+      "SUPABASE_URL",
+      "SUPABASE_ANON_KEY",
+      "SUPABASE_SERVICE_ROLE_KEY"
+    ],
+    "requiredSecrets": [
+      "AFRICASTALKING_API_KEY",
+      "AFRICASTALKING_USERNAME",
+      "APP_URL",
+      "APP_VERSION",
+      "AT_API_KEY",
+      "AT_USERNAME",
+      "BOOTSTRAP_SECRET",
+      "DEMO_SECRET",
+      "ENVIRONMENT",
+      "LOVABLE_API_KEY",
+      "META_PHONE_NUMBER_ID",
+      "META_WHATSAPP_TOKEN",
+      "NODE_ENV",
+      "PAYSTACK_SECRET_KEY",
+      "PHONE_NUMBER_ID",
+      "REPORT_FROM_EMAIL",
+      "RESEND_API_KEY",
+      "RESEND_FROM_DOMAIN",
+      "RESEND_FROM_EMAIL",
+      "SENDGRID_API_KEY",
+      "SITE_URL",
+      "STRIPE_SECRET_KEY",
+      "STRIPE_WEBHOOK_SECRET",
+      "TWILIO_ACCOUNT_SID",
+      "TWILIO_AUTH_TOKEN",
+      "TWILIO_WHATSAPP_FROM",
+      "WHATSAPP_ACCESS_TOKEN"
+    ],
+    "paymentProviderSecrets": [
+      "MPESA_CALLBACK_SECRET",
+      "MPESA_CONSUMER_KEY",
+      "MPESA_CONSUMER_SECRET",
+      "MPESA_ENV",
+      "MPESA_PASSKEY",
+      "MPESA_SHORTCODE"
+    ]
+  }
+}

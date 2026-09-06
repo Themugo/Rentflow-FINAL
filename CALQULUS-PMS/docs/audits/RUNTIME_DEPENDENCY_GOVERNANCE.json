@@ -1,0 +1,28 @@
+{
+  "generatedAt": "2026-09-03T15:47:19.784Z",
+  "status": "PASS",
+  "policyPresent": true,
+  "packageJsonPresent": true,
+  "lockfilePresent": true,
+  "lockfileVersion": 3,
+  "packageJsonSha256": "277cb5b4c0b0079683403d4bdfc31d8b8a6fd611ff9c01d9998a848f9854123d",
+  "lockfileSha256": "16764a542eb0efc6431ba30c25da33a9052207e35d0b1dda8fa82f581a79510e",
+  "directDependencyCount": 64,
+  "missingLockedDependencies": [],
+  "specVersionMismatches": [],
+  "gitOrFileDependencies": [],
+  "lifecycleScripts": [],
+  "outdated": {
+    "status": "EXTERNAL_REQUIRED",
+    "packages": [],
+    "reason": "Network-backed npm registry query is not authoritative in an offline packaged workspace."
+  },
+  "vulnerabilityGate": "CI_REQUIRED",
+  "rules": {
+    "lockfile": "npm lockfileVersion 3 is required and every direct dependency must have a matching lock entry.",
+    "registry": "Git/file/link dependencies require explicit review and are never silently accepted as runtime dependencies.",
+    "lifecycle": "Install lifecycle scripts require review because they execute code during dependency installation.",
+    "updates": "Major runtime updates require review before promotion; minor/patch updates should be refreshed routinely.",
+    "vulnerabilities": "High/critical npm audit findings must block CI unless formally remediated or waived with owner and expiry."
+  }
+}

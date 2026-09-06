@@ -1,0 +1,12 @@
+import fs from 'node:fs'; import path from 'node:path'; import {spawnSync} from 'node:child_process';
+const root=process.cwd(), out=path.join(root,'docs','audits','SCHEMA_DRIFT_REPORT.json');
+const db=process.env.DATABASE_URL||process.env.SUPABASE_DB_URL; const baselinePath=path.join(root,'config','schema-drift-baseline.json');
+if(!db){fs.writeFileSync(out,JSON.stringify({generatedAt:new Date().toISOString(),status:'EXTERNAL_REQUIRED',reason:'DATABASE_URL or SUPABASE_DB_URL is required; no live database is accessed implicitly.'},null,2)+'\n');console.log('schema-drift: EXTERNAL_REQUIRED');process.exit(0);}
+const sql=`select n.nspname as schema_name,c.relname as object_name,c.relkind as object_kind from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname in ('public','storage') and c.relkind in ('r','v','m','p','S','f') order by 1,2;`;
+const r=spawnSync('psql',['--no-psqlrc','--tuples-only','--csv',db,'-c',sql],{encoding:'utf8'});
+if(r.status!==0){fs.writeFileSync(out,JSON.stringify({generatedAt:new Date().toISOString(),status:'BLOCKED',error:String(r.stderr||r.error||'psql failed').trim()},null,2)+'\n');console.log('schema-drift: BLOCKED');process.exit(1);}
+const live=r.stdout.split(/\r?\n/).map(x=>x.trim()).filter(Boolean); let baseline; try{baseline=JSON.parse(fs.readFileSync(baselinePath,'utf8'));}catch{}
+if(!baseline?.objects){fs.writeFileSync(out,JSON.stringify({generatedAt:new Date().toISOString(),status:'EXTERNAL_REQUIRED',liveObjectCount:live.length,liveObjectHash:requireHash(live),reason:'Live schema inventory captured. Commit a reviewed config/schema-drift-baseline.json before enforcing drift comparison.'},null,2)+'\n');console.log('schema-drift: EXTERNAL_REQUIRED');process.exit(0);}
+const expected=[...baseline.objects].sort(); const actual=[...live].sort(); const missing=expected.filter(x=>!actual.includes(x)); const extra=actual.filter(x=>!expected.includes(x)); const status=missing.length||extra.length?'FAIL':'PASS';
+fs.writeFileSync(out,JSON.stringify({generatedAt:new Date().toISOString(),status,expectedObjectCount:expected.length,liveObjectCount:actual.length,missingObjects:missing,unexpectedObjects:extra,liveObjectHash:requireHash(actual)},null,2)+'\n'); console.log(`schema-drift: ${status}`); if(status==='FAIL')process.exit(1);
+function requireHash(items){let h=0;for(const s of items){for(let i=0;i<s.length;i++)h=((h<<5)-h+s.charCodeAt(i))|0;}return Math.abs(h).toString(16);}
