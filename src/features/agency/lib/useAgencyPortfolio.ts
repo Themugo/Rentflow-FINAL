@@ -16,6 +16,7 @@ export type AgencyPropertyRow = {
   collectedMtd: number;
   outstanding: number;
   serviceModel: AgencyServiceModel | null;
+  tenantCount: number;
 };
 
 export type AgencyClientRow = {
@@ -29,6 +30,7 @@ export type AgencyClientRow = {
   occupancyRate: number;
   collectedMtd: number;
   outstanding: number;
+  propertyLocations: string[];
 };
 
 export type AgencyMonthPoint = { month: string; paid: number; pending: number };
@@ -81,6 +83,7 @@ export function useAgencyPortfolio() {
         linksRes,
         invoicesRes,
         expiringRes,
+        tenantsRes,
       ] = await Promise.all([
         supabase
           .from("properties")
@@ -101,11 +104,17 @@ export function useAgencyPortfolio() {
           .eq("manager_id", user.id)
           .eq("status", "active")
           .lte("end_date", expiringCutoff),
+        supabase
+          .from("tenants")
+          .select("id, property_id")
+          .eq("manager_id", user.id)
+          .eq("status", "active"),
       ]);
 
       if (propertiesRes.error) throw propertiesRes.error;
       if (linksRes.error) throw linksRes.error;
       if (invoicesRes.error) throw invoicesRes.error;
+      if (tenantsRes.error) throw tenantsRes.error;
 
       const properties = (propertiesRes.data ?? []) as {
         id: string;
@@ -122,6 +131,12 @@ export function useAgencyPortfolio() {
         operating_model?: string | null;
         agency_service_model?: string | null;
       }[];
+      const tenantRows = (tenantsRes.data ?? []) as { id: string; property_id: string | null }[];
+      const tenantCountByProperty = new Map<string, number>();
+      for (const tenant of tenantRows) {
+        if (tenant.property_id) tenantCountByProperty.set(tenant.property_id, (tenantCountByProperty.get(tenant.property_id) ?? 0) + 1);
+      }
+
       const invoices = (invoicesRes.data ?? []) as {
         property_id: string | null;
         amount: number | string | null;
@@ -193,6 +208,7 @@ export function useAgencyPortfolio() {
           collectedMtd: collectedByProperty.get(property.id) ?? 0,
           outstanding: outstandingByProperty.get(property.id) ?? 0,
           serviceModel: (link?.agency_service_model ?? agencyServiceModelFromOperatingModel(link?.operating_model)) as AgencyPropertyRow["serviceModel"],
+          tenantCount: tenantCountByProperty.get(property.id) ?? 0,
         };
       });
 
@@ -207,6 +223,7 @@ export function useAgencyPortfolio() {
           existing.occupied += property.occupied;
           existing.collectedMtd += property.collectedMtd;
           existing.outstanding += property.outstanding;
+          if (property.address && !existing.propertyLocations.includes(property.address)) existing.propertyLocations.push(property.address);
           existing.occupancyRate = occupancyRate(existing.occupied, existing.units);
         } else {
           clientMap.set(key, {
@@ -220,6 +237,7 @@ export function useAgencyPortfolio() {
             occupancyRate: property.occupancyRate,
             collectedMtd: property.collectedMtd,
             outstanding: property.outstanding,
+            propertyLocations: property.address ? [property.address] : [],
           });
         }
       }

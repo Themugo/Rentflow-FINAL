@@ -10,6 +10,8 @@ import {
   Home,
   UserPlus,
   Wrench,
+  Settings2,
+  ShieldAlert,
 } from "lucide-react";
 import {
   Area,
@@ -99,7 +101,7 @@ export default function AgencyDashboard() {
   return (
     <AgencyLayout
       title="Your agency at a glance."
-      description="Clients are landlords you serve. Collections track rent recorded across the book; service mix shows where the agency collects versus where owners collect directly."
+      description="Run the client book from one operating view. Collections, operations and service mix follow the mandate agreed with each landlord."
       actions={<p className="type-meta whitespace-nowrap text-muted-foreground">Today · {dateLabel}</p>}
     >
       {isError ? <ErrorState title="Couldn't load the agency book" onRetry={() => void refetch()} className="mb-6" /> : null}
@@ -124,6 +126,22 @@ export default function AgencyDashboard() {
           </Button>
         </section>
       ) : null}
+
+      {/* Command tabs — the dashboard is an operations centre, while detailed work stays in the same canonical routes. */}
+      <nav aria-label="Agency command tabs" className="mb-6 flex min-w-0 gap-1 overflow-x-auto rounded-xl border border-border bg-card p-1">
+        {[
+          ["Overview", AGENCY_ROUTES.dashboard],
+          ["Landlords", AGENCY_ROUTES.clients],
+          ["Properties", AGENCY_ROUTES.portfolio],
+          ["Collections", AGENCY_ROUTES.billing],
+          ["Operations", AGENCY_OPS_ROUTES.maintenance],
+          ["Controls", AGENCY_ROUTES.settings],
+        ].map(([label, href]) => (
+          <Link key={href} to={href} className={cn("whitespace-nowrap rounded-lg px-3 py-2 text-xs font-semibold transition", href === AGENCY_ROUTES.dashboard ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground")}>
+            {label}
+          </Link>
+        ))}
+      </nav>
 
       {/* Executive KPI row — one unified metric system, live values only */}
       <section className="mb-6 min-w-0" aria-labelledby="agency-dashboard-kpi">
@@ -178,7 +196,7 @@ export default function AgencyDashboard() {
                   compact
                   title="Collections recorded"
                   value={formatKes(data.collectedMtd)}
-                  change="Rent recorded this month"
+                  change="Recorded this month · follows client mandate"
                   changeType="neutral"
                   icon={CreditCard}
                   iconColor="primary"
@@ -188,6 +206,26 @@ export default function AgencyDashboard() {
         </div>
       </section>
 
+      {/* Operational pulse — color-coded decisions, not decorative numbers. */}
+      <section className="mb-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4" aria-label="Agency operational pulse">
+        {[
+          { label: "Collections", value: data ? formatKes(data.collectedMtd) : "—", detail: "recorded this month", tone: "border-emerald-500/25 bg-emerald-500/[0.045]", icon: CreditCard, href: AGENCY_ROUTES.billing },
+          { label: "Occupancy", value: data ? `${data.occupancyRate}%` : "—", detail: "portfolio occupied", tone: "border-primary/25 bg-primary/[0.045]", icon: Home, href: AGENCY_ROUTES.portfolio },
+          { label: "Attention", value: isLoading ? "—" : String(attentionCount), detail: attentionCount ? "items need action" : "nothing urgent", tone: attentionCount ? "border-amber-500/25 bg-amber-500/[0.045]" : "border-border bg-card", icon: attentionCount ? ShieldAlert : Home, href: attentionCount ? AGENCY_ROUTES.dashboard : AGENCY_ROUTES.clients },
+          { label: "Maintenance", value: isLoading ? "—" : String(openMaintenance), detail: "open requests", tone: openMaintenance ? "border-orange-500/25 bg-orange-500/[0.045]" : "border-border bg-card", icon: Wrench, href: AGENCY_OPS_ROUTES.maintenance },
+        ].map((item) => {
+          const Icon = item.icon;
+          return (
+            <Link key={item.label} to={item.href} className={cn("group rounded-xl border p-4 transition hover:-translate-y-0.5 hover:shadow-sm", item.tone)}>
+              <div className="flex items-start justify-between gap-3">
+                <div><p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">{item.label}</p><p className="mt-1 font-heading text-xl font-bold text-foreground">{item.value}</p><p className="mt-0.5 text-[10px] text-muted-foreground">{item.detail}</p></div>
+                <span className="rounded-lg bg-background/80 p-2 text-primary shadow-sm"><Icon className="h-4 w-4" aria-hidden /></span>
+              </div>
+            </Link>
+          );
+        })}
+      </section>
+
       {/* Portfolio performance + snapshot */}
       <div className="mb-6 grid grid-cols-1 gap-5 xl:grid-cols-12">
         <section className={cn(AGENCY_CARD.panel, "xl:col-span-7")} aria-labelledby="agency-dashboard-performance">
@@ -195,7 +233,7 @@ export default function AgencyDashboard() {
             id="agency-dashboard-performance"
             eyebrow="Cash flow"
             title="Portfolio performance"
-            description="Collected versus outstanding invoices over six months"
+            description="Recorded collections versus outstanding invoices across the client book"
             className="mb-4"
           />
           {isLoading ? (
@@ -515,10 +553,13 @@ export default function AgencyDashboard() {
 
       {/* Quick actions — linked to real Agency routes */}
       <section className="mb-6 flex flex-wrap items-center gap-2" aria-labelledby="agency-dashboard-quick-actions">
-        <h2 id="agency-dashboard-quick-actions" className="section-title mr-auto pr-4">Quick actions</h2>
+        <div className="mr-auto min-w-0 pr-4">
+          <h2 id="agency-dashboard-quick-actions" className="section-title">Quick actions</h2>
+          <p className="mt-0.5 text-xs text-muted-foreground">Start common work without leaving the agency desk.</p>
+        </div>
         <Button size="sm" variant="outline" className="min-h-11" asChild>
           <Link to={AGENCY_ROUTES.clients}>
-            <Handshake className="h-4 w-4" aria-hidden /> Add client
+            <Handshake className="h-4 w-4" aria-hidden /> Manage landlords
           </Link>
         </Button>
         <Button size="sm" variant="outline" className="min-h-11" asChild>
@@ -539,6 +580,11 @@ export default function AgencyDashboard() {
         <Button size="sm" variant="outline" className="min-h-11" asChild>
           <Link to={AGENCY_ROUTES.reports}>
             <FileChartColumn className="h-4 w-4" aria-hidden /> View reports
+          </Link>
+        </Button>
+        <Button size="sm" className="min-h-11" asChild>
+          <Link to={AGENCY_ROUTES.settings}>
+            <Settings2 className="h-4 w-4" aria-hidden /> Agency controls
           </Link>
         </Button>
       </section>

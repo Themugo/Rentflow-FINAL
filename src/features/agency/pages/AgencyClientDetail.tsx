@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { ArrowLeft, Building2, Handshake } from "lucide-react";
+import { ArrowLeft, Building2, Handshake, MapPin, Users } from "lucide-react";
 import AgencyLayout from "@/features/agency/components/AgencyLayout";
 import { useAgencyPortfolio } from "@/features/agency/lib/useAgencyPortfolio";
 import { AGENCY_ROUTES, agencyPropertyPath } from "@/features/agency/lib/agencyPaths";
@@ -197,37 +197,26 @@ export default function AgencyClientDetail() {
               {properties.length === 0 ? (
                 <p className="py-8 text-sm text-muted-foreground">No buildings linked to this client yet.</p>
               ) : (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Property</TableHead>
-                      <TableHead className="text-right">Units</TableHead>
-                      <TableHead className="text-right">Occupancy</TableHead>
-                      <TableHead className="text-right">Collected</TableHead>
-                      <TableHead className="text-right">Outstanding</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {properties.map((property) => (
-                      <TableRow key={property.id}>
-                        <TableCell>
-                          <Link to={agencyPropertyPath(property.id)} className="font-medium hover:underline">
-                            {property.name}
-                          </Link>
-                          {property.address ? <p className="text-xs text-muted-foreground">{property.address}</p> : null}
-                        </TableCell>
-                        <TableCell className="text-right text-sm">{property.occupied}/{property.units}</TableCell>
-                        <TableCell className={`text-right text-sm ${occupancyRateColor(property.occupancyRate)}`}>
-                          {property.occupancyRate}%
-                        </TableCell>
-                        <TableCell className="text-right text-sm font-medium">{formatKes(property.collectedMtd)}</TableCell>
-                        <TableCell className={`text-right text-sm ${property.outstanding > 0 ? "text-destructive" : ""}`}>
-                          {formatKes(property.outstanding)}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+                  {properties.map((property) => (
+                    <Link key={property.id} to={agencyPropertyPath(property.id)} className="rounded-xl border border-border bg-card p-4 transition hover:border-primary/40 hover:shadow-sm">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-semibold">{property.name}</p>
+                          <p className="mt-1 flex items-center gap-1 text-[10px] text-muted-foreground"><MapPin className="h-3 w-3 shrink-0" />{property.address || "Location not recorded"}</p>
+                        </div>
+                        <Building2 className="h-4 w-4 shrink-0 text-primary" />
+                      </div>
+                      <div className="mt-4 grid grid-cols-4 gap-2 text-center">
+                        <div className="rounded-md bg-muted/40 p-2"><p className="text-[9px] uppercase text-muted-foreground">Units</p><p className="text-xs font-semibold">{property.units}</p></div>
+                        <div className="rounded-md bg-muted/40 p-2"><p className="text-[9px] uppercase text-muted-foreground">Tenants</p><p className="inline-flex items-center gap-1 text-xs font-semibold"><Users className="h-3 w-3" />{property.tenantCount}</p></div>
+                        <div className="rounded-md bg-muted/40 p-2"><p className="text-[9px] uppercase text-muted-foreground">Occupancy</p><p className={`text-xs font-semibold ${occupancyRateColor(property.occupancyRate)}`}>{property.occupancyRate}%</p></div>
+                        <div className="rounded-md bg-muted/40 p-2"><p className="text-[9px] uppercase text-muted-foreground">Due</p><p className={`text-xs font-semibold ${property.outstanding > 0 ? "text-destructive" : ""}`}>{formatKes(property.outstanding)}</p></div>
+                      </div>
+                      <div className="mt-3 flex items-center justify-between border-t border-border/60 pt-3 text-[10px] text-muted-foreground"><span>Recorded {formatKes(property.collectedMtd)} this month</span><span className="font-semibold text-primary">Open property</span></div>
+                    </Link>
+                  ))}
+                </div>
               )}
             </TabsContent>
 

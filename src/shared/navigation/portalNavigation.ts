@@ -86,26 +86,41 @@ export const MANAGER_NAV_GROUPS: PortalDeskNavGroup[] = [
 
 export const AGENCY_NAV_GROUPS: PortalDeskNavGroup[] = [
   {
-    label: "Agency book",
+    label: "Overview",
     items: [
       { label: "Dashboard", href: AGENCY_ROUTES.dashboard, icon: LayoutDashboard },
-      { label: "Clients", href: AGENCY_ROUTES.clients, icon: Handshake },
-      { label: "Portfolio", href: AGENCY_ROUTES.portfolio, icon: Building2 },
     ],
   },
   {
-    label: "Operations",
+    label: "Client book",
     items: [
+      { label: "Clients", href: AGENCY_ROUTES.clients, icon: Handshake },
+      { label: "Portfolio", href: AGENCY_ROUTES.portfolio, icon: Building2 },
       { label: "Tenants", href: AGENCY_ROUTES.tenants, icon: Users },
       { label: "Leases", href: AGENCY_OPS_ROUTES.leases, icon: FileText },
+    ],
+  },
+  {
+    label: "Financial operations",
+    items: [
       { label: "Billing", href: AGENCY_ROUTES.billing, icon: CreditCard },
       { label: "Water Billing", href: AGENCY_OPS_ROUTES.waterBilling, icon: Droplets },
       { label: "Statements", href: AGENCY_OPS_ROUTES.statements, icon: FileSpreadsheet },
+    ],
+  },
+  {
+    label: "Property operations",
+    items: [
+      { label: "Maintenance", href: AGENCY_OPS_ROUTES.maintenance, icon: Wrench },
       { label: "Invites", href: AGENCY_OPS_ROUTES.invites, icon: Mail },
       { label: "Vacation Notices", href: AGENCY_OPS_ROUTES.vacationNotices, icon: Calendar },
-      { label: "Maintenance", href: AGENCY_OPS_ROUTES.maintenance, icon: Wrench },
+    ],
+  },
+  {
+    label: "Insights & control",
+    items: [
       { label: "Reports", href: AGENCY_ROUTES.reports, icon: BarChart3 },
-      { label: "Settings", href: AGENCY_ROUTES.settings, icon: Settings },
+      { label: "Agency controls", href: AGENCY_ROUTES.settings, icon: Settings },
     ],
   },
 ];

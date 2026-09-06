@@ -1,26 +1,37 @@
-# CALQULUS PMS — MASTER UPDATED REPOSITORY
+# CALQULUS PMS — Agency Landlord-First Operations Centre
 
-This archive is a **complete repository snapshot**, not a patch. It was rebuilt from the supplied `CALQULUS-PMS-main` archive and includes the full project tree plus the completed Utilities, Amenities & Contract Document Control initiative.
+## Foundation
 
-## Copy target
-Extract the contents so the project root becomes:
+Built from the committed CALQULUS `main` foundation:
 
-`C:\Users\hp\Desktop\CALQULUS-PMS`
+`f2da729454017e3c6f95615ca3e6585c19c70ba0`
 
-Do not copy this archive inside the project as a nested folder. The extracted project root should contain `package.json`, `src`, `supabase`, `public`, `scripts`, etc.
+This is a full repository snapshot with the Agency landlord-first operations update layered into the existing architecture. It is **not a patch package**.
 
-## Verify
+## Added in this update
+
+- Agency-created landlord accounts for landlords who should not have to self-invite.
+- One landlord identity can be attached to multiple properties.
+- Property selection supports different locations/towns while retaining property-level rules.
+- Dynamic Agency sidebar landlord book.
+- Landlord workspace hierarchy: landlord → property → occupants/operations.
+- Property cards expose location, units, tenants and occupancy.
+- Agency dashboard command tabs and color-coded operational pulse cards.
+- Existing live Agency portfolio, billing, maintenance and service-model systems remain the source of truth.
+- Secure activation links are generated without exposing temporary passwords.
+- Server-side authorization revalidates agency/property relationships before account linkage.
+
+## Validation
+
+Static repository checks were run. Full npm test/typecheck/build was not run in this packaged environment because dependencies are not installed in the snapshot.
+
+After extraction into the local repository, run:
+
 ```cmd
-cd /d C:\Users\hp\Desktop\CALQULUS-PMS
 npm ci
-npm run test -- src/test/utilitiesAmenitiesContractsInitiative.test.ts
+npm run test -- src/test/agencyLandlordAccountWorkspace.test.ts
 npm run typecheck
 npm run build
 ```
 
-## Commit and push
-After verification and after the Supabase migration is applied through your normal deployment workflow:
-
-```cmd
-cd /d C:\Users\hp\Desktop\CALQULUS-PMS && git add -A && git commit -m "feat: complete utilities amenities and contract document control" && git push origin main
-```
+Then commit/push the resulting repository state to `main` so this becomes the next canonical foundation.
