@@ -63,6 +63,7 @@ import { cn } from "@/shared/lib/utils";
 import { paginate, sortBy, toggleSort, type SortDir } from "@/shared/lib/clientTable";
 import { SortableHead, TablePager } from "@/shared/components/ui/table-pager";
 import { DataTableFrame } from "@/shared/components/ui/data-table-frame";
+import { TenantLifecycleCommandBar } from "@/features/tenants/components/TenantLifecycleCommandBar";
 
 interface Property {
   id: string;
@@ -778,6 +779,24 @@ const Tenants = () => {
                   Move out
                 </Button>
               )}
+            </div>
+          )}
+          {selectedTenant && (
+            <div className="mt-4">
+              <TenantLifecycleCommandBar
+                tenant={selectedTenant}
+                lease={leaseByTenantId.get(selectedTenant.id) ?? null}
+                balance={tenantBalances[selectedTenant.id] ?? 0}
+                expiringSoon={(() => {
+                  const lease = leaseByTenantId.get(selectedTenant.id);
+                  return lease ? expiringSoonLeaseIds.has(lease.id) : false;
+                })()}
+                canMoveOut={can("approve_moveouts")}
+                onMoveOut={() => {
+                  setMoveOutTenant(selectedTenant);
+                  setMoveOutDialogOpen(true);
+                }}
+              />
             </div>
           )}
           {selectedTenant && (
