@@ -112,7 +112,8 @@
     "gate:environment": "node scripts/production-environment-gate.mjs",
     "gate:reconciliation": "node scripts/deployment-reconciliation-gate.mjs",
     "gate:smoke": "node scripts/production-smoke-gate.mjs",
-    "gate:production": "npm run gate:environment && npm run gate:reconciliation"
+    "gate:production": "npm run gate:environment && npm run gate:reconciliation",
+    "audit:deployment-workflow": "node scripts/audit-deployment-workflow.mjs"
   },
   "dependencies": {
     "@capacitor/android": "^8.4.0",
