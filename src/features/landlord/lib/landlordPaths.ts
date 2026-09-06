@@ -10,6 +10,7 @@ export const LANDLORD_ROUTES = {
   statements: "/landlord/statements",
   maintenance: "/landlord/maintenance",
   documents: "/landlord/documents",
+  management: "/landlord/management",
   settings: "/landlord/settings",
 } as const;
 

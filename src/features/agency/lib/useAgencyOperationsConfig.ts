@@ -19,6 +19,14 @@ export type AgencyContractRule = {
   settlement_rules: Record<string, boolean | string | number>;
   approval_rules: Record<string, boolean | string | number>;
   notes: string | null;
+  owner_controls_collections?: boolean;
+  owner_controls_financials?: boolean;
+  owner_controls_distributions?: boolean;
+  agency_controls_operations?: boolean;
+  agency_controls_tenant_communications?: boolean;
+  owner_approval_required?: boolean;
+  manual_payment_tolerance?: number;
+  expense_approval_threshold?: number;
 };
 
 export type AgencyChargeCatalogItem = {

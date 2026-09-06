@@ -45,6 +45,7 @@ export const MANAGER_NAV_GROUPS: PortalDeskNavGroup[] = [
       { label: "Units", href: "/units", icon: Layers, permission: "view_properties" },
       { label: "Owners", href: "/landlords", icon: Handshake, permission: "view_properties" },
       { label: "Management control", href: "/management-control", icon: ShieldAlert },
+      { label: "Operating rules", href: "/management-rules", icon: Settings },
     ],
   },
   {
@@ -111,7 +112,11 @@ export const AGENCY_NAV_GROUPS: PortalDeskNavGroup[] = [
 
 export const LANDLORD_NAV_GROUPS: PortalDeskNavGroup[] = [
   { label: "Overview", items: [{ label: "Dashboard", href: LANDLORD_ROUTES.dashboard, icon: LayoutDashboard }] },
-  { label: "Portfolio", items: [{ label: "Portfolio", href: LANDLORD_ROUTES.portfolio, icon: Building2 }] },
+  { label: "Portfolio", items: [
+    { label: "Portfolio", href: LANDLORD_ROUTES.portfolio, icon: Building2 },
+    { label: "Management", href: LANDLORD_ROUTES.management, icon: Handshake },
+    { label: "Rules & configuration", href: "/landlord/rules", icon: ShieldAlert },
+  ] },
   {
     label: "Financials",
     items: [

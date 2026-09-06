@@ -70,6 +70,7 @@ const ActivateAccount = lazy(() => import("@/features/auth/pages/ActivateAccount
 const ManagerPlatformBilling = lazy(() => import("@/features/payments/pages/ManagerPlatformBilling"));
 const ManagerLandlords = lazy(() => import("@/features/landlord/pages/ManagerLandlords"));
 const ManagementControl = lazy(() => import("@/features/manager/pages/ManagementControl"));
+const ManagementRules = lazy(() => import("@/features/manager/pages/ManagementRules"));
 const Invites = lazy(() => import("@/features/tenants/pages/Invites"));
 const WaterBilling = lazy(() => import("@/features/water/pages/WaterBilling"));
 const Statements = lazy(() => import("@/features/statements/pages/Statements"));
@@ -82,6 +83,8 @@ const LandlordStatements = lazy(() => import("@/features/landlord/pages/Landlord
 const LandlordMaintenance = lazy(() => import("@/features/landlord/pages/LandlordMaintenance"));
 const LandlordDocumentsPage = lazy(() => import("@/features/landlord/pages/LandlordDocumentsPage"));
 const LandlordSettings = lazy(() => import("@/features/landlord/pages/LandlordSettings"));
+const LandlordManagement = lazy(() => import("@/features/landlord/pages/LandlordManagement"));
+const LandlordRules = lazy(() => import("@/features/landlord/pages/LandlordRules"));
 const LandlordInvitationAccept = lazy(() => import("@/features/landlord/pages/LandlordInvitationAccept"));
 const LandlordOnboardingPage = lazy(() => import("@/features/onboarding/pages/LandlordOnboardingPage"));
 const AgencyOnboardingPage = lazy(() => import("@/features/onboarding/pages/AgencyOnboardingPage"));
@@ -369,6 +372,8 @@ export const roleRouteConfigs: RoleRouteConfig[] = [
       { path: "/landlord/maintenance", element: LandlordMaintenance, protected: true },
       { path: "/landlord/documents", element: LandlordDocumentsPage, protected: true },
       { path: "/landlord/settings", element: LandlordSettings, protected: true },
+      { path: "/landlord/management", element: LandlordManagement, protected: true },
+      { path: "/landlord/rules", element: LandlordRules, protected: true },
       { path: "/reset-password", element: ResetPassword },
       { path: "*", redirect: "/landlord/dashboard" },
     ],
@@ -481,6 +486,7 @@ export const roleRouteConfigs: RoleRouteConfig[] = [
       { path: "/water-billing", element: WaterBilling, protected: true },
       { path: "/statements", element: Statements, protected: true },
       { path: "/management-control", element: ManagementControl, protected: true },
+      { path: "/management-rules", element: ManagementRules, protected: true },
       { path: "/settings", element: Settings, protected: true },
       { path: "*", element: NotFoundPage },
     ],
