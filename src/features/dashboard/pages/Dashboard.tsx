@@ -1,4 +1,3 @@
-import { Layout } from "@/shared/components/layout/Layout";
 import { StatCard } from "@/features/dashboard/components/StatCard";
 import { AttentionStrip } from "@/features/dashboard/components/AttentionStrip";
 import { PortfolioOperationsControlCenter } from "@/features/dashboard/components/PortfolioOperationsControlCenter";
@@ -34,7 +33,8 @@ import MaintenanceAssetLifecycleCenter from "@/features/dashboard/components/Mai
 import PropertySafetyRegulatoryRiskCenter from "@/features/dashboard/components/PropertySafetyRegulatoryRiskCenter";
 import PropertyInspectionComplianceAssuranceCenter from "@/features/dashboard/components/PropertyInspectionComplianceAssuranceCenter";
 
-
+import ManagerOperatingSummary from "@/features/manager/components/ManagerOperatingSummary";
+import ManagerLayout from "@/features/manager/components/ManagerLayout";
 
 import { ManagerQuickActions } from "@/features/dashboard/components/ManagerQuickActions";
 import { ManagerActivationEmpty } from "@/features/dashboard/components/ManagerActivationEmpty";
@@ -168,7 +168,7 @@ const Dashboard = () => {
   }, [managerId, queryClient]);
 
   return (
-    <Layout
+    <ManagerLayout
       title="Dashboard"
       subtitle="Portfolio overview and today's operational priorities."
       headerActions={
@@ -195,6 +195,7 @@ const Dashboard = () => {
         </div>
       }
     >
+      <ManagerOperatingSummary />
       {!isEmptyPortfolio && <PaymentSetupStatus />}
       <ManagerSubscriptionBanner compact />
       <ManagerBillingRecoveryBanner />
@@ -535,7 +536,7 @@ const Dashboard = () => {
           </div>
         </>
       )}
-    </Layout>
+    </ManagerLayout>
   );
 };
 

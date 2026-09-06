@@ -67,7 +67,7 @@ interface SidebarProps {
 export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
   const location = useLocation();
   const navigate = useNavigate();
-  const { signOut, user, isWebhost, isAgency, isLandlord, isTenant } = useAuth();
+  const { signOut, user, isWebhost, isAgency, isLandlord, isTenant, isSubmanager } = useAuth();
   const { can } = useRBAC();
   const { isViewOnly } = useViewOnly();
   const { favorites } = useNavHistory();
@@ -96,7 +96,9 @@ export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
   // Filter items dynamically based on permission checks
   const navGroups = rawNavGroups.map((group) => ({
     ...group,
-    items: group.items.filter((item) => !item.permission || can(item.permission)),
+    items: group.items.filter((item) =>
+      (!isSubmanager || item.href !== "/management-control") && (!item.permission || can(item.permission)),
+    ),
   })).filter((group) => group.items.length > 0);
 
   const isActive = (href: string) => {

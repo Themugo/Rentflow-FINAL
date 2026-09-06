@@ -43,7 +43,8 @@ export const MANAGER_NAV_GROUPS: PortalDeskNavGroup[] = [
     items: [
       { label: "Properties", href: "/properties", icon: Building2, permission: "view_properties" },
       { label: "Units", href: "/units", icon: Layers, permission: "view_properties" },
-      { label: "Landlords", href: "/landlords", icon: Handshake, permission: "view_properties" },
+      { label: "Owners", href: "/landlords", icon: Handshake, permission: "view_properties" },
+      { label: "Management control", href: "/management-control", icon: ShieldAlert },
     ],
   },
   {

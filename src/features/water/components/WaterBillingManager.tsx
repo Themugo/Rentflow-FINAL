@@ -92,9 +92,6 @@ interface MeterReading {
   billing_period_end: string | null;
   status: string;
   notes: string | null;
-  reading_source?: string;
-  verified_at?: string | null;
-  verification_reason?: string | null;
 }
 
 interface WaterBillingManagerProps {
@@ -199,23 +196,6 @@ export function WaterBillingManager({ propertyId, propertyName }: WaterBillingMa
   useEffect(() => {
     fetchData();
   }, [propertyId, fetchData]);
-
-  const verifyReading = async (readingId: string, action: 'approve' | 'reject') => {
-    const reason = action === 'reject' ? window.prompt('Reason for rejecting this reading:') : null;
-    if (action === 'reject' && !reason?.trim()) return;
-    const { error } = await supabase.rpc('verify_water_meter_reading_atomic' as never, {
-      p_reading_id: readingId,
-      p_action: action,
-      p_current_reading: null,
-      p_reason: reason,
-    });
-    if (error) {
-      toast({ title: 'Verification failed', description: error.message, variant: 'destructive' });
-      return;
-    }
-    toast({ title: action === 'approve' ? 'Reading verified' : 'Reading rejected' });
-    fetchData();
-  };
 
   const handleSaveConfig = async () => {
     const { data: { user } } = await supabase.auth.getUser();
@@ -689,27 +669,14 @@ export function WaterBillingManager({ propertyId, propertyName }: WaterBillingMa
                           {formatCurrency(reading.total_amount)}
                         </TableCell>
                         <TableCell>
-                          <div className="flex flex-wrap items-center gap-2">
-                            <Badge variant="outline" className={cn(
-                              "capitalize",
-                              reading.status === "paid" && "bg-success/10 text-success border-success/20",
-                              reading.status === "invoiced" && "bg-[hsl(195_60%_42%/0.1)] text-[hsl(195_60%_32%)] border-[hsl(195_60%_42%/0.2)]",
-                              reading.status === "pending" && "bg-warning/10 text-warning border-warning/20",
-                              reading.status === "verified" && "bg-success/10 text-success border-success/20",
-                              reading.status === "rejected" && "bg-destructive/10 text-destructive border-destructive/20"
-                            )}>
-                              {reading.status}
-                            </Badge>
-                            {reading.reading_source && reading.reading_source !== 'manager_manual' && (
-                              <Badge variant="secondary" className="text-[10px]">{reading.reading_source.replaceAll('_', ' ')}</Badge>
-                            )}
-                            {(reading.status === 'pending' || reading.status === 'submitted') && (
-                              <>
-                                <Button size="sm" variant="outline" className="h-7" onClick={() => verifyReading(reading.id, 'approve')}>Verify</Button>
-                                <Button size="sm" variant="ghost" className="h-7 text-destructive" onClick={() => verifyReading(reading.id, 'reject')}>Reject</Button>
-                              </>
-                            )}
-                          </div>
+                          <Badge variant="outline" className={cn(
+                            "capitalize",
+                            reading.status === "paid" && "bg-success/10 text-success border-success/20",
+                            reading.status === "invoiced" && "bg-[hsl(195_60%_42%/0.1)] text-[hsl(195_60%_32%)] border-[hsl(195_60%_42%/0.2)]",
+                            reading.status === "pending" && "bg-warning/10 text-warning border-warning/20"
+                          )}>
+                            {reading.status}
+                          </Badge>
                         </TableCell>
                       </TableRow>
                     ))}

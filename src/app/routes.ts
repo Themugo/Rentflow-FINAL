@@ -69,6 +69,7 @@ const InstallApp = lazy(() => import("@/shared/pages/InstallApp"));
 const ActivateAccount = lazy(() => import("@/features/auth/pages/ActivateAccount"));
 const ManagerPlatformBilling = lazy(() => import("@/features/payments/pages/ManagerPlatformBilling"));
 const ManagerLandlords = lazy(() => import("@/features/landlord/pages/ManagerLandlords"));
+const ManagementControl = lazy(() => import("@/features/manager/pages/ManagementControl"));
 const Invites = lazy(() => import("@/features/tenants/pages/Invites"));
 const WaterBilling = lazy(() => import("@/features/water/pages/WaterBilling"));
 const Statements = lazy(() => import("@/features/statements/pages/Statements"));
@@ -479,6 +480,7 @@ export const roleRouteConfigs: RoleRouteConfig[] = [
       { path: "/invites", element: Invites, protected: true },
       { path: "/water-billing", element: WaterBilling, protected: true },
       { path: "/statements", element: Statements, protected: true },
+      { path: "/management-control", element: ManagementControl, protected: true },
       { path: "/settings", element: Settings, protected: true },
       { path: "*", element: NotFoundPage },
     ],
