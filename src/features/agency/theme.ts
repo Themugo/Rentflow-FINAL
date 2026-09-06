@@ -47,7 +47,7 @@ export const AGENCY_KPI_ACCENT = {
  */
 export const AGENCY_CARD = {
   /** A contained panel (chart, snapshot, panel). */
-  panel: "min-w-0 rounded-xl border border-border/80 bg-card p-5 shadow-[0_5px_20px_rgba(16,42,67,0.05)]",
+  panel: "min-w-0 rounded-xl border border-border bg-card p-5 card-shadow",
   /** A section that sits directly on the page instead of a floating card. */
   section: "min-w-0",
 } as const;

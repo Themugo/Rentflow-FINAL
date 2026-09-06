@@ -24,6 +24,7 @@ import { invalidateManagerActivation } from "@/features/dashboard/hooks/useManag
 import { invalidateDashboardQueries } from "@/shared/lib/invalidateDashboards";
 import { roundMoney } from "@/shared/lib/money";
 import type { Database } from "@/integrations/supabase/types";
+import { agencyServiceModelFromOperatingModel, type AgencyServiceModel } from "@/shared/constants/authorityModels";
 
 // ── Typed row aliases ────────────────────────────────────────────────────────
 
@@ -62,6 +63,10 @@ export interface BillingInvoice extends Omit<InvoiceRow, "status"> {
   original_amount: number | null;
   paid_amount: number;
   balance_due: number | null;
+  /** Agency-only: whether the agency is permitted to collect this invoice. */
+  agencyCanCollect?: boolean;
+  /** Agency-only: configured collection destination for this invoice. */
+  agencyCollectionDestination?: "agency" | "landlord";
 }
 
 // fetchLeases() below only selects a handful of columns (not every LeaseRow
@@ -96,7 +101,7 @@ export const billingKeys = {
 
 // ── Fetchers ─────────────────────────────────────────────────────────────────
 
-async function fetchInvoices(managerId: string, assignedPropertyIds?: string[]): Promise<BillingInvoice[]> {
+async function fetchInvoices(managerId: string, assignedPropertyIds?: string[], isAgency = false): Promise<BillingInvoice[]> {
   if (assignedPropertyIds && assignedPropertyIds.length === 0) return [];
 
   let scopedTenantIds: string[] | null = null;
@@ -129,7 +134,39 @@ async function fetchInvoices(managerId: string, assignedPropertyIds?: string[]):
     logError("billing.fetchInvoices", error);
     throw error;
   }
-  return (data ?? []) as BillingInvoice[];
+
+  const invoices = (data ?? []) as BillingInvoice[];
+  if (!isAgency || invoices.length === 0) return invoices;
+
+  const propertyIds = [...new Set(invoices.map((invoice) => invoice.property_id).filter((id): id is string => Boolean(id)))];
+  const { data: serviceLinks, error: serviceError } = propertyIds.length
+    ? await supabase
+        .from("property_landlords")
+        .select("property_id, agency_service_model, operating_model, payment_destination")
+        .eq("manager_id", managerId)
+        .in("property_id", propertyIds)
+    : { data: [], error: null };
+  if (serviceError) {
+    logError("billing.fetchAgencyServiceModels", serviceError);
+    throw serviceError;
+  }
+
+  const serviceByProperty = new Map<string, { model: AgencyServiceModel | null; destination: "agency" | "landlord" }>();
+  for (const link of serviceLinks ?? []) {
+    const model = (link.agency_service_model ?? agencyServiceModelFromOperatingModel(link.operating_model)) as AgencyServiceModel | null;
+    const destination = link.payment_destination === "landlord" || model === "managed_direct_landlord_collection" ? "landlord" : "agency";
+    serviceByProperty.set(link.property_id, { model, destination });
+  }
+
+  return invoices.map((invoice) => {
+    const service = invoice.property_id ? serviceByProperty.get(invoice.property_id) : undefined;
+    const legacyAllowed = !service || !service.model;
+    return {
+      ...invoice,
+      agencyCanCollect: legacyAllowed || service.model === "full_management" || service.model === "collections_enforcement_only",
+      agencyCollectionDestination: service?.destination ?? "agency",
+    };
+  });
 }
 
 async function fetchLeases(managerId: string, assignedPropertyIds?: string[]): Promise<BillingLease[]> {
@@ -218,14 +255,15 @@ async function fetchExpenditures(
 // ── Hook ─────────────────────────────────────────────────────────────────────
 
 export function useBillingData(selectedMonth: string) {
+  const { userRole } = useAuth();
   const { managerId, restrictToAssignedProperties, assignedPropertyIds } = useManagerScope();
   const queryClient = useQueryClient();
   const scopeKey = restrictToAssignedProperties ? assignedPropertyIds.join(",") : "all";
   const scopedIds = restrictToAssignedProperties ? assignedPropertyIds : undefined;
 
   const invoicesQuery = useQuery({
-    queryKey: [...billingKeys.invoices(managerId ?? ""), scopeKey],
-    queryFn: () => fetchInvoices(managerId!, scopedIds),
+    queryKey: [...billingKeys.invoices(managerId ?? ""), scopeKey, userRole?.role === "agency" ? "agency-service" : "standard"],
+    queryFn: () => fetchInvoices(managerId!, scopedIds, userRole?.role === "agency"),
     enabled: !!managerId,
     staleTime: 15 * 1000,
   });

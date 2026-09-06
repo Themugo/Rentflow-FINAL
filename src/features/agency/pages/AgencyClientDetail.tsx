@@ -1,4 +1,5 @@
 import { Link, useParams } from "react-router-dom";
+import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { ArrowLeft, Building2, Handshake } from "lucide-react";
@@ -14,6 +15,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/features/auth/AuthContext";
 import { formatKes } from "@/features/landlord/lib/formatKes";
+import { AGENCY_SERVICE_MODELS, AGENCY_SERVICE_MODEL_SHORT_LABELS } from "@/shared/constants/authorityModels";
 import { LANDLORD_DOCUMENT_TYPE } from "@/features/landlord/lib/documentTypes";
 import ManagerActivityLog from "@/features/dashboard/components/ManagerActivityLog";
 import { occupancyRateColor } from "@/shared/lib/statusBadge";
@@ -49,6 +51,27 @@ export default function AgencyClientDetail() {
   const properties = (data?.properties ?? []).filter((property) =>
     isPending ? property.id === pendingPropertyId : property.clientId === id,
   );
+  const serviceMix = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const property of properties) {
+      const key = property.serviceModel ?? "unconfigured";
+      counts.set(key, (counts.get(key) ?? 0) + 1);
+    }
+    return [
+      ...AGENCY_SERVICE_MODELS.map((model) => ({
+        id: model.id,
+        label: AGENCY_SERVICE_MODEL_SHORT_LABELS[model.id],
+        count: counts.get(model.id) ?? 0,
+        slogan: model.slogan,
+      })),
+      {
+        id: "unconfigured",
+        label: "Mandate not configured",
+        count: counts.get("unconfigured") ?? 0,
+        slogan: "Set the service model before assigning operational work.",
+      },
+    ].filter((entry) => entry.count > 0);
+  }, [properties]);
 
   const { data: maintenanceCount = 0, isLoading: maintenanceLoading } = useQuery({
     queryKey: ["agency-client-maintenance", user?.id, id],
@@ -146,6 +169,28 @@ export default function AgencyClientDetail() {
                   </div>
                 ))}
               </div>
+              {serviceMix.length > 0 ? (
+                <div className="mt-4 rounded-xl border border-border bg-card p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="text-xs font-semibold text-foreground">How your agency serves this client</p>
+                      <p className="mt-0.5 text-[10px] text-muted-foreground">Different properties may carry different mandates, but each property has one clear operating model.</p>
+                    </div>
+                    <Link to={AGENCY_ROUTES.portfolio} className="shrink-0 text-xs font-medium text-primary hover:underline">Portfolio</Link>
+                  </div>
+                  <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+                    {serviceMix.map((entry) => (
+                      <div key={entry.id} className="min-w-0 rounded-lg border border-border/70 bg-background px-3 py-2.5">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="truncate text-[11px] font-semibold text-foreground">{entry.label}</span>
+                          <span className="shrink-0 font-heading text-sm font-bold text-primary">{entry.count}</span>
+                        </div>
+                        <p className="mt-1 line-clamp-2 text-[10px] leading-4 text-muted-foreground">{entry.slogan}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
             </TabsContent>
 
             <TabsContent value="portfolio">

@@ -32,6 +32,13 @@ interface LandlordLinkData {
   management_fee_pct: number | null;
   allows_delegated_manager: boolean | null;
   delegated_manager_id: string | null;
+  agency_service_model: string | null;
+  agency_fee_model: string | null;
+  agency_fee_value: number | null;
+  agency_payment_arrangements_enabled: boolean | null;
+  agency_enforcement_enabled: boolean | null;
+  agency_service_notes: string | null;
+  agency_mandate_effective_from: string | null;
 }
 
 interface LandlordProfile {
@@ -90,7 +97,7 @@ const PropertyLandlordTab: React.FC<PropertyLandlordTabProps> = ({ propertyId })
   const { data: landlordLinks = [], isLoading } = useQuery({
     queryKey: ['property-landlords', propertyId],
     queryFn: async () => {
-      const { data, error } = await supabase.from('property_landlords').select('id, landlord_user_id, revenue_share_pct, assigned_at, operating_model, payment_destination, management_fee_pct, allows_delegated_manager, delegated_manager_id').eq('property_id', propertyId).order('assigned_at');
+      const { data, error } = await supabase.from('property_landlords').select('id, landlord_user_id, revenue_share_pct, assigned_at, operating_model, payment_destination, management_fee_pct, allows_delegated_manager, delegated_manager_id, agency_service_model, agency_fee_model, agency_fee_value, agency_payment_arrangements_enabled, agency_enforcement_enabled, agency_service_notes, agency_mandate_effective_from').eq('property_id', propertyId).order('assigned_at');
       if (error) throw error;
       const rows = data ?? [];
       return Promise.all(rows.map(async (link: any) => {
@@ -230,7 +237,23 @@ const PropertyLandlordTab: React.FC<PropertyLandlordTabProps> = ({ propertyId })
           {landlordLinks.length === 0 ? <div className="py-10 text-center text-muted-foreground"><User className="h-10 w-10 mx-auto mb-3 opacity-30" /><p className="text-sm">No landlord linked to this property yet</p></div> : landlordLinks.map((link: any) => <div key={link.id} className="space-y-3">
             <div className="flex items-center justify-between gap-4 p-3 bg-muted/30 rounded-lg"><div className="flex items-center gap-3"><div className="h-10 w-10 rounded-full bg-amber-100 flex items-center justify-center"><span className="text-warning font-semibold text-sm">{(link.profile?.full_name || link.profile?.email || 'L')[0].toUpperCase()}</span></div><div><p className="font-medium text-sm">{link.profile?.full_name || 'Landlord'}</p><p className="text-xs text-muted-foreground">{link.profile?.email}</p>{link.profile?.phone && <p className="text-xs text-muted-foreground">{link.profile.phone}</p>}</div></div><div className="text-right"><Badge variant="outline" className="mb-2 border-amber-300 text-warning bg-amber-50">{link.revenue_share_pct}% revenue share</Badge><div className="text-xs text-muted-foreground">Since {format(new Date(link.assigned_at), 'dd/MM/yy')}</div><Button variant="ghost" size="sm" className="mt-1 text-destructive hover:text-destructive hover:bg-destructive/10 h-7 text-xs" onClick={() => setUnlinkTarget(link.id)}><Trash2 className="h-3 w-3 mr-1" />Unlink</Button></div></div>
             <BillingDueConfigPanel scope="landlord" scopeId={link.landlord_user_id} propertyId={propertyId} title={`Billing policy for ${link.profile?.full_name || 'this landlord'}`} compact />
-            {landlordLinks.length === 1 && <PropertyAuthorityPanel propertyId={propertyId} link={{ id: link.id, landlord_user_id: link.landlord_user_id, operating_model: link.operating_model, payment_destination: link.payment_destination, revenue_share_pct: link.revenue_share_pct, management_fee_pct: link.management_fee_pct, allows_delegated_manager: link.allows_delegated_manager, delegated_manager_id: link.delegated_manager_id }} />}
+            {<div className="rounded-xl border border-border/70 bg-background/60 p-1"><div className="px-3 pt-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">Service mandate for {link.profile?.full_name || 'this owner'}</div><PropertyAuthorityPanel propertyId={propertyId} link={{
+              id: link.id,
+              landlord_user_id: link.landlord_user_id,
+              operating_model: link.operating_model,
+              payment_destination: link.payment_destination,
+              revenue_share_pct: link.revenue_share_pct,
+              management_fee_pct: link.management_fee_pct,
+              allows_delegated_manager: link.allows_delegated_manager,
+              delegated_manager_id: link.delegated_manager_id,
+              agency_service_model: link.agency_service_model,
+              agency_fee_model: link.agency_fee_model,
+              agency_fee_value: link.agency_fee_value,
+              agency_payment_arrangements_enabled: link.agency_payment_arrangements_enabled,
+              agency_enforcement_enabled: link.agency_enforcement_enabled,
+              agency_service_notes: link.agency_service_notes,
+              agency_mandate_effective_from: link.agency_mandate_effective_from,
+            }} /></div>}
           </div>)}
         </CardContent>
       </Card>

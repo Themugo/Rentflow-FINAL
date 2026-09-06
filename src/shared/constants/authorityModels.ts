@@ -8,7 +8,8 @@ export type OperatingModel =
   | 'manager_operates_landlord_collects'
   | 'agency_collects_full_management'
   | 'agency_collects_pays_landlord'
-  | 'agency_manages_fee_from_landlord';
+  | 'agency_manages_fee_from_landlord'
+  | 'agency_collects_landlord_managed';
 
 export type PaymentDestination = 'manager' | 'landlord';
 
@@ -85,7 +86,103 @@ export const OPERATING_MODELS: OperatingModelMeta[] = [
     whoGetsPaid: 'Manager (management fee %)',
     defaultPaymentDestination: 'landlord',
   },
+  {
+    id: 'agency_collects_landlord_managed',
+    category: 4,
+    title: 'Agency collects & enforces — owner operates',
+    shortLabel: 'Collect + enforce',
+    description:
+      'Agency collects rent and enforces payment. The property owner retains day-to-day management, caretakers and maintenance authority.',
+    whoOperates: 'Landlord (and their team)',
+    whoCollects: 'Manager / agency',
+    whoGetsPaid: 'Agency collection fee / agreed share',
+    defaultPaymentDestination: 'manager',
+  },
 ];
+
+export type AgencyServiceModel =
+  | 'full_management'
+  | 'managed_direct_landlord_collection'
+  | 'collections_enforcement_only';
+
+export interface AgencyServiceModelMeta {
+  id: AgencyServiceModel;
+  operatingModel: OperatingModel;
+  label: string;
+  slogan: string;
+  description: string;
+  operates: string;
+  collects: string;
+  enforces: string;
+  maintenance: string;
+  paymentDestination: PaymentDestination;
+}
+
+export const AGENCY_SERVICE_MODELS: AgencyServiceModelMeta[] = [
+  {
+    id: 'full_management',
+    operatingModel: 'agency_collects_full_management',
+    label: 'Full management + collection',
+    slogan: 'You run it. We handle it end to end.',
+    description: 'Agency runs property operations, tenant workflows, maintenance, collections and enforcement.',
+    operates: 'Agency',
+    collects: 'Agency',
+    enforces: 'Agency',
+    maintenance: 'Agency',
+    paymentDestination: 'manager',
+  },
+  {
+    id: 'managed_direct_landlord_collection',
+    operatingModel: 'manager_operates_landlord_collects',
+    label: 'Management + direct owner collection',
+    slogan: 'We manage. Owners receive rent directly.',
+    description: 'Agency runs operations and enforcement while rent routes directly to the property owner.',
+    operates: 'Agency',
+    collects: 'Landlord',
+    enforces: 'Agency',
+    maintenance: 'Agency',
+    paymentDestination: 'landlord',
+  },
+  {
+    id: 'collections_enforcement_only',
+    operatingModel: 'agency_collects_landlord_managed',
+    label: 'Collections + enforcement only',
+    slogan: 'Owners run the property. We protect the rent.',
+    description: 'Agency collects rent and enforces payment; the owner retains operations, caretakers and maintenance.',
+    operates: 'Landlord',
+    collects: 'Agency',
+    enforces: 'Agency',
+    maintenance: 'Landlord',
+    paymentDestination: 'manager',
+  },
+];
+
+export function getAgencyServiceModelMeta(id: AgencyServiceModel | string | null | undefined): AgencyServiceModelMeta {
+  return AGENCY_SERVICE_MODELS.find((m) => m.id === id) ?? AGENCY_SERVICE_MODELS[0];
+}
+
+export function agencyServiceModelFromOperatingModel(model: OperatingModel | string | null | undefined): AgencyServiceModel | null {
+  switch (model) {
+    case 'agency_collects_full_management':
+    case 'agency_collects_pays_landlord':
+      return 'full_management';
+    case 'manager_operates_landlord_collects':
+    case 'agency_manages_fee_from_landlord':
+      return 'managed_direct_landlord_collection';
+    case 'agency_collects_landlord_managed':
+      return 'collections_enforcement_only';
+    default:
+      return null;
+  }
+}
+
+
+export const AGENCY_SERVICE_MODEL_SHORT_LABELS: Record<AgencyServiceModel, string> = {
+  full_management: 'Full management',
+  managed_direct_landlord_collection: 'Manage · owner collects',
+  collections_enforcement_only: 'Collections · enforcement',
+};
+
 
 export function getOperatingModelMeta(id: OperatingModel | string | null | undefined): OperatingModelMeta {
   return OPERATING_MODELS.find((m) => m.id === id) ?? OPERATING_MODELS[2];

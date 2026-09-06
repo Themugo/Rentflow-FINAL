@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { format, startOfMonth, endOfMonth, subMonths } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/features/auth/AuthContext";
+import { agencyServiceModelFromOperatingModel, type AgencyServiceModel } from "@/shared/constants/authorityModels";
 
 export type AgencyPropertyRow = {
   id: string;
@@ -14,6 +15,7 @@ export type AgencyPropertyRow = {
   clientName: string;
   collectedMtd: number;
   outstanding: number;
+  serviceModel: AgencyServiceModel | null;
 };
 
 export type AgencyClientRow = {
@@ -87,7 +89,7 @@ export function useAgencyPortfolio() {
           .order("name"),
         supabase
           .from("property_landlords")
-          .select("id, property_id, landlord_user_id, revenue_share_pct")
+          .select("id, property_id, landlord_user_id, revenue_share_pct, operating_model, agency_service_model")
           .eq("manager_id", user.id),
         supabase
           .from("invoices")
@@ -117,6 +119,8 @@ export function useAgencyPortfolio() {
         property_id: string;
         landlord_user_id: string | null;
         revenue_share_pct: number | null;
+        operating_model?: string | null;
+        agency_service_model?: string | null;
       }[];
       const invoices = (invoicesRes.data ?? []) as {
         property_id: string | null;
@@ -188,6 +192,7 @@ export function useAgencyPortfolio() {
           clientName: profile?.full_name || profile?.email || (link ? "Invitation pending" : "Unlinked"),
           collectedMtd: collectedByProperty.get(property.id) ?? 0,
           outstanding: outstandingByProperty.get(property.id) ?? 0,
+          serviceModel: (link?.agency_service_model ?? agencyServiceModelFromOperatingModel(link?.operating_model)) as AgencyPropertyRow["serviceModel"],
         };
       });
 
@@ -250,6 +255,19 @@ export function useAgencyPortfolio() {
       const totalUnits = propertyRows.reduce((sum, row) => sum + row.units, 0);
       const totalOccupied = propertyRows.reduce((sum, row) => sum + row.occupied, 0);
 
+      const serviceModelsByProperty = new Map<string, AgencyServiceModel>();
+      for (const link of links) {
+        const model = (link.agency_service_model ?? agencyServiceModelFromOperatingModel(link.operating_model)) as AgencyServiceModel | null;
+        if (model) serviceModelsByProperty.set(link.property_id, model);
+      }
+
+      const serviceMix = {
+        fullManagement: [...serviceModelsByProperty.values()].filter((model) => model === "full_management").length,
+        managedDirectCollection: [...serviceModelsByProperty.values()].filter((model) => model === "managed_direct_landlord_collection").length,
+        collectionsEnforcementOnly: [...serviceModelsByProperty.values()].filter((model) => model === "collections_enforcement_only").length,
+        unconfigured: propertyRows.filter((row) => !serviceModelsByProperty.has(row.id)).length,
+      };
+
       return {
         properties: propertyRows,
         clients,
@@ -263,6 +281,7 @@ export function useAgencyPortfolio() {
         outstanding,
         overdueInvoices,
         expiringLeases: expiringRes.count ?? 0,
+        serviceMix,
         series,
       };
     },

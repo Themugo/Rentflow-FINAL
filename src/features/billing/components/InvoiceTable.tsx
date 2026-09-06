@@ -145,6 +145,7 @@ export function InvoiceTable({
             const cfg    = STATUS_CONFIG[status] ?? STATUS_CONFIG.cancelled;
             const StatusIcon = cfg.icon;
             const canCollect = status !== "paid" && status !== "cancelled" && status !== "failed" && status !== "refunded";
+            const canCollectPayment = canCollect && (invoice.agencyCanCollect ?? true);
             const pdfPayload = {
               invoice_number: invoice.invoice_number,
               amount: invoice.amount,
@@ -226,7 +227,7 @@ export function InvoiceTable({
 
                 <TableCell>
                   <div className="flex items-center justify-end gap-1.5">
-                    {canCollect && (
+                    {canCollectPayment && (
                       <>
                         <Button
                           variant="outline" size="sm"
@@ -244,6 +245,11 @@ export function InvoiceTable({
                         </Button>
                       </>
                     )}
+                    {!canCollectPayment && invoice.agencyCollectionDestination === "landlord" && canCollect ? (
+                      <span className="hidden items-center rounded-full border border-border bg-muted/60 px-2 py-1 text-[10px] font-medium text-muted-foreground sm:inline-flex">
+                        Owner collects
+                      </span>
+                    ) : null}
                     {status === "paid" && (
                       <Button
                         variant="ghost" size="sm" className="h-8 px-2 text-[hsl(214_73%_48%)]"
@@ -289,7 +295,7 @@ export function InvoiceTable({
                             Edit invoice
                           </DropdownMenuItem>
                         )}
-                        {canCollect && (
+                        {canCollectPayment && (
                           <DropdownMenuItem className="sm:hidden" onClick={() => onMarkPaid(invoice.id)}>
                             Mark paid
                           </DropdownMenuItem>
